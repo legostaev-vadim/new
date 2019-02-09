@@ -1,0 +1,14 @@
+.carousel {
+  height: auto;
+  padding-top: 50%;
+  .carousel-item {
+    width: 100%;
+    height: 85%;
+    text-align: center;
+    font-size: 0;
+    img {
+      width: auto;
+      height: 100%;
+    }
+  }
+}

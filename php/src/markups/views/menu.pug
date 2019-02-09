@@ -1,0 +1,20 @@
+mixin menu
+  <div class="navbar-fixed">
+    <nav class="menu white">
+      <div class="nav-wrapper">
+        <a href="/" class="brand-logo"><?php echo $site_name; ?></a>
+        <a data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          |<?php get_menu(); ?>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div class="sidenav" id="mobile-demo">
+    div.sidenav__header
+      <i class="sidenav__close material-icons">close</i>
+    <div class="divider"></div>
+    ul
+      |<?php get_menu(); ?>
+  </div>
