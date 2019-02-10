@@ -1,4 +1,16 @@
-footer.page-footer.cyan.darken-4
-  .container
-    p.copyright <?php echo $site_name; ?> © <?php echo date('Y'); ?>
+footer.footer
+  ._block
+    img._pic(src="dist/img/footer/001.jpg", alt="")
+  +advantage({
+    title: 'ВЫЗОВ ВРАЧА НА ДОМ',
+    img: 'advantage/005',
+    mod: 'advantage--call',
+    btn: {
+      text: 'ВЫЗВАТЬ',
+      mod: 'button--call'
+    }
+  })
+  +cart
+  p._copy <?php echo $site_name; ?> © <?php echo date('Y'); ?>
 +button-up
++popup

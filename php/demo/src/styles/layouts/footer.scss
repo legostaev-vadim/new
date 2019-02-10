@@ -1,5 +1,26 @@
-.page-footer {
-  text-align: center;
-  padding: 12px;
-  overflow: hidden;
+.footer {
+  &__block {
+    overflow: hidden;
+  }
+
+  &__pic {
+    width: 100%;
+    min-width: 550px;
+  }
+
+  &__copy {
+    margin: 0;
+    padding: 47px 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    background: #314569;
+  }
+
+  @include max($ss) {
+    &__copy {
+      padding: 37px 15px;
+      font-size: 15px;
+    }
+  }
 }

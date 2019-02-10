@@ -1,0 +1,9 @@
+.picbox {
+  text-align: center;
+  
+  &--align {
+    &_left {
+      text-align: left;
+    }
+  }
+}

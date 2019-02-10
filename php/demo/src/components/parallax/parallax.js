@@ -1,5 +1,12 @@
-$(function() {
+appPlugins.parallax = function(context = 'html') {
+  
+  $('.parallax-mirror').remove()
+  
+  const $parallax = $('.parallax', context)
 
-  $('.parallax').parallax()
+  $('.parallax').parallax({
+    imageSrc: $parallax.data('image'),
+    speed: $parallax.data('speed')
+  }).resize()
 
-})
+}

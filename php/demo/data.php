@@ -1,9 +1,13 @@
 <?php
 
-$site_name = 'spaX';
+$site_name = 'Vetanic';
 
 $menu = [
   '/' => 'Главная',
-  'about' => 'О нас',
+  'doctors' => 'Врачи',
+  'services' => 'Услуги',
+  'prices' => 'Цены',
+  'reviews' => 'Отзывы',
+  'graph' => 'График',
   'contacts' => 'Контакты'
 ];

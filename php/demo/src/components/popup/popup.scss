@@ -1,0 +1,8 @@
+.popup {
+  display: none;
+  &__form {
+    .button {
+      margin-top: 15px;
+    }
+  }
+}

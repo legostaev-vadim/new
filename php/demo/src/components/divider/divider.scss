@@ -1,0 +1,28 @@
+.divider {
+  text-align: center;
+
+  &__pic {
+    width: 94px;
+  }
+
+  &__text {
+    width: 52%;
+    margin: 0 auto;
+    margin-top: 18px;
+    font-size: 17px;
+    font-weight: 400;
+    color: #5f5f5f;
+  }
+
+  @include max(880) {
+    &__text {
+      width: 72%;
+    }
+  }
+
+  @include max($ss) {
+    &__text {
+      width: 92%;
+    }
+  }
+}

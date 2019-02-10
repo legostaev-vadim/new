@@ -1,0 +1,106 @@
+main {
+
+  .content-title {
+    margin-top: 80px;
+    margin-bottom: 60px;
+  }
+
+  table {
+    th {
+      font-size: 19px;
+    }
+    td {
+      font-size: 18px;
+    }
+  }
+
+  p {
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.25;
+    color: #4d4d4d;
+  }
+
+  .picbox {
+    margin: 40px 0;
+  }
+
+  .divider {
+    margin-top: 84px;
+    margin-bottom: 88px;
+  }
+
+  &#index {
+    ~.footer {
+      .footer__block {
+        display: none;
+      }
+    }
+    .advantage {
+      &--first {
+        margin-top: 55px;
+      }
+      &--visit {
+        margin-bottom: 45px;
+      }
+    }
+    .animals {
+      margin-top: 55px;
+    }
+  }
+
+  &#doctors,
+  &#reviews {
+    .advantage {
+      margin-bottom: 40px;
+      &--last {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &#reviews {
+    .advantage {
+      margin-bottom: 60px;
+    }
+  }
+
+  @include max($sm) {
+    .content-title {
+      margin-bottom: 40px;
+    }
+    p {
+      font-size: 20px;
+    }
+  }
+
+  @include max(880) {
+    .divider {
+      margin-top: 42px;
+      margin-bottom: 44px;
+    }
+    &#index {
+      .advantage {
+        &--first {
+          margin-top: 60px;
+        }
+        &--visit {
+          margin-bottom: 54px;
+        }
+      }
+      .animals {
+        margin-top: 60px;
+      }
+    }
+    &#doctors,
+    &#reviews {
+      .advantage {
+        margin-bottom: 70px;
+        &--last {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+  
+}

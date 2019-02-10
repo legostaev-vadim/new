@@ -1,0 +1,9 @@
+.content-title {
+  font-size: 32px;
+  text-align: center;
+  color: #333;
+
+  @include max($sm) {
+    font-size: 30px;
+  }
+}

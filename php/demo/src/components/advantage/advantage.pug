@@ -1,0 +1,10 @@
+mixin advantage(opt)
+  section.advantage(class=opt.mod)
+    ._first.wow.fadeInRight(data-wow-offset="150")
+      ._block
+        h3._title=opt.title
+        p._text=opt.text || 'Lorem ipsum dolor sit amet consectetur adipiscing elit sed tempor incididunt ut laboret dolore'
+        if(opt.btn)
+          +button(opt.btn.text, opt.btn.mod)
+    ._last.wow.fadeInLeft(data-wow-offset="150")
+      img._pic(src=`dist/img/${opt.img}.jpg`, alt="")

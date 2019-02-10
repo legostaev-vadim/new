@@ -1,6 +1,79 @@
 .header {
-  .wrapper {
-    max-width: 1300px;
-    margin: 0 auto;
+  padding-top: 212px;
+  padding-bottom: 167px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url(img/header/001.jpg) top center;
+  background-size: cover;
+
+  &__title {
+    margin-bottom: 23px;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 1.25;
+    letter-spacing: 1px;
+  }
+
+  &__contacts {
+    display: inline-block;
+    text-align: left;
+  }
+
+  &__adress {
+    margin-top: 0;
+    margin-bottom: 3px;
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  &__phone {
+    margin-top: 0;
+    font-size: 22px;
+    font-weight: 500;
+    span {
+      white-space: nowrap;
+    }
+  }
+  
+  &__time {
+    margin-top: 34px;
+    font-size: 19px;
+    font-weight: 500;
+    &::before {
+      content: '';
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 18px;
+      width: 50px;
+      height: 2px;
+      background: #00ffff;
+    }
+  }
+
+  @include max($sm) {
+    padding-top: 154px;
+    padding-bottom: 107px;
+  }
+
+  @include max($ss) {
+    padding-top: 72px;
+    padding-bottom: 66px;
+  }
+
+  @include max($sn) {
+    &__title {
+      font-size: 54px;
+      margin-bottom: 41px;
+    }
+    &__adress {
+      margin-bottom: 16px;
+    }
+  }
+
+  @include max(360) {
+    &__title {
+      font-size: 45px;
+      margin-bottom: 41px;
+    }
   }
 }

@@ -4,7 +4,11 @@
 }
 
 body {
+  font-family: $fp;
   overflow-x: hidden;
+  // min-height: 10000px;
+  // background: linear-gradient(rgba(0,255,0,.5), rgba(0,255,0,.5)), url(../maket/desctop.jpg) no-repeat top center;
+  // opacity: 0.5;
 }
 
 a, button, input, [type="submit"] {
@@ -14,5 +18,34 @@ a, button, input, [type="submit"] {
 }
 
 img {
+  max-width: 100%;
   @include no-select;
 }
+
+[class*=wrapper] {
+  max-width: #{$sl}px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@include max($sm) {
+  [class*=wrapper] {
+    padding: 0 15px;
+  }
+}
+
+// -----------------------------------------------------------------
+
+.table thead tr th {
+  vertical-align: top;
+}
+
+input.error {
+  border: 1px solid $ce;
+}
+
+label.error {
+  color: $ce;
+  font-weight: normal;
+}
+

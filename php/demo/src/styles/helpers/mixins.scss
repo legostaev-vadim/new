@@ -1,11 +1,11 @@
-@mixin min($screen) {
-  @media (min-width: #{$screen}px) {
+@mixin min($sr) {
+  @media (min-width: #{$sr}px) {
     @content;
   }
 }
 
-@mixin max($screen) {
-  @media (max-width: #{$screen}px) {
+@mixin max($sr) {
+  @media (max-width: #{$sr}px) {
     @content;
   }
 }
@@ -20,5 +20,5 @@
   -ms-user-select: none; 
   -moz-user-select: none; 
   -webkit-user-select: none; 
-  user-select: none;
+  user-select: none; 
 }

@@ -1,23 +1,18 @@
 
-<div class="navbar-fixed">
-<nav class="menu white">
-<div class="nav-wrapper">
-<a href="/" class="brand-logo"><?php echo $site_name; ?></a>
-<a data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-<ul class="right hide-on-med-and-down"><?php get_menu(); ?></ul>
-</div>
-</nav>
-</div>
-<div class="sidenav" id="mobile-demo">
-<div class="sidenav__header"><i class="sidenav__close material-icons">close</i></div><div class="divider"></div>
-<ul><?php get_menu(); ?></ul></div>
 <header class="header">
-  <div class="wrapper"><div class="carousel">
-<p class="carousel-item"><img src="dist/img/carousel/001.jpg"></p>
-<p class="carousel-item"><img src="dist/img/carousel/002.jpg"></p>
-<p class="carousel-item"><img src="dist/img/carousel/003.jpg"></p>
-<p class="carousel-item"><img src="dist/img/carousel/004.jpg"></p>
-<p class="carousel-item"><img src="dist/img/carousel/005.jpg"></p>
-</div>
+  <nav class="menu">
+    <div class="menu__wrapper">
+      <p class="menu__page"></p>
+      <button class="menu__button"></button><a class="logo" href="/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.544 6.879"><g style="line-height:1.25;-inkscape-font-specification:'Scream alternative'" aria-label="vetanic" font-weight="400" font-size="7.056" font-family="Scream alternative" letter-spacing="0" word-spacing="0" fill="#f60" stroke-width=".203"><path style="-inkscape-font-specification:'Scream alternative'" d="M5.615 1.947L2.863 6.795Q2.327 5.779.118 1.947h1.94l.819 1.546.797-1.546zM10.852 4.297H8.029q.085.473.607.473.36 0 .544-.269l1.658-.007q-.142.72-.798 1.115-.585.36-1.361.36-1.052 0-1.694-.494-.705-.55-.705-1.573 0-1.002.684-1.524.614-.473 1.651-.473 1.178 0 1.722.614.515.586.515 1.778zM9.13 3.4q-.092-.402-.557-.402-.459 0-.55.402zM14.499 3.408h-.783v2.47h-1.708v-2.47h-.423V2.039h.423l-.007-1.03h1.715v1.03h.783z"/><path d="M20.148 5.828H18.46v-.155q-.43.296-1.002.296-.896 0-1.502-.579-.6-.578-.6-1.467 0-.882.607-1.446.606-.572 1.495-.572.537 0 .981.254v-.17h1.708zM18.46 3.937q0-.29-.183-.452-.184-.162-.48-.162-.67 0-.67.614t.67.614q.296 0 .48-.162.183-.163.183-.452zM25.477 5.835h-1.721V3.683q0-.487-.48-.487-.205 0-.339.148-.134.141-.134.346v2.145H21.06V1.997h1.743v.211q.318-.296 1.164-.296.741 0 1.136.43.374.41.374 1.158zM28.194.953q0 .36-.282.606-.282.247-.65.247-.38 0-.655-.24-.276-.24-.276-.613 0-.374.276-.614.275-.24.656-.24V.085q.374.007.649.254.282.247.282.614zm-.07 4.974h-1.7V2.08h1.7zM32.426 5.7q-.48.269-1.101.269-.988 0-1.616-.522-.677-.557-.677-1.524 0-.924.698-1.489.65-.529 1.595-.529.571 0 1.1.261v1.468q-.557-.395-.896-.395-.296 0-.515.197-.211.19-.211.487 0 .296.218.494.22.19.516.19.402 0 .889-.458z" fill="currentColor"/></g></svg></a>
+      <div class="menu__list"><?php get_menu(); ?></div>
+    </div>
+  </nav>
+  <div class="header__wrapper">
+    <h1 class="header__title">Ветклиника на Таганке.</h1>
+    <div class="header__contacts">
+      <p class="header__adress">Москва, ЦАО, Старовольский переулок, д.&nbsp;52, кор.&nbsp;4</p>
+      <p class="header__phone"><span>+7 (495) 002-01-03</span>, <span>+7 (495) 002-01-04</span></p>
+    </div>
+    <p class="header__time">круглосуточно</p>
   </div>
 </header>

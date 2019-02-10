@@ -1,0 +1,50 @@
+.parallax {
+  position: relative;
+  z-index: 10000;
+  padding-top: 112px;
+  padding-bottom: 158px;
+  text-align: center;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.3);
+    z-index: -1;
+  }
+  
+  &__title {
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 1.25;
+    letter-spacing: 1px;
+    color: #fff;
+  }
+
+  &__text {
+    width: 85%;
+    margin: 0 auto;
+    font-size: 21px;
+    color: #e7e7e7;
+    line-height: 1.25;
+  }
+
+  @include max($ss) {
+    padding-top: 82px;
+    padding-bottom: 128px;
+  }
+
+  @include max(360) {
+    padding-top: 52px;
+    padding-bottom: 88px;
+    &__title {
+      font-size: 40px;
+    }
+    &__text {
+      width: auto;
+    }
+  }
+}

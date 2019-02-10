@@ -1,0 +1,30 @@
+.animals {
+  display: flex;
+  font-size: 0;
+
+  &__first {
+    padding-right: 2px;
+  }
+
+  &__last {
+    padding-left: 2px;
+  }
+
+  &__pic {
+    width: 100%;
+  }
+
+  @include max(880) {
+    display: block;
+    &__first {
+      width: 100%;
+      padding: 0;
+      padding-bottom: 2px;
+    }
+    &__last {
+      width: 100%;
+      padding: 0;
+      padding-top: 2px;
+    }
+  }
+}

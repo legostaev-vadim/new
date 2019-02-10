@@ -1,0 +1,11 @@
+.decor {
+  display: block;
+  width: 126px;
+  margin: 0 auto;
+  margin-top: 140px;
+
+  @include max($sm) {
+    width: 109px;
+    margin-top: 90px;
+  }
+}

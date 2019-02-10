@@ -1,0 +1,16 @@
+mixin popup
+  .popup
+    form._form(method="get" action="#")
+      <div class="form-group">
+        <label for="exampleInputName">Введите имя</label>
+        <input class="form-control" name="name" id="exampleInputName" type="text" required placeholder="Имя">
+      </div>
+      <div class="form-group popup__address">
+        <label for="exampleInputAddress">Введите адрес</label>
+        <input class="form-control" name="address" id="exampleInputAddress" type="text" required placeholder="Адрес">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPhone">Введите телефон</label>
+        <input class="form-control" name="phone" id="exampleInputPhone" type="text" required placeholder="Телефон">
+      </div>
+      +button('Отправить', 'button--submit', 'submit')

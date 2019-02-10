@@ -1,0 +1,56 @@
+.button {
+  width: 200px;
+  height: 47px;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 47px;
+  border: 1px solid transparent;
+  transition: all $dr;
+
+  &--visit {
+    background: #ff6600;
+    &:hover {
+      border: 1px solid #ff6600;
+      background: transparent;
+      color: #008080;
+    }
+  }
+
+  &--call {
+    background: #e80000;
+    &:hover {
+      border: 1px solid #e80000;
+      background: transparent;
+      color: #008080;
+    }
+  }
+
+  &--submit {
+    width: 130px;
+    height: 38px;
+    font-size: 13px;
+    border-radius: 38px;
+    color: #008080;
+    border: 1px solid #0b78b5;
+    background: transparent;
+    &:hover {
+      color: #fff;
+      border: 1px solid transparent;
+      background: #0b78b5;
+    }
+  }
+
+  @include max($ss) {
+    &--visit,
+    &--call {
+      width: 180px;
+      height: 44px;
+      border-radius: 44px;
+    }
+  }
+}

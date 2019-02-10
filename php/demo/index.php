@@ -14,14 +14,15 @@
     elseif(file_exists('dist/description/'.$_GET['id'].'.txt'))
       include 'dist/description/'.$_GET['id'].'.txt';
     else
-      echo 'Page not found';
+      include 'dist/description/404.txt';
   ?>">
+  <link rel="shortcut icon" type="image/x-icon" href="dist/favicon.ico">
   <title><?php
     if(!isset($_GET['id']) or $_GET['id'] == 'index') echo $site_name;
     elseif(array_key_exists($_GET['id'], $menu)) echo $menu[$_GET['id']] . ' | ' . $site_name;
     else echo '404';
   ?></title>
-  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
   <link rel="stylesheet" href="dist/main.css">
 </head>
 <body>

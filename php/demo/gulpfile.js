@@ -24,7 +24,7 @@ let saveLayouts;
 let saveStyles;
 let basename;
 let newLine;
-pugbem.m = '_';
+// pugbem.m = '_';
 
 
 function preLayouts() {
@@ -84,10 +84,12 @@ function styles() {
     // 'node_modules/materialize-css/dist/css/materialize.min.css',
     // 'node_modules/bootstrap/dist/css/bootstrap.min.css',
     'node_modules/normalize.css/normalize.css',
+    'src/libs/jquery.simple-popup.min.css',
+    'src/libs/animate.min.css',
     'src/styles/base/**/*.scss',
-    'src/components/**/*.scss',
+    'src/styles/index.scss',
     'src/styles/layouts/**/*.scss',
-    'src/styles/index.scss'
+    'src/components/**/*.scss'
   ], {since: () => {
     if(isStyles) return gulp.lastRun(styles);
     return undefined;
@@ -101,11 +103,11 @@ function styles() {
       gulpIf(mode === 'production', multipipe(
         autoprefixer({ browsers: ['last 15 versions'] }),
         csscomb()
-      )),
-      remember('styles')
+      ))
     )))
-    .pipe(gulpIf(mode === 'production', cleanCSS()))
+    .pipe(remember('styles'))
     .pipe(concat('main.css', { newLine }))
+    .pipe(gulpIf(mode === 'production', cleanCSS()))
     .pipe(gulp.dest('dist'))
     .on('end', () => isStyles = true);
 }
@@ -116,9 +118,13 @@ function scripts() {
     // 'node_modules/bootstrap/dist/js/bootstrap.min.js',
     'node_modules/jquery/dist/jquery.min.js',
     'node_modules/riot-route/dist/route.min.js',
+    'src/libs/jquery.simple-popup.min.js',
+    'src/libs/jquery.validate.min.js',
+    'src/libs/wow.min.js',
+    'src/libs/parallax.js',
+    'src/scripts/index.js',
     'src/components/**/*.js',
-    'src/scripts/ajax/**/*.js',
-    'src/scripts/index.js'
+    'src/scripts/ajax/**/*.js'
   ], {since: gulp.lastRun(scripts)})
     .pipe(gulpIf(mode === 'production', gulpIf(file => !file.path.includes('/node_modules/'), multipipe(
       babel({ presets: ['@babel/env'], sourceType: 'unambiguous' }),
@@ -158,16 +164,16 @@ function clean() {
 }
 
 function watch() {
-  gulp.watch(['src/layouts/helpers/**/*.pug', 'src/components/**/*.pug'], gulp.series(preLayouts, layouts));
+  gulp.watch('{src/layouts/helpers,src/components}/**/*.pug', gulp.series(preLayouts, layouts));
   gulp.watch('src/layouts/*.pug', gulp.series(layouts));
-  gulp.watch('src/styles/**/*.scss', gulp.series(preStyles, styles));
-  gulp.watch('src/components/**/*.scss', gulp.series(styles));
+  gulp.watch(['src/styles/**/*.scss','!src/styles/layouts/**/*.scss'], gulp.series(preStyles, styles));
+  gulp.watch('{src/components,src/styles/layouts}/**/*.scss', gulp.series(styles));
   gulp.watch('src/**/*.js', gulp.series(scripts));
   gulp.watch('src/symbols/**/*.svg', gulp.series(symbols));
   gulp.watch('src/assets/**/*', gulp.series(copy));
 }
 
-const dev = gulp.series(clean, copy, preLayouts, preStyles, gulp.parallel(layouts, styles, scripts, symbols), watch);
+const dev = gulp.series(clean, copy, preLayouts, layouts, preStyles, styles, scripts, symbols, watch);
 const build = gulp.series(public, dev);
 
 gulp.task('default', dev);
