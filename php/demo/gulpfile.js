@@ -88,8 +88,8 @@ function styles() {
     'src/libs/animate.min.css',
     'src/styles/base/**/*.scss',
     'src/styles/index.scss',
-    'src/styles/layouts/**/*.scss',
-    'src/components/**/*.scss'
+    'src/components/**/*.scss',
+    'src/styles/layouts/**/*.scss'
   ], {since: () => {
     if(isStyles) return gulp.lastRun(styles);
     return undefined;
