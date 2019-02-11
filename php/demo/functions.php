@@ -1,4 +1,4 @@
-<?php
+<?php if(!defined('IN_INCLUDE')) die('you cannot load this page directly.');
 
 function get_menu() {
   global $menu;

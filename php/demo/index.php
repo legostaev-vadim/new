@@ -1,4 +1,5 @@
 <?php
+  define("IN_INCLUDE", true);
   include 'data.php';
   include 'functions.php';
 ?>
