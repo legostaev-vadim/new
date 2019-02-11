@@ -3,44 +3,69 @@ $(function() {
   route.start()
   route.base('/')
 
+  const dataStore = {};
   const $html = $('html')
   const siteName = $('html').data('name')
   const $description = $('meta[name=description]')
   const $title = $('title')
   const $main = $('main')
-  const $menuItems = $('.menu li')
-  const $sidenavItems = $('.sidenav li')
-  const dataStore = {};
+  const $menu = $('.menu')
+  const $page = $('.menu__page')
+  const $items = $('.menu__item')
   const indent = $main.data('indent')
   const duration = 300
-  let link
+  const error = '404'
+  let idPage = $items.filter('.menu__item--current').attr('href')
+  let href
 
-  function show_page(data) {
-    $html.stop().animate({scrollTop: $main.offset().top - indent}, 400, () => {
-      $main.html(data).fadeTo(duration, 1, function() {
-        $('.parallax').parallax()
+  function show_page(data, idPage) {
+    $html.stop().animate({scrollTop: $main.offset().top - indent}, 600, () => {
+      $main.html(data).attr('id', idPage).fadeTo(duration, 1, function() {
+        // for (const key in appPlugins) appPlugins[key]('main')
       })
     })
   }
 
-  dataStore[location.href] = {
+  href = $items.filter('.menu__item--current').text() || error
+  $page.text(href)
+  
+  if(href !== error) {
+    href = location.href
+    if(idPage === '/') idPage = 'index'
+  } else idPage = error
+
+  $main.attr('id', idPage)
+
+  dataStore[href] = {
     main: $main.html(),
     description: $description.attr('content')
   }
 
+  // for (const key in appPlugins) appPlugins[key]()
+
+
   route(function(path) {
+
+    if($items.is(`[href="${path || '/'}"]`)) {
+      href = location.href
+      idPage = path || 'index'
+    } else {
+      href = error
+      idPage = error
+    }
+
     $main.fadeTo(duration, 0, function() {
-      if(location.href in dataStore) {
-        show_page(dataStore[location.href].main)
-        $description.attr('content', dataStore[location.href].description)
+      if(href in dataStore) {
+        show_page(dataStore[href].main, idPage)
+        $description.attr('content', dataStore[href].description)
       } else {
-        dataStore[location.href] = {}
+        dataStore[href] = {}
         $.ajax({
           url: `dist/pages/${path || 'index'}.html`,
           cache: false,
           success(data) {
-            show_page(data)
-            dataStore[location.href].main = data
+            show_page(data, idPage)
+            dataStore[href].main = data
           }
         })
         $.ajax({
@@ -48,22 +73,30 @@ $(function() {
           cache: false,
           success(data) {
             $description.attr('content', data)
-            dataStore[location.href].description = data
+            dataStore[href].description = data
           }
         })
       }
-      $menuItems.removeClass('active')
-        .each(function() {
-          link = $(this).children('a')[0]
-          if(link.href === location.href) {
-            $(this).addClass('active')
-            $sidenavItems.removeClass('active').eq($(this).index()).addClass('active')
-            if(path) $title.text(`${$(link).text()} | ${siteName}`)
+
+      $items.removeClass('menu__item--current')
+      
+      if(href === error) {
+        $title.text(error)
+        $page.text(error)
+      } else {
+        $items.each(function() {
+          if($(this)[0].href === href) {
+            $(this).addClass('menu__item--current')
+            if(path) $title.text(`${$(this).text()} | ${siteName}`)
             else $title.text(siteName)
+            $page.text($(this).text())
             return false
           }
         })
+      }
     })
+
+    $menu.removeClass('menu--open').animate({scrollTop : 0}, 300)
   }) // end route
 
 })

@@ -1,17 +1,17 @@
-<?php
+<?php if(!defined('IN_INCLUDE')) die('you cannot load this page directly.');
 
 function get_menu() {
   global $menu;
 
-  $class_current = 'active';
+  $item = 'menu__item';
+  $current = $item.'--current';
 
   if(!isset($_GET['id'])) $href = '/';
   else $href = $_GET['id'];
 
   foreach ($menu as $key => $value) {
-    if($key == $href)
-      echo "<li class='$class_current'><a href='$key'>$value</a></li>";
-    else
-      echo "<li><a href='$key'>$value</a></li>";
+    if($key == $href) $class = "$item $current";
+    else  $class = $item;
+    echo "<a href='$key' class='$class'>$value</a>";
   }
 }

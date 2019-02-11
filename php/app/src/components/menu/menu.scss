@@ -1,0 +1,233 @@
+.menu {
+  position: fixed;
+  z-index: 100000;
+  top: 0;
+  width: 100%;
+  border-bottom: 1px solid #e5e5e5;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0;
+    background: #fff;
+    transition: opacity $dr;
+  }
+
+  &--small {
+    &::before {
+      opacity: 1;
+    }
+    .logo {
+      color: #ccc;
+    }
+    .menu {
+      &__wrapper {
+        min-height: 62px;
+      }
+      &__item {
+        color: #444;
+      }
+    }
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    min-height: 97px;
+    transition: min-height $dr;
+  }
+
+  &__page {
+    display: none;
+  }
+
+  &__button {
+    display: none;
+  }
+
+  .logo {
+    margin-right: auto;
+  }
+
+  &__item {
+    display: inline-block;
+    position: relative;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #fff;
+    margin-left: 42px;
+    transition: color $dr;
+    &::before {
+      content: '';
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      margin-top: -1px;
+      height: 2px;
+      width: 12px;
+      background: transparent;
+      transition: background-color $dr;
+    }
+    &:hover {
+      &::before {
+        background: #ff6600;
+      }
+    }
+    &--current {
+      &::before {
+        background: #ff6600;
+      }
+    }
+  }
+
+  $mob-height: 55px;
+
+  @include max($sm) {
+    height: $mob-height;
+    overflow: hidden;
+    transition: height $dr;
+    &::before {
+      height: $mob-height;
+    }
+    &--small {
+      .menu {
+        &__page {
+          color: #444;
+        }
+        &__button {
+          border-color: #777;
+          &::after, &::before {
+            background: #777;
+          }
+        }
+      }
+    }
+    &--open {
+      height: 100%;
+      border-bottom: none;
+      &::before {
+        opacity: 1;
+      }
+      .logo {
+        color: #ccc;
+      }
+      .menu {
+        &__page {
+          color: orangered;
+        }
+        &__button {
+          border-color: transparent;
+          &::before {
+            transform: rotate(45deg);
+            background: #777;
+          }
+          &::after {
+            transform: rotate(-45deg);
+            background: #777;
+          }
+        }
+        &__list {
+          animation: scroll 0.1s $dr forwards;
+        }
+      }
+    }
+    &__wrapper {
+      flex-wrap: wrap;
+      height: 100%;
+      padding: 0;
+      &::before {
+        content: '';
+        order: -1;
+        height: $mob-height;
+      }
+    }
+    &__page {
+      display: inline-block;
+      margin: 0;
+      margin-right: auto;
+      font-weight: 500;
+      font-size: 13px;
+      text-transform: uppercase;
+      color: #fff;
+      cursor: pointer;
+      transition: color $dr;
+    }
+    &__button {
+      order: -1;
+      display: block;
+      width: 24px;
+      height: 14px;
+      padding: 0;
+      position: relative;
+      cursor: pointer;
+      margin: 0 12px;
+      border: none;
+      border-top: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      background: transparent;
+      transition: all $dr;
+      &:hover {
+        opacity: .6;
+      }
+      &::after, &::before {
+        content: '';
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        top: 4px;
+        left: 0;
+        background: #fff;
+        transition: all $dr;
+      }
+    }
+    .logo {
+      margin-right: 15px;
+      svg {
+        height: 20px;
+        width: 98px;
+      }
+    }
+    &__list {
+      width: 100%;
+      height: calc(100% - #{$mob-height});
+      background: rgba(0,0,0,.8);
+      &::before {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background: #aaa;
+      }
+    }
+    &__item {
+      display: block;
+      padding: 18px 15px;
+      margin: 0;
+      text-align: left;
+      color: #444;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      &:hover {
+        background: #e5e5e5;
+      }
+      &::before {
+        display: none;
+      }
+      &--current {
+        display: none;
+      }
+    }
+  }
+
+  @keyframes scroll {
+    100% {
+      overflow-y: auto;
+    }
+  }
+}

@@ -1,0 +1,40 @@
+.header {
+  padding-top: 212px;
+  padding-bottom: 167px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url(img/header/001.jpg) top center;
+  background-size: cover;
+
+  &__title {
+    margin-bottom: 23px;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 1.25;
+    letter-spacing: 1px;
+  }
+
+  @include max($sm) {
+    padding-top: 154px;
+    padding-bottom: 107px;
+  }
+
+  @include max($ss) {
+    padding-top: 72px;
+    padding-bottom: 66px;
+  }
+
+  @include max($sn) {
+    &__title {
+      font-size: 54px;
+      margin-bottom: 41px;
+    }
+  }
+
+  @include max(360) {
+    &__title {
+      font-size: 45px;
+      margin-bottom: 41px;
+    }
+  }
+}

@@ -4,7 +4,11 @@
 }
 
 body {
+  font-family: $fp;
   overflow-x: hidden;
+  // min-height: 10000px;
+  // background: linear-gradient(rgba(0,255,0,.5), rgba(0,255,0,.5)), url(../maket/desctop.jpg) no-repeat top center;
+  // opacity: 0.5;
 }
 
 a, button, input, [type="submit"] {
@@ -14,60 +18,18 @@ a, button, input, [type="submit"] {
 }
 
 img {
+  max-width: 100%;
   @include no-select;
 }
 
-// Custom Stylesheet
-
-nav ul a,
-nav .brand-logo {
-  color: #444;
+[class*=wrapper] {
+  max-width: #{$sl}px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-p {
-  line-height: 2rem;
-}
-
-.sidenav-trigger {
-  color: #26a69a;
-}
-
-.parallax-container {
-  min-height: 380px;
-  line-height: 0;
-  height: auto;
-  color: rgba(255,255,255,.9);
-  &-big {
-    min-height: 450px;
+@include max($sm) {
+  [class*=wrapper] {
+    padding: 0 15px;
   }
-}
-  .parallax-container .section {
-    width: 100%;
-  }
-
-@media only screen and (max-width : 992px) {
-  .parallax-container .section {
-    position: absolute;
-    top: 40%;
-  }
-  #index-banner .section {
-    top: 10%;
-  }
-}
-
-@media only screen and (max-width : 600px) {
-  #index-banner .section {
-    top: 0;
-  }
-}
-
-.icon-block {
-  padding: 0 15px;
-}
-.icon-block .material-icons {
-  font-size: inherit;
-}
-
-footer.page-footer {
-  margin: 0;
 }

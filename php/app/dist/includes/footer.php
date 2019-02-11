@@ -1,7 +1,6 @@
 
-<footer class="page-footer cyan darken-4">
-  <div class="container">
-    <p class="copyright"><?php echo $site_name; ?> © <?php echo date('Y'); ?></p>
-  </div>
+<footer class="footer">
+  <div class="cart"><iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14684.905008814461!2d37.61853179202!3d55.72568576244975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sru!4v1543963957335" style="border:0" allowfullscreen></iframe></div>
+  <p class="footer__copy"><?php echo $site_name; ?> © <?php echo date('Y'); ?></p>
 </footer>
 <button class="button-up"></button>
