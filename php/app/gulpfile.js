@@ -173,8 +173,8 @@ function watch() {
   gulp.watch('src/assets/**/*', gulp.series(copy));
 }
 
-const dev = gulp.series(clean, copy, preLayouts, layouts, preStyles, styles, scripts, symbols, watch);
-const build = gulp.series(public, dev);
+const dev = gulp.series(copy, preLayouts, layouts, preStyles, styles, scripts, symbols, watch);
+const build = gulp.series(public, clean, dev);
 
 gulp.task('default', dev);
 gulp.task('build', build);
