@@ -47,7 +47,6 @@ $(function() {
         dataStore[page] = {}
         $.ajax({
           url: `dist/pages/${path || 'index'}.html`,
-          cache: false,
           success(data) {
             show_page(data, page)
             dataStore[page].main = data
@@ -55,7 +54,6 @@ $(function() {
         })
         $.ajax({
           url: `dist/description/${path || 'index'}.txt`,
-          cache: false,
           success(data) {
             $description.attr('content', data)
             dataStore[page].description = data
