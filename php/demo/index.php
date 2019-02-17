@@ -18,24 +18,21 @@
       include 'dist/description/404.txt';
   ?>">
   <link rel="shortcut icon" type="image/x-icon" href="dist/favicon.ico">
-  <title><?php
-    if(!isset($_GET['id']) or $_GET['id'] == 'index') echo $site_name;
-    elseif(array_key_exists($_GET['id'], $menu)) echo $menu[$_GET['id']] . ' | ' . $site_name;
-    else echo '404';
-  ?></title>
+  <title>
+    <?php
+      if($page == 'index') echo $site_name;
+      elseif($page == '404') echo $page;
+      else echo $menu[$page] . ' | ' . $site_name;
+    ?>
+  </title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
   <link rel="stylesheet" href="dist/main.css">
 </head>
 <body>
   <?php include 'dist/includes/header.php'; ?>
-  <main data-indent="200"><?php
-    if(!isset($_GET['id']))
-      include 'dist/pages/index.html';
-    elseif(file_exists('dist/pages/'.$_GET['id'].'.html'))
-      include 'dist/pages/'.$_GET['id'].'.html';
-    else
-      include 'dist/pages/404.html';
-  ?></main>
+  <main id="<?php echo $page; ?>" data-indent="200">
+    <?php include 'dist/pages/'.$page.'.html'; ?>
+  </main>
   <?php include 'dist/includes/footer.php'; ?>
   <script src="dist/main.js"></script>
 </body>

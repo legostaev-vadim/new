@@ -11,3 +11,7 @@ $menu = [
   'graph' => 'График',
   'contacts' => 'Контакты'
 ];
+
+if(!isset($_GET['id'])) $page = 'index';
+elseif(file_exists('dist/pages/'.$_GET['id'].'.html')) $page = $_GET['id'];
+else $page = '404';
