@@ -22,7 +22,7 @@ $(function() {
   }
 
   function load_page(data, id, isAjax) {
-    $html.stop().animate({scrollTop: $main.offset().top - indent}, 600, () => {
+    $html.stop().animate({scrollTop: $main.offset().top - indent}, 0, () => {
       $main.html(data).attr({id})
       if(isAjax) {
         let $lastImg = $main.find('img:last')
