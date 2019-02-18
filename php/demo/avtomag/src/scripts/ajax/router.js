@@ -15,11 +15,22 @@ $(function() {
   const error = '404'
   let page = $main.attr('id')
 
-  function show_page(data, id) {
+  function show_page() {
+    $html.fadeTo(duration, 1, function() {
+      // for (const key in appPlugins) appPlugins[key]('main')
+    })
+  }
+
+  function load_page(data, id, isAjax) {
     $html.stop().animate({scrollTop: $main.offset().top - indent}, 600, () => {
-      $main.html(data).attr({id}).fadeTo(duration, 1, function() {
-        // for (const key in appPlugins) appPlugins[key]('main')
-      })
+      $main.html(data).attr({id})
+      if(isAjax) {
+        let $lastImg = $main.find('img:last')
+        if($lastImg.is('img')) $lastImg.one('load', show_page)
+        else show_page()
+      } else {
+        show_page()
+      }
     })
   }
 
@@ -35,16 +46,16 @@ $(function() {
     if($items.is(`[href="${path || '/'}"]`)) page = path || 'index'
     else page = error
 
-    $main.fadeTo(duration, 0, function() {
+    $html.fadeTo(duration, 0, function() {
       if(page in dataStore) {
-        show_page(dataStore[page].main, page)
+        load_page(dataStore[page].main, page)
         $description.attr('content', dataStore[page].description)
       } else {
         dataStore[page] = {}
         $.ajax({
           url: `dist/pages/${path || 'index'}.html`,
           success(data) {
-            show_page(data, page)
+            load_page(data, page, true)
             dataStore[page].main = data
           }
         })
