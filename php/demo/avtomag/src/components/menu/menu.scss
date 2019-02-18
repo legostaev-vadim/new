@@ -1,0 +1,38 @@
+.menu {
+
+  nav {
+    background: $cp;
+  }
+
+  ul {
+    li a {
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+  }
+
+  .brand-logo {
+    font-size: 21px;
+    font-weight: 500;
+  }
+
+  .dropdown-trigger {
+    .material-icons {
+      margin-left: 5px;
+    }
+  }
+
+  .dropdown-content {
+    li a {
+      color: $cs;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+
+  @include min(993) {
+    .nav-wrapper {
+      padding: 0 20px;
+    }
+  }
+
+}

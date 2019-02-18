@@ -1,0 +1,50 @@
+mixin menu
+  .menu.navbar-fixed
+    <ul id="dropdown1" class="dropdown-content">
+      li: <a href="cars" class="item">Все автомобили</a>
+      li: <a href="credit" class="item">Автокредит</a>
+      li: <a href="insurance" class="item">Автострахование</a>
+      li: <a href="organizations" class="item">Организациям</a>
+    </ul>
+
+    <ul id="dropdown2" class="dropdown-content">
+      li: <a href="exchange" class="item">Обмен</a>
+      li: <a href="buyout" class="item">Выкуп</a>
+      li: <a href="calc" class="item">Автокредит</a>
+      li: <a href="commission" class="item">Комиссия</a>
+    </ul>
+
+    <ul id="dropdown3" class="dropdown-content">
+      li: <a href="maintenance" class="item">Техобслуживание</a>
+      li: <a href="locksmith" class="item">Слесарный ремонт</a>
+      li: <a href="bodywork" class="item">Кузовной ремонт</a>
+      li: <a href="spare" class="item">Запчасти</a>
+      li: <a href="special" class="item">Спецпредложения</a>
+    </ul>
+
+    <ul id="dropdown4" class="dropdown-content">
+      li: <a href="purchase" class="item">Покупка автомобиля</a>
+      li: <a href="service" class="item">Сервис</a>
+    </ul>
+
+    <ul id="dropdown5" class="dropdown-content">
+      li: <a href="news" class="item">Новости</a>
+      li: <a href="services" class="item">Услуги</a>
+      li: <a href="discount" class="item">Дисконтная система</a>
+      li: <a href="jobs" class="item">Вакансии</a>
+    </ul>
+    
+    <nav>
+      <div class="nav-wrapper container">
+        <a href="/" class="item brand-logo"><?php echo $site_name; ?></a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          li: <a class='dropdown-trigger' data-target='dropdown1'>Новые<i class='material-icons right'>arrow_drop_down</i></a>
+          li: <a class='dropdown-trigger' data-target='dropdown2'>С пробегом<i class='material-icons right'>arrow_drop_down</i></a>
+          li: <a class='dropdown-trigger' data-target='dropdown3'>Сервис<i class='material-icons right'>arrow_drop_down</i></a>
+          li: <a class='dropdown-trigger' data-target='dropdown4'>Акции<i class='material-icons right'>arrow_drop_down</i></a>
+          li: <a class='dropdown-trigger' data-target='dropdown5'>О нас<i class='material-icons right'>arrow_drop_down</i></a>
+          li: <a class="item" href="contacts">Контакты</a>
+        </ul>
+      </div>
+    </nav>

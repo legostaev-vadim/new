@@ -1,0 +1,57 @@
+.sidenav {
+
+  &__header {
+    overflow: hidden;
+    padding: 12px 0;
+  }
+
+  .logo {
+    font-size: 18px;
+    font-weight: 500;
+    color: $cp;
+    float: left;
+    margin-left: 15px;
+  }
+
+  &__close {
+    margin-right: 15px;
+    transition: opacity $dr;
+    cursor: pointer;
+    &:hover {
+      opacity: .6;
+    }
+  }
+
+  .collapsible {
+    margin-bottom: 70px;
+    border-top: 1px solid #ddd;
+    .collapsible-header {
+      a {
+        font-weight: 500;
+      }
+      .material-icons {
+        margin: 0;
+        &.open {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+    .collapsible-body {
+      a {
+        padding-left: 30px;
+        &:hover {
+          background: $cp;
+          color: #fff;
+        }
+      }
+    }
+    a {
+      display: block;
+      width: 100%;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: $cs;
+    }
+  }
+  
+}
