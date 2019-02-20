@@ -14,13 +14,13 @@ $(function() {
     }
   })
   
-  $(window).on('scroll', function() {
+  $(window).on('scroll.menu', function() {
     if ($(window).scrollTop() > 150) $menu.addClass('menu--small')
     else $menu.removeClass('menu--small')
   }).on('keydown', function(e) {
     if(e.which == 27) {
       $menu.removeClass('menu--open').animate({scrollTop : 0}, 300)
     }
-  })
+  }).trigger('scroll.menu')
 
 })

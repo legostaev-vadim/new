@@ -3,7 +3,7 @@ $(function() {
   route.start()
   route.base('/')
 
-  const dataStore = {};
+  const pageStore = {};
   const $html = $('html')
   const siteName = $('html').data('name')
   const $description = $('meta[name=description]')
@@ -17,33 +17,14 @@ $(function() {
   const error = '404'
   let page = $main.attr('id')
 
-  function show_page() {
-    $html.fadeTo(duration, 1, function() {
-      for (const key in appPlugins) appPlugins[key]('main')
-    })
-  }
-
-  function load_page(data, id, isAjax) {
-    $html.stop().animate({scrollTop: $main.offset().top - indent}, 0, () => {
-      $main.html(data).attr({id})
-      if(isAjax) {
-        let $lastImg = $main.find('img:last')
-        if($lastImg.is('img')) $lastImg.one('load', show_page)
-        else show_page()
-      } else {
-        show_page()
-      }
-    })
-  }
-
   $current.text($items.filter('.menu__item--current').text() || error)
+  for (const key in appPlugins) appPlugins[key]()
 
-  dataStore[page] = {
+  pageStore[page] = {
     main: $main.html(),
     description: $description.attr('content')
   }
 
-  for (const key in appPlugins) appPlugins[key]()
 
   route(function(path) {
 
@@ -51,23 +32,26 @@ $(function() {
     else page = error
 
     $html.fadeTo(duration, 0, function() {
-      if(page in dataStore) {
-        load_page(dataStore[page].main, page)
-        $description.attr('content', dataStore[page].description)
+      if(page in pageStore) {
+        $main.html(pageStore[page].main).attr('id', page)
+        $description.attr('content', pageStore[page].description)
+        $html.scrollTop($main.offset().top - indent).fadeTo(duration, 1, function() {
+          for (const key in appPlugins) appPlugins[key]()
+        })
       } else {
-        dataStore[page] = {}
         $.ajax({
-          url: `dist/pages/${path || 'index'}.html`,
+          url: `dist/pages/${page || 'index'}.html`,
           success(data) {
-            load_page(data, page, true)
-            dataStore[page].main = data
+            $main.html(data).attr('id', page)
+            $html.scrollTop($main.offset().top - indent).fadeTo(duration, 1, function() {
+              for (const key in appPlugins) appPlugins[key]()
+            })
           }
         })
         $.ajax({
-          url: `dist/description/${path || 'index'}.txt`,
+          url: `dist/description/${page || 'index'}.txt`,
           success(data) {
             $description.attr('content', data)
-            dataStore[page].description = data
           }
         })
       }
