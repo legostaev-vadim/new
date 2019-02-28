@@ -22,6 +22,13 @@ $(function() {
     description: $description.attr('content')
   }
 
+  function load_page(data) {
+    $main.html(data).attr('id', page)
+    $html.scrollTop($main.offset().top - indent).fadeTo(duration, 1, function() {
+      // for (const key in appPlugins) appPlugins[key]()
+    })
+  }
+
 
   route(function(path) {
 
@@ -30,19 +37,13 @@ $(function() {
 
     $html.fadeTo(duration, 0, function() {
       if(page in pageStore) {
-        $main.html(pageStore[page].main).attr('id', page)
+        load_page(pageStore[page].main)
         $description.attr('content', pageStore[page].description)
-        $html.scrollTop($main.offset().top - indent).fadeTo(duration, 1, function() {
-          // for (const key in appPlugins) appPlugins[key]()
-        })
       } else {
         $.ajax({
           url: `dist/pages/${page || 'index'}.html`,
           success(data) {
-            $main.html(data).attr('id', page)
-            $html.scrollTop($main.offset().top - indent).fadeTo(duration, 1, function() {
-              // for (const key in appPlugins) appPlugins[key]()
-            })
+            load_page(data)
           }
         })
         $.ajax({
