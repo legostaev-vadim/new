@@ -22,10 +22,11 @@ $(function() {
 $(function() {
 
   const $menu = $('.menu')
+  const $nav = $('.menu #nav')
   const $button = $('.menu .button')
 
   $menu.click(function(e) {
-    if(e.target === $menu[0]) $menu.removeClass('open')
+    if(e.target === $nav[0]) $menu.removeClass('open')
   })
 
   $button.click(function() {

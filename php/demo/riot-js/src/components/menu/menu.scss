@@ -3,8 +3,8 @@
   top: 0;
   left: 0;
   right: 0;
-  background: #fff;
   border-bottom: 1px solid #ccc;
+  background: linear-gradient(#fff 65px, rgba(0,0,0,.8) 65px);
 
   .button {
     display: none;
@@ -17,9 +17,17 @@
 
   .wrap {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     height: 62px;
+  }
+
+  #nav {
+    a {
+      &:not(.current) {
+        color: #777;
+      }
+
+    }
   }
 
   @include max(720) {
@@ -30,15 +38,17 @@
     overflow: hidden;
     &.open {
       height: 100%;
-      background-color: rgba(0,0,0,.8);
       .button {
         color: orangered;
       }
+      #nav {
+        animation: scroll 0.1s .3s forwards;
+      }
     }
     .wrap {
-      height: auto;
+      flex-wrap: wrap;
+      height: 100%;
       padding: 0;
-      background: #fff;
       &::before {
         content: '';
         width: 0;
@@ -63,11 +73,34 @@
       margin-left: 23px;
     }
     #nav {
-      margin: 10px 0;
-      a {
-        width: 100%;
-        padding: 0 10px;
+      float: none;
+      height: calc(100% - 62px);
+      margin: 0;
+      .items {
+        &::before, &::after {
+          content: '';
+          display: block;
+          height: 10px;
+          background: #efefef;
+        }
       }
+      a {
+        float: none;
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 5px 10px;
+        &:not(.current) {
+          color: #444;
+          background: #efefef;
+        }
+      }
+    }
+  }
+
+  @keyframes scroll {
+    100% {
+      overflow-y: auto;
     }
   }
 

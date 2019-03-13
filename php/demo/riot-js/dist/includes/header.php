@@ -12,9 +12,9 @@
         </div>
         <button class="search__button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
       </form><nav id="nav">
-<?php get_menu($menu); ?>
+      <div class="items"><?php get_menu($menu); ?>
 <a target="_blank" href="https://riot.js.org/made-with-riot/">Showcase</a>
-</nav>
+      </div></nav>
     </div>
   </div>
 </header>
