@@ -1,0 +1,487 @@
+<div id="tabs">
+  <?php get_menu($tabsApi); ?>
+  <a target="_blank" href="https://riot.js.org/api/misc/">Misc</a>
+</div>
+
+<h1>API · Router</h1>
+
+<div id="toc"><p><a href="#setup-routing">Setup routing</a></p><p><a href="#use-router">Use router</a></p><p><a href="#customize-router">Customize router</a></p><p><a href="#routing-groups">Routing groups</a></p><p><a href="#routing-priority">Routing priority</a></p><p><a href="#tag-based-routing">Tag-based routing</a></p></div>
+
+<p>The default riot.js bundle does not contain any router allowing you to pick any library that fits better to your needs.</p>
+
+<p>However we have developed and maintain <code class="highlighter-rouge">riot-route</code>, a small router library that could be used also as standalone module and fits perfectly to the minimal riot philosophy.</p>
+
+<p>If you want to use <code class="highlighter-rouge">riot-route</code> in your project you just need to include it either adding via <code class="highlighter-rouge">&lt;script&gt;</code> tag:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"path/to/dist/route.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div></div>
+
+<p>Or if you are using es6 syntax you could do:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">route</span> <span class="k">from</span> <span class="s1">'riot-route'</span> <span class="c1">// var route = require('riot-route') is also ok</span>
+</code></pre></div></div>
+
+<h1 id="api">API</h1>
+
+<p>The Riot Router is the minimal router implementation with such technologies:</p>
+
+<ul>
+  <li>pushState and history API</li>
+  <li>multiple routing groups</li>
+  <li>replacable parser</li>
+  <li>isomorphic</li>
+  <li>use a <a href="https://github.com/devote/HTML5-History-API">polyfill</a> for ie9 support and earlier.  Because ie.</li>
+</ul>
+
+<h2 id="setup-routing">Setup routing</h2>
+
+<h3 id="routecallback">route(callback)</h3>
+
+<p>Execute the given <code class="highlighter-rouge">callback</code> when the URL changes. For example</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">collection</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>If for example the url changes to <code class="highlighter-rouge">customers/987987/edit</code> then in the above example the arguments would be:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">collection</span> <span class="o">=</span> <span class="s1">'customers'</span>
+<span class="nx">id</span> <span class="o">=</span> <span class="s1">'987987'</span>
+<span class="nx">action</span> <span class="o">=</span> <span class="s1">'edit'</span>
+</code></pre></div></div>
+
+<p>The url can change in the following ways:</p>
+
+<ol>
+  <li>A new hash is typed into the location bar</li>
+  <li>When the back/forward buttons are pressed</li>
+  <li>When <code class="highlighter-rouge">route(to)</code> is called</li>
+  <li>Anchor tag is clicked</li>
+</ol>
+
+<h3 id="routefilter-callback">route(filter, callback)</h3>
+
+<p><span class="tag red">&gt;= v2.3</span></p>
+
+<p>Execute the given <code class="highlighter-rouge">callback</code> when the URL changes and it match the <code class="highlighter-rouge">filter</code>. For example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// matches to just `/fruit`</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The list of fruits'</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>Wildcards(<code class="highlighter-rouge">*</code>) are allowed in <code class="highlighter-rouge">filter</code> and you can capture them as arguments:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// if the url change to `/fruit/apple`,</span>
+<span class="c1">// this will match and catch 'apple' as `name`</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit/*'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The detail of '</span> <span class="o">+</span> <span class="nx">name</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="c1">// if the url change to `/blog/2015-09/01`,</span>
+<span class="c1">// this will match and catch '2015', '09' and '01'</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/blog/*-*/*'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">year</span><span class="p">,</span> <span class="nx">month</span><span class="p">,</span> <span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The page of '</span> <span class="o">+</span> <span class="nx">year</span> <span class="o">+</span> <span class="s1">'-'</span> <span class="o">+</span> <span class="nx">month</span> <span class="o">+</span> <span class="s1">'-'</span> <span class="nx">date</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>If you want to match the url <code class="highlighter-rouge">/old</code> and <code class="highlighter-rouge">/old/and/anything</code>, it could be written with <code class="highlighter-rouge">..</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">(</span><span class="s1">'/old..'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The pages under /old was moved.'</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>It could be useful when the url includes search queries.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// if the url change to `/search?keyword=Apple` this will match</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/search..'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">q</span> <span class="o">=</span> <span class="nx">route</span><span class="p">.</span><span class="nx">query</span><span class="p">()</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Search keyword: '</span> <span class="o">+</span> <span class="nx">q</span><span class="p">.</span><span class="nx">keyword</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="c1">// it could be written like this,</span>
+<span class="c1">// but be aware that `*` can match only alphanumerics and underscore</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/search?keyword=*'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">keyword</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Search keyword: '</span> <span class="o">+</span> <span class="nx">keyword</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p><span class="tag red">Note:</span> Internally wildcards are converted to such regular expressions:</p>
+
+<ul>
+  <li>
+<code class="highlighter-rouge">*</code>: <code class="highlighter-rouge">([^/?#]+?)</code>
+</li>
+  <li>
+<code class="highlighter-rouge">..</code>: <code class="highlighter-rouge">.*</code>
+</li>
+</ul>
+
+<h3 id="routecreate">route.create()</h3>
+
+<p><span class="tag red">&gt;= v2.3</span></p>
+
+<p>Returns a new routing context. For example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">subRoute</span> <span class="o">=</span> <span class="nx">route</span><span class="p">.</span><span class="nx">create</span><span class="p">()</span>
+<span class="nx">subRoute</span><span class="p">(</span><span class="s1">'/fruit/apple'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span>
+</code></pre></div></div>
+
+<p>See also <a href="#routing-groups">Routing group</a> and <a href="#routing-priority">Routing priority</a> section, for detail.</p>
+
+<h2 id="use-router">Use router</h2>
+
+<h3 id="routeto-title-shouldreplace">route(to[, title, shouldReplace])</h3>
+
+<p>Changes the browser URL and notifies all the listeners assigned with <code class="highlighter-rouge">route(callback)</code>. For example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">(</span><span class="s1">'customers/267393/edit'</span><span class="p">)</span>
+</code></pre></div></div>
+<p>From v2.3, you can set the title, too:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">(</span><span class="s1">'customers/267393/edit'</span><span class="p">,</span> <span class="s1">'Editing customer page'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>With the third argument, you can replace the current history. It’s useful when the app needs redirect to another page.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">(</span><span class="s1">'not-found'</span><span class="p">,</span> <span class="s1">'Not found'</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Internally…</p>
+
+<ul>
+  <li>without <code class="highlighter-rouge">shouldReplace</code>, <code class="highlighter-rouge">history.pushState()</code> will be used.</li>
+  <li>with <code class="highlighter-rouge">shouldReplace</code>, <code class="highlighter-rouge">history.replaceState()</code> will be used.</li>
+</ul>
+
+<h3 id="routestart">route.start()</h3>
+
+<p>Start listening the url changes.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">.</span><span class="nx">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><span class="tag red">&gt;= v2.3</span></p>
+
+<p>Riot doesn’t <code class="highlighter-rouge">start</code> its router automatically. DON’T FORGET TO START IT BY YOURSELF. This also means that you can choose your favorite router.
+(Note: before v2.3 Riot started the router automatically. The behavior was changed)</p>
+
+<h3 id="routestartautoexec">route.start(autoExec)</h3>
+
+<p>Start listening the url changes and also exec routing on the current url.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This is a shorthand for:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">.</span><span class="nx">start</span><span class="p">()</span>
+<span class="nx">route</span><span class="p">.</span><span class="nx">exec</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><span class="tag red">&gt;= v2.3</span></p>
+
+<p>Riot doesn’t <code class="highlighter-rouge">start</code> its router automatically. DON’T FORGET TO START IT BY YOURSELF. This also means that you can choose your favorite router.
+(Note: before v2.3 Riot started the router automatically. The behavior was changed)</p>
+
+<h3 id="routestop">route.stop()</h3>
+
+<p>Stop all the routings. It’ll removes the listeners and clear also the callbacks.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">.</span><span class="nx">stop</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>You typically use this method together with <a href="#route-start">route.start</a>. Example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">.</span><span class="nx">stop</span><span class="p">()</span> <span class="c1">// clear all the old router callbacks</span>
+<span class="nx">route</span><span class="p">.</span><span class="nx">start</span><span class="p">()</span> <span class="c1">// start again</span>
+</code></pre></div></div>
+
+<h3 id="subroutestop">subRoute.stop()</h3>
+
+<p><span class="tag red">&gt;= v2.3</span></p>
+
+<p>Stop only subRoute’s routings. It’ll removes the listeners and clear also the callbacks.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">subRoute</span> <span class="o">=</span> <span class="nx">route</span><span class="p">.</span><span class="nx">create</span><span class="p">()</span>
+<span class="nx">subRoute</span><span class="p">(</span><span class="s1">'/fruit/apple'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span>
+<span class="nx">subRoute</span><span class="p">.</span><span class="nx">stop</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="routeexec">route.exec()</h3>
+
+<p>Study the current browser path “in place” and emit routing without waiting for it to change.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* define routing */</span> <span class="p">})</span>
+<span class="nx">route</span><span class="p">.</span><span class="nx">exec</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><span class="tag red">Warning:</span> <code class="highlighter-rouge">route.exec(callback)</code> was deprecated from <code class="highlighter-rouge">v2.3</code>.</p>
+
+<h3 id="routequery">route.query()</h3>
+
+<p><span class="tag red">&gt;= v2.3</span></p>
+
+<p>This is an utility function to extract the query from the url. For example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// if the url change to `/search?keyword=Apple&amp;limit=30` this will match</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/search..'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">q</span> <span class="o">=</span> <span class="nx">route</span><span class="p">.</span><span class="nx">query</span><span class="p">()</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Search keyword: '</span> <span class="o">+</span> <span class="nx">q</span><span class="p">.</span><span class="nx">keyword</span><span class="p">)</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Search limit: '</span> <span class="o">+</span> <span class="nx">q</span><span class="p">.</span><span class="nx">limit</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h2 id="customize-router">Customize router</h2>
+
+<h3 id="routebasebase">route.base(base)</h3>
+
+<p>Change the base path. If you have the url like this:</p>
+
+<p><code class="highlighter-rouge">http://riotexample.com/app/fruit/apple</code></p>
+
+<p>You could set the base to <code class="highlighter-rouge">/app</code>, then you will have to take care of only <code class="highlighter-rouge">/fruit/apple</code>.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">.</span><span class="nx">base</span><span class="p">(</span><span class="s1">'/app'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The default <code class="highlighter-rouge">base</code> value is “#”. If you’d like to use hashbang, change it to <code class="highlighter-rouge">#!</code>.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">.</span><span class="nx">base</span><span class="p">(</span><span class="s1">'#!'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><span class="tag red">Warning</span></p>
+
+<p>If you remove the <code class="highlighter-rouge">#</code> from the base, your web server needs to deliver your app no matter what url comes in, because your app, in the browser, is manipulating the url. The web server doesn’t know how to handle the URL.</p>
+
+<h3 id="routeparserparser-secondparser">route.parser(parser[, secondParser])</h3>
+
+<p>Changes the default parser to a custom one. Here’s one that parses paths like this:</p>
+
+<p><code class="highlighter-rouge">!/user/activation?token=xyz</code></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">.</span><span class="nx">parser</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">raw</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">'?'</span><span class="p">),</span>
+      <span class="nx">uri</span> <span class="o">=</span> <span class="nx">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">),</span>
+      <span class="nx">qs</span> <span class="o">=</span> <span class="nx">raw</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+      <span class="nx">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">qs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">qs</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'&amp;'</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'='</span><span class="p">)</span>
+      <span class="nx">params</span><span class="p">[</span><span class="nx">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nx">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+
+  <span class="nx">uri</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span>
+  <span class="k">return</span> <span class="nx">uri</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>And here you’ll receive the params when the URL changes:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">action</span><span class="p">,</span> <span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="cm">/*
+    target = 'user'
+    action = 'activation'
+    params = { token: 'xyz' }
+  */</span>
+
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h4 id="second-parser">Second parser</h4>
+
+<p><span class="tag red">&gt;= v2.3</span></p>
+
+<p>If you specify <code class="highlighter-rouge">secondParser</code>, you can change the second parser, too. The second parser is used with url filter:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// This is the default parser</span>
+<span class="kd">function</span> <span class="nx">second</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">filter</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">re</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">'^'</span> <span class="o">+</span> <span class="nx">filter</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">\*</span><span class="sr">/g</span><span class="p">,</span> <span class="s1">'([^/?#]+?)'</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">\.\.</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'.*'</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'$'</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">args</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">re</span><span class="p">))</span> <span class="k">return</span> <span class="nx">args</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nx">route</span><span class="p">.</span><span class="nx">parser</span><span class="p">(</span><span class="nx">first</span><span class="p">,</span> <span class="nx">second</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>If the parser return nothing, the next route matching will be tried.</p>
+
+<h2 id="routing-groups">Routing groups</h2>
+
+<p>Traditional router on server-side is highly centralized, but recently we use routers everywhere on the page. Think about this case:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;first-tag&gt;</span>
+  <span class="nt">&lt;p&gt;</span>First tag<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit/*'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+      <span class="cm">/* do something common */</span>
+    <span class="p">})</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/first-tag&gt;</span>
+
+<span class="nt">&lt;second-tag&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Second tag<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit/apple'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+      <span class="cm">/* do something SPECIAL */</span>
+    <span class="p">})</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/second-tag&gt;</span>
+</code></pre></div></div>
+
+<p>Two tags have routings, and looks good? No, this won’t work. Because only one routing will emit and we can’t know which routing will, too. Then, we have to make separated routing groups for each tag definition. For example:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;first-tag&gt;</span>
+  <span class="nt">&lt;p&gt;</span>First tag<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="kd">var</span> <span class="nx">subRoute</span> <span class="o">=</span> <span class="nx">route</span><span class="p">.</span><span class="nx">create</span><span class="p">()</span> <span class="c1">// create another routing context</span>
+    <span class="nx">subRoute</span><span class="p">(</span><span class="s1">'/fruit/*'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+      <span class="cm">/* do something common */</span>
+    <span class="p">})</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/first-tag&gt;</span>
+
+<span class="nt">&lt;second-tag&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Second tag<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="kd">var</span> <span class="nx">subRoute</span> <span class="o">=</span> <span class="nx">route</span><span class="p">.</span><span class="nx">create</span><span class="p">()</span> <span class="c1">// create another routing context</span>
+    <span class="nx">subRoute</span><span class="p">(</span><span class="s1">'/fruit/apple'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+      <span class="cm">/* do something SPECIAL */</span>
+    <span class="p">})</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/second-tag&gt;</span>
+</code></pre></div></div>
+
+<h2 id="routing-priority">Routing priority</h2>
+
+<p>The router will try to match routing from the first. So in the next case, routing-B and -C will never emit.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit/*'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span> <span class="c1">// routing-A (1)</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit/apple'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span> <span class="c1">// routing-B (2)</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit/orange'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span> <span class="c1">// routing-C (3)</span>
+</code></pre></div></div>
+
+<p>This will work fine:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit/apple'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span> <span class="c1">// routing-B (1)</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit/orange'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span> <span class="c1">// routing-C (2)</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit/*'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span> <span class="c1">// routing-A (3)</span>
+</code></pre></div></div>
+
+<p>And routings <em>with filter</em> has higher priority than routing <em>without filter</em>. It means that routing-X is defined first but execute at last in the next example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">route</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span> <span class="c1">// routing-X (3)</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/fruit/*'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span> <span class="c1">// routing-Y (1)</span>
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/sweet/*'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span> <span class="c1">// routing-Z (2)</span>
+</code></pre></div></div>
+
+<h2 id="tag-based-routing">Tag-based routing</h2>
+
+<p><span class="tag red">&gt;= v3.1</span></p>
+
+<p>This feature allows you to <strong>write your routes as declarative tags</strong>:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;app&gt;</span>
+  <span class="nt">&lt;router&gt;</span>
+    <span class="nt">&lt;route</span> <span class="na">path=</span><span class="s">"apple"</span><span class="nt">&gt;&lt;p&gt;</span>Apple<span class="nt">&lt;/p&gt;&lt;/route&gt;</span>
+    <span class="nt">&lt;route</span> <span class="na">path=</span><span class="s">"banana"</span><span class="nt">&gt;&lt;p&gt;</span>Banana<span class="nt">&lt;/p&gt;&lt;/route&gt;</span>
+    <span class="nt">&lt;route</span> <span class="na">path=</span><span class="s">"coffee"</span><span class="nt">&gt;&lt;p&gt;</span>Coffee<span class="nt">&lt;/p&gt;&lt;/route&gt;</span>
+  <span class="nt">&lt;/router&gt;</span>
+<span class="nt">&lt;/app&gt;</span>
+</code></pre></div></div>
+
+<p>To use this feature, you need to load <code class="highlighter-rouge">route+tag.js</code> instead of <code class="highlighter-rouge">route.js</code></p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"path/to/dist/route+tag.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div></div>
+
+<p>Or for ES6:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">route</span> <span class="k">from</span> <span class="s1">'riot-route/lib/tag'</span> <span class="c1">// note that the path is bit different to cjs one</span>
+</code></pre></div></div>
+
+<p>Or for CommonJS:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'riot-route/tag'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="available-tags">Available tags</h3>
+
+<ul>
+  <li>
+<code class="highlighter-rouge">&lt;router&gt;</code>
+    <ul>
+      <li>it can contains multiple routes</li>
+      <li>equivalent to <code class="highlighter-rouge">const r = route.create()</code> so it creates a sub router</li>
+    </ul>
+  </li>
+  <li>
+<code class="highlighter-rouge">&lt;route&gt;</code>
+    <ul>
+      <li>it has <code class="highlighter-rouge">path</code> attribute</li>
+      <li>
+<code class="highlighter-rouge">&lt;route path="fruit/apple"&gt;</code> is equivalent to <code class="highlighter-rouge">r('fruit/apple', () =&gt; { ... })</code>
+</li>
+      <li>when the route has selected, it triggers <strong>route</strong> event on its children and passes some arguments to them (see details below)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="capturing-wildcard-arguments">Capturing wildcard arguments</h3>
+
+<p>Remember that we could use wildcards <code class="highlighter-rouge">*</code> in routing. Of cause we can also do the same in <em>tag-based routing</em>:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;app&gt;</span>
+  <span class="nt">&lt;router&gt;</span>
+    <span class="nt">&lt;route</span> <span class="na">path=</span><span class="s">"fruit/apple"</span><span class="nt">&gt;&lt;p&gt;</span>Apple<span class="nt">&lt;/p&gt;&lt;/route&gt;</span>
+    <span class="nt">&lt;route</span> <span class="na">path=</span><span class="s">"fruit/*"</span><span class="nt">&gt;&lt;inner-tag</span> <span class="nt">/&gt;&lt;/route&gt;</span>
+  <span class="nt">&lt;/router&gt;</span>
+<span class="nt">&lt;/app&gt;</span>
+
+<span class="nt">&lt;inner-tag&gt;</span>
+  <span class="nt">&lt;p&gt;</span>{ name } is not found<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'route'</span><span class="p">,</span> <span class="nx">name</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">)</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/inner-tag&gt;</span>
+</code></pre></div></div>
+
+<p>See the example above. If it gets <code class="highlighter-rouge">fruit/pineapple</code>, the <code class="highlighter-rouge">route</code> event will fire in <code class="highlighter-rouge">&lt;inner-tag&gt;</code> and pass one argument <code class="highlighter-rouge">'pineapple'</code>.</p>
+
+<h3 id="real-world-example">Real world example</h3>
+
+<p>Usually we would call external API to get some data during routing process. It’s handy to hook <code class="highlighter-rouge">route</code> event for such a purpose. For example:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;app&gt;</span>
+  <span class="nt">&lt;router&gt;</span>
+    <span class="nt">&lt;route</span> <span class="na">path=</span><span class="s">"user/*"</span><span class="nt">&gt;&lt;app-user</span> <span class="nt">/&gt;&lt;/route&gt;</span>
+  <span class="nt">&lt;/router&gt;</span>
+<span class="nt">&lt;/app&gt;</span>
+
+<span class="nt">&lt;app-user&gt;</span>
+  <span class="nt">&lt;p&gt;</span>{ message }!<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'route'</span><span class="p">,</span> <span class="nx">id</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="s1">'now loading...'</span>
+      <span class="nx">getUserById</span><span class="p">(</span><span class="nx">id</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">user</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span>
+          <span class="na">message</span><span class="p">:</span> <span class="s2">`Hello </span><span class="p">${</span> <span class="nx">user</span><span class="p">.</span><span class="nx">name</span> <span class="p">}</span><span class="s2">!`</span>
+        <span class="p">})</span>
+      <span class="p">})</span>
+    <span class="p">})</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/app-user&gt;</span>
+</code></pre></div></div>
+
+<h3 id="some-notes">Some notes</h3>
+
+<ul>
+  <li>The router automatically starts after first <code class="highlighter-rouge">&lt;router&gt;</code> tag has been mounted. You don’t have to call <code class="highlighter-rouge">router.start(true)</code> by yourself.</li>
+  <li>to change <code class="highlighter-rouge">base</code> for routing, use <code class="highlighter-rouge">route.base('/path/to/base/')</code>
+</li>
+</ul>

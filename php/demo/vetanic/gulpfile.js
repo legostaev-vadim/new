@@ -15,6 +15,7 @@ const concat = require('gulp-concat');
 const svgSprite = require('gulp-svg-sprites');
 const save = require('gulp-save');
 const gulpIf = require('gulp-if');
+const browserSync = require('browser-sync').create();
 const del = require('del');
 let mode = 'development';
 let isSymbol = false;
@@ -26,6 +27,19 @@ let basename;
 let newLine;
 // pugbem.m = '_';
 
+function serve(done) {
+  browserSync.init({
+    proxy: 'http://test/',
+    open: false,
+    notify: false
+  });
+  done();
+}
+
+function reload(done) {
+  browserSync.reload();
+  done();
+}
 
 function preLayouts() {
   return saveLayouts = gulp.src([
@@ -164,17 +178,17 @@ function clean() {
 }
 
 function watch() {
-  gulp.watch('{src/layouts/helpers,src/components}/**/*.pug', gulp.series(preLayouts, layouts));
-  gulp.watch('src/layouts/*.pug', gulp.series(layouts));
-  gulp.watch(['src/styles/**/*.scss','!src/styles/layouts/**/*.scss'], gulp.series(preStyles, styles));
-  gulp.watch('{src/components,src/styles/layouts}/**/*.scss', gulp.series(styles));
-  gulp.watch('src/**/*.js', gulp.series(scripts));
-  gulp.watch('src/symbols/**/*.svg', gulp.series(symbols));
-  gulp.watch('src/assets/**/*', gulp.series(copy));
+  gulp.watch('{src/layouts/helpers,src/components}/**/*.pug', gulp.series(preLayouts, layouts, reload));
+  gulp.watch('src/layouts/*.pug', gulp.series(layouts, reload));
+  gulp.watch(['src/styles/**/*.{scss,css}','!src/styles/layouts/**/*.scss'], gulp.series(preStyles, styles, reload));
+  gulp.watch('{src/components,src/styles/layouts}/**/*.scss', gulp.series(styles, reload));
+  gulp.watch('src/**/*.js', gulp.series(scripts, reload));
+  gulp.watch('src/symbols/**/*.svg', gulp.series(symbols, reload));
+  gulp.watch('src/assets/**/*', gulp.series(copy, reload));
 }
 
-const dev = gulp.series(copy, preLayouts, layouts, preStyles, styles, scripts, symbols, watch);
-const build = gulp.series(public, clean, dev);
+const dev = gulp.series(clean, copy, preLayouts, layouts, preStyles, styles, scripts, symbols, serve, watch);
+const build = gulp.series(public, dev);
 
 gulp.task('default', dev);
 gulp.task('build', build);

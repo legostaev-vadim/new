@@ -1,0 +1,8 @@
+mixin search
+  form.search(action="https://yandex.ru/yandsearch" method="get")
+    ._block
+      <i class="fa fa-times search__close" aria-hidden="true"></i>
+      input._text(type="text" name="text" placeholder="введите запрос")
+      input._name(type="hidden" name="site" value="https://riot.js.org/")
+    button._button(type="submit")
+      <i class="fa fa-search" aria-hidden="true"></i>

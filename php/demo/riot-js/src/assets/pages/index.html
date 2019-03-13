@@ -1,0 +1,207 @@
+<div id="hero">
+  <img src="dist/img/riot240x.png">
+  <h1>Simple and elegant component-based UI library</h1>
+  <h4>Custom tags • Enjoyable syntax • Elegant API • Tiny size</h4>
+
+  <div id="version-slurp">
+    <a href="download" class="tag blue">v3.13.2</a> —
+    <a target="_blank" href="https://riot.js.org/release-notes/">More flexible "value" attributes handling…</a>
+  </div>
+
+</div>
+
+<h1 id="why-do-we-need-a-new-ui-library">Why do we need a new UI library?</h1>
+
+<p>The frontend space is indeed crowded, but we honestly feel the solution is still “out there”. We believe Riot offers the right balance for solving the great puzzle. While React seems to do it, they have serious weak points that Riot will solve.</p>
+
+<p>So — here’s why we need one:</p>
+
+<h2 id="1-custom-tags">1. Custom tags</h2>
+
+<p>Riot brings custom tags to all browsers.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;todo&gt;</span>
+
+  <span class="c">&lt;!-- layout --&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>{ opts.title }<span class="nt">&lt;/h3&gt;</span>
+
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">each=</span><span class="s">{</span> <span class="na">item</span><span class="err">,</span> <span class="na">i</span> <span class="na">in</span> <span class="na">items</span> <span class="err">}</span><span class="nt">&gt;</span>{ item }<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+
+  <span class="nt">&lt;form</span> <span class="na">onsubmit=</span><span class="s">{</span> <span class="na">add</span> <span class="err">}</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">ref=</span><span class="s">"input"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;button&gt;</span>Add #{ items.length + 1 }<span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;/form&gt;</span>
+
+  <span class="c">&lt;!-- style --&gt;</span>
+  <span class="nt">&lt;style&gt;</span>
+    <span class="nt">h3</span> <span class="p">{</span>
+      <span class="nl">font-size</span><span class="p">:</span> <span class="m">14px</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="nt">&lt;/style&gt;</span>
+
+  <span class="c">&lt;!-- logic --&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">items</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nx">add</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+      <span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">refs</span><span class="p">.</span><span class="nx">input</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
+      <span class="nx">input</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="s1">''</span>
+    <span class="p">}</span>
+  <span class="nt">&lt;/script&gt;</span>
+
+<span class="nt">&lt;/todo&gt;</span>
+</code></pre></div></div>
+
+<p>A custom tag glues relevant HTML and JavaScript together forming a reusable component. Think React + Polymer but with enjoyable syntax and a small learning curve.</p>
+
+<h3 id="human-readable">Human-readable</h3>
+
+<p>Custom tags let you build complex views with HTML. Your application might look something like this:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+
+  <span class="nt">&lt;h1&gt;</span>Acme community<span class="nt">&lt;/h1&gt;</span>
+
+  <span class="nt">&lt;forum-header/&gt;</span>
+
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;forum-threads/&gt;</span>
+    <span class="nt">&lt;forum-sidebar/&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+
+  <span class="nt">&lt;forum-footer/&gt;</span>
+
+  <span class="nt">&lt;script&gt;</span><span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'*'</span><span class="p">,</span> <span class="p">{</span> <span class="na">api</span><span class="p">:</span> <span class="nx">forum_api</span> <span class="p">})</span><span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<p>HTML syntax is the <em>de facto</em> language of the web and it’s designed for building user interfaces. The syntax is explicit, nesting is inherent to the language, and attributes offer a clean way to provide options for custom tags.</p>
+
+<p>Riot tags are <a href="guide-compiler">converted</a> to pure JavaScript before browsers can execute them.</p>
+
+<h3 id="dom-expressions-binding">DOM Expressions binding</h3>
+<ul>
+  <li>Absolutely the smallest possible amount of DOM updates and reflows</li>
+  <li>One way data flow: updates and unmounts are propagated downwards from parent to children</li>
+  <li>Expressions are pre-compiled and cached for high performance</li>
+  <li>Lifecycle events for more control</li>
+  <li>Server-side rendering of custom tags for universal (isomorphic) applications</li>
+</ul>
+
+<h3 id="close-to-standards">Close to standards</h3>
+<ul>
+  <li>No proprietary event system</li>
+  <li>No need for external polyfills or additional libraries</li>
+  <li>The rendered DOM can be freely manipulated with other tools</li>
+  <li>No extra HTML root elements or <code class="highlighter-rouge">data-</code> attributes</li>
+  <li>Plays well with jQuery</li>
+</ul>
+
+<h3 id="tooling-friendly">Tooling friendly</h3>
+<ul>
+  <li>Create tags with ES6, Typescript, CoffeeScript, Jade, LiveScript or <a href="guide-compiler#pre-processors">any pre-processor</a> you want</li>
+  <li>Integrate with NPM, CommonJS, AMD, Bower or Component</li>
+  <li>Develop with <a href="https://github.com/e-jigsaw/gulp-riot">Gulp</a>, <a href="https://github.com/ariesjia/grunt-riot">Grunt</a> or <a href="https://github.com/jhthorsen/riotify">Browserify</a> plugins</li>
+</ul>
+
+<h2 id="2-simple-and-minimalistic">2. Simple and minimalistic</h2>
+
+<p>Minimalism sets Riot apart from others:</p>
+
+<h3 id="1-enjoyable-syntax">1. Enjoyable syntax</h3>
+
+<p>One of the design goals was to introduce a powerful tag syntax with as little boilerplate as possible:</p>
+
+<ul>
+  <li>Power shortcuts: <code class="highlighter-rouge">class={ enabled: is_enabled, hidden: hasErrors() }</code>
+</li>
+  <li>No extra brain load such as <code class="highlighter-rouge">render</code>, <code class="highlighter-rouge">state</code>, <code class="highlighter-rouge">constructor</code>
+</li>
+  <li>Interpolation: <code class="highlighter-rouge">Add #{ items.length + 1 }</code> or <code class="highlighter-rouge">class="item { selected: flag }"</code>
+</li>
+  <li>The <code class="highlighter-rouge">&lt;script&gt;</code> tag to enclose the logic is optional</li>
+  <li>Compact ES6 method syntax</li>
+</ul>
+
+<h3 id="2-small-learning-curve">2. Small learning curve</h3>
+
+<p>Riot has between 10 and 100 times fewer API methods than other UI libraries.</p>
+
+<ul>
+  <li>Less to learn. Fewer books and tutorials to view</li>
+  <li>Less proprietary stuff and more standard stuff</li>
+</ul>
+
+<h3 id="3-tiny-size">3. Tiny size</h3>
+
+<p><small><em>polymer.html</em> – 49.38KB (gzip)</small>
+<span class="bar red"></span></p>
+
+<p><small><em>react.min.js</em> – 33.27KB (gzip)</small>
+<span class="bar red" style="width: 67.37545565006076%"></span></p>
+
+<p><small><em>riot.min.js</em> – 10.85KB (gzip)</small>
+<span class="bar blue" style="width: 32.61196272918545%"></span></p>
+
+<ul>
+  <li>Fewer bugs</li>
+  <li>Faster to parse and cheaper to download</li>
+  <li>Embeddable. The library ought to be smaller than the application</li>
+  <li>Less to maintain. We don’t need a big team to maintain Riot</li>
+</ul>
+
+<h3 id="4-small-but-complete">4. Small, but complete</h3>
+
+<p>Riot has all the essential building blocks for modern client-side applications:</p>
+
+<ul>
+  <li>“Reactive” views for building user interfaces</li>
+  <li>Event library for building APIs with isolated modules</li>
+  <li>Optional Router for taking care of URL and the back button</li>
+</ul>
+
+<p>Riot is an “open stack”. It’s meant for developers who want to avoid framework specific idioms. The generic tools let you mix and match design patterns. Systems like Facebook Flux can be <a href="https://github.com/jimsparkman/RiotControl">self-made</a>.</p>
+
+<blockquote>
+  <p><a href="https://twitter.com/riotjs_">@riotjs_</a> Thanks for creating a library that allows me to make a simple SPA in plain JS without needing to download 13k NPM packages.
+<a href="https://twitter.com/coussej/status/763659990250946561">@coussej</a></p>
+</blockquote>
+
+<blockquote>
+  <p>Switched my site from #BackboneJS to #RiotJS. Other than compile/mount not blocking for DOM render, it’s great! #JavaScript <a href="https://twitter.com/riotjs_">@riotjs_</a>
+<a href="https://twitter.com/richardtallent/status/766696802066194432">@richardtallent</a></p>
+</blockquote>
+
+<blockquote>
+  <p>Like all people fed up with the status quo and the development of the world, I’m voting RiotJS &lt;3 Love you baby <a href="https://twitter.com/plumpNation/status/760803974660390912">@plumpNation</a></p>
+</blockquote>
+
+<blockquote>
+  <p>I looked at the riot.js example, and it feels so clean, it’s scary.
+<a href="https://twitter.com/paulbjensen/status/558378720403419137">@paulbjensen</a></p>
+</blockquote>
+
+<blockquote>
+  <p>I liked the idea of #reactjs with #flux but I like #riotjs with #riotcontrol even better!
+<a href="https://twitter.com/tscok/status/580509124598829056">@tscok</a></p>
+</blockquote>
+
+<blockquote>
+  <p>Played with riot.js and like it so much more than React. Minimalistic, fast and a comprehensible API. <a href="https://twitter.com/juriansluiman/status/560399379035865088">@juriansluiman</a></p>
+</blockquote>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Riot is Web Components for everyone. Think React + Polymer but without the bloat. It’s intuitive to use and it weighs almost nothing. And it works today. No reinventing the wheel, but rather taking the good parts of what’s there and making the simplest tool possible.</p>
+
+<p>We should focus on reusable components instead of templates. According to the developers of React:</p>
+
+<blockquote>
+  <p>“Templates separate technologies, not concerns.”</p>
+</blockquote>
+
+<p>By having related layout and logic together under the same component the overall system becomes cleaner. We respect React for this important insight.</p>        

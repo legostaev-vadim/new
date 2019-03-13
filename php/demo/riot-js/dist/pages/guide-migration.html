@@ -1,0 +1,154 @@
+<div id="tabs">
+  <?php get_menu($tabsGuide); ?>
+</div>
+
+<h1>Migration from riot 2</h1>
+
+<div id="toc"><p><a href="#general-info">General info</a></p><p><a href="#breaking-changes">Breaking changes</a></p></div>
+
+<h2 id="general-info">General info</h2>
+
+<p>Riot 3 is a big improvement over the previous release, please check <a href="/release-notes">release notes</a> for details.</p>
+
+<p>We have resolved many problems and they required a major release bump because they couldn’t be fixed with the previous codebase.
+Migration from Riot 2 shouldn’t be very difficult. Refer to the list of breaking changes below.</p>
+
+<h2 id="breaking-changes">Breaking changes</h2>
+
+<h3 id="riot-tag-attribute-renamed-to-data-is">
+<code class="highlighter-rouge">riot-tag</code> attribute renamed to <code class="highlighter-rouge">data-is</code>
+</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- not supported --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">riot-tag=</span><span class="s">"my-tag"</span><span class="nt">&gt;&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- good --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">data-is=</span><span class="s">"my-tag"</span><span class="nt">&gt;&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>Notice that <code class="highlighter-rouge">data-is</code> can also be used in nested tags and supports dynamic expressions:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">data-is=</span><span class="s">{</span> <span class="na">subComponent</span> <span class="err">}</span><span class="nt">&gt;&lt;/div&gt;</span>
+
+  <span class="nt">&lt;script&gt;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">subComponent</span> <span class="o">=</span> <span class="s1">'child-tag'</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/my-tag&gt;</span>
+</code></pre></div></div>
+
+<h3 id="name-and-id-attributes-no-longer-create-references-to-dom-nodes">
+<code class="highlighter-rouge">name</code> and <code class="highlighter-rouge">id</code> attributes no longer create references to DOM nodes</h3>
+
+<p>The <code class="highlighter-rouge">name</code> and <code class="highlighter-rouge">id</code> attributes are no longer used by riot to cache DOM references to the tag context or add custom tag references to <code class="highlighter-rouge">this.tags</code>. Use the <code class="highlighter-rouge">ref</code> attribute instead to get references to DOM nodes or custom tags.</p>
+
+<p><span class="tag red">Warning:</span> the <code class="highlighter-rouge">refs</code> object is <strong>only populated</strong> after the <code class="highlighter-rouge">mount</code> event.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">ref=</span><span class="s">"paragraph"</span><span class="nt">&gt;</span>Hello<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;sub-tag</span> <span class="na">ref=</span><span class="s">"childtag"</span><span class="nt">&gt;&lt;/sub-tag&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'mount'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">refs</span><span class="p">.</span><span class="nx">paragraph</span><span class="p">)</span> <span class="c1">// =&gt; p node</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">refs</span><span class="p">.</span><span class="nx">childtag</span><span class="p">)</span> <span class="c1">// =&gt; sub-tag tag</span>
+    <span class="p">})</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/my-tag&gt;</span>
+</code></pre></div></div>
+
+<h3 id="changed-object-loop-syntax">Changed object loop syntax</h3>
+
+<p>Object loops now use a different syntax, before we used <code class="highlighter-rouge">key, value in object</code>, and now we switched to <code class="highlighter-rouge">value, key in object</code>
+<a href="https://github.com/riot/riot/issues/1420">related issue</a></p>
+
+<h3 id="riotroute-removed-from-riot-core">
+<code class="highlighter-rouge">riot.route</code> removed from riot core</h3>
+
+<p><code class="highlighter-rouge">riot.route</code> was removed from riot core to decrease the bundle size in case you choose a different routing library. <a href="https://github.com/riot/route"><code class="highlighter-rouge">riot-route</code></a> is still maintained and can be used with riot or standalone.</p>
+
+<h3 id="no-update-and-updated-events-triggered-before-the-mount-event">No <code class="highlighter-rouge">update</code> and <code class="highlighter-rouge">updated</code> events triggered before the <code class="highlighter-rouge">mount</code> event</h3>
+
+<p>Previously riot was firing <code class="highlighter-rouge">update</code> and <code class="highlighter-rouge">updated</code> events even before the <code class="highlighter-rouge">mount</code> event was triggered.
+Now you can use <code class="highlighter-rouge">before-mount</code> and <code class="highlighter-rouge">mount</code> to mount your tags properly, the <code class="highlighter-rouge">update</code> and the <code class="highlighter-rouge">updated</code> events will only be fired on consequent update calls.</p>
+
+<h3 id="removed-automatic-preventdefault">Removed automatic <code class="highlighter-rouge">preventDefault</code>
+</h3>
+
+<p>Riot 2 was automatically calling <code class="highlighter-rouge">event.preventDefault()</code> on any tag event, we thought this behavior was wrong and we decided to remove it.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
+  <span class="nt">&lt;form</span> <span class="na">onsubmit=</span><span class="s">{</span> <span class="na">ajaxSubmit</span> <span class="err">}</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input&gt;</span>
+  <span class="nt">&lt;/form&gt;</span>
+
+  <span class="nt">&lt;script&gt;</span>
+    <span class="nx">ajaxSubmit</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// in riot2 this was not needed</span>
+      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/my-tag&gt;</span>
+</code></pre></div></div>
+
+<h3 id="no-more-parent-tag-updates-on-events-generated-by-custom-children-tags">No more parent tag updates on events generated by custom children tags</h3>
+
+<p>In riot 2 events generated by custom children tags in loops were triggering an update on the parent as well <a href="https://github.com/riot/riot/issues/1319">riot/1319</a>. In riot 3 if you need to update the parent from a custom looped child tag you will need to do it explicitly.</p>
+
+<h3 id="removed-support-for-spaced-events-in-riotobservable">Removed support for spaced events in <code class="highlighter-rouge">riot.observable</code>
+</h3>
+
+<p>We made riot.observable 6x times faster than the previous release, but to achieve this performance we had to remove spaced events support. Listening to <code class="highlighter-rouge">*</code> is still supported.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">observable</span><span class="p">()</span>
+
+<span class="c1">// not supported</span>
+<span class="nx">el</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'start stop'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* */</span> <span class="p">})</span>
+<span class="nx">el</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'start stop'</span><span class="p">)</span>
+
+<span class="c1">// use this instead</span>
+<span class="kd">function</span> <span class="nx">cb</span><span class="p">()</span> <span class="p">{}</span>
+<span class="nx">el</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'stop'</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+
+<span class="nx">el</span>
+  <span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'start'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'stop'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="jquery-dom-events">jQuery DOM events</h3>
+
+<p>Previously you could trigger riot event handlers via jQuery using <code class="highlighter-rouge">$('.my-element').trigger('click')</code>. This was possible because riot 2 was using the <a href="https://www.w3.org/TR/DOM-Level-2-Events/">old DOM events model ( level 2 )</a> fully compatible with the jQuery events API. With riot 3 we have upgraded the riot internal events handlers to the more standard <a href="https://www.w3.org/TR/DOM-Level-3-Events/">new DOM events model level 3</a> that is not supported by the jQuery DOM events API. This means that you need alternative solutions to the simulate fake events <a href="https://github.com/riot/riot/issues/2150#issuecomment-271334951">more info</a>.</p>
+
+<h3 id="scoped-css-by-default">Scoped css by default</h3>
+
+<p>In riot 3 all css rules declared inside a tag’s <code class="highlighter-rouge">&lt;style&gt;</code> element are scoped by default and you will no longer need the <code class="highlighter-rouge">scoped</code> attribute. There is no option to disable this behavior at the moment.</p>
+
+<h3 id="deprecated-babel-58">Deprecated <code class="highlighter-rouge">babel</code> 5.8</h3>
+
+<p>Now the <code class="highlighter-rouge">es6</code> parser will use the latest <code class="highlighter-rouge">babel</code> version <a href="/guide/compiler/#ecmascript-6">more info</a>. You can still manually configure your <code class="highlighter-rouge">es6</code> parser to use the old babel releases. Note that we also support <code class="highlighter-rouge">bublé</code> as an alternative to babel.</p>
+
+<h3 id="template-errors-are-no-longer-silently-swallowed">Template errors are no longer silently swallowed</h3>
+
+<p>In riot 2 a handler function had to be manually configured to catch errors in tag templates. In riot 3 all template errors
+are output using <code class="highlighter-rouge">console.error</code> if the <code class="highlighter-rouge">console</code> api is available. This is not really a breaking change, because a custom <code class="highlighter-rouge">riot.util.tmpl.errorHandler</code> will still work.</p>
+
+<h3 id="all-value-attributes-using-expressions-will-be-output-as-riot-value-riot1957">All <code class="highlighter-rouge">value</code> attributes using expressions will be output as <code class="highlighter-rouge">riot-value</code> (<a href="https://github.com/riot/riot/issues/1957">riot/1957</a>)</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
+  <span class="c">&lt;!-- The value attribute will be compiled to riot-value in riot 3. --&gt;</span>
+  <span class="nt">&lt;input-wrapper</span> <span class="na">value=</span><span class="s">{total}</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">total</span> <span class="o">=</span> <span class="s1">'$11'</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/my-tag&gt;</span>
+
+<span class="nt">&lt;input-wrapper&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="c1">// riot3</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">riotValue</span><span class="p">)</span>
+    <span class="c1">// riot2</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/input-wrapper&gt;</span>
+</code></pre></div></div>
