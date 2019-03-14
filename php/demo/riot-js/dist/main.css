@@ -3578,6 +3578,34 @@ iframe {
   #main {
     margin-top: 100px; } }
 
+.button-up {
+  position: fixed;
+  z-index: 10000;
+  right: 12px;
+  bottom: -50px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  opacity: .8;
+  border: none;
+  border-radius: 3px;
+  background: orangered;
+  transition: all .3s; }
+  .button-up::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -6px;
+    margin-left: -8px;
+    border: 8px solid transparent;
+    border-top: none;
+    border-bottom: 12px solid #fff; }
+  .button-up:hover {
+    opacity: 1; }
+  .button-up--show {
+    bottom: 12px; }
+
 .menu {
   position: fixed;
   top: 0;
@@ -3653,34 +3681,6 @@ iframe {
 @keyframes scroll {
   100% {
     overflow-y: auto; } }
-
-.button-up {
-  position: fixed;
-  z-index: 10000;
-  right: 12px;
-  bottom: -50px;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  opacity: .8;
-  border: none;
-  border-radius: 3px;
-  background: orangered;
-  transition: all .3s; }
-  .button-up::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -6px;
-    margin-left: -8px;
-    border: 8px solid transparent;
-    border-top: none;
-    border-bottom: 12px solid #fff; }
-  .button-up:hover {
-    opacity: 1; }
-  .button-up--show {
-    bottom: 12px; }
 
 .search {
   position: relative;
