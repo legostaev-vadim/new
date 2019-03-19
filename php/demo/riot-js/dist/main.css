@@ -3355,7 +3355,7 @@ a.blue:hover {
     text-decoration: none;
     cursor: default;
 }
-@media (max-width: 720px) {
+@media (max-width: 740px) {
     #nav {
         margin: 0.5rem 0 1.5rem;
         line-height: 2.4;
@@ -3557,7 +3557,8 @@ img {
 #tabs {
   font-size: 0; }
   #tabs a {
-    font-size: 16px; }
+    font-size: 16px;
+    text-decoration: none; }
 
 iframe {
   border: 1px solid #ddd;
@@ -3574,9 +3575,16 @@ iframe {
   margin-left: 0;
   margin-right: 0; }
 
+.sitemail {
+  font-size: 14px;
+  color: #fff;
+  text-align: right; }
+
 @media (max-width: 660px) {
   #main {
-    margin-top: 100px; } }
+    margin-top: 100px; }
+  .sitemail {
+    text-align: left; } }
 
 .button-up {
   position: fixed;
@@ -3586,10 +3594,10 @@ iframe {
   width: 40px;
   height: 40px;
   cursor: pointer;
-  opacity: .8;
+  opacity: .9;
   border: none;
   border-radius: 3px;
-  background: orangered;
+  background: #e3003d;
   transition: all .3s; }
   .button-up::before {
     content: '';
@@ -3602,7 +3610,7 @@ iframe {
     border-top: none;
     border-bottom: 12px solid #fff; }
   .button-up:hover {
-    opacity: 1; }
+    background-color: orangered; }
   .button-up--show {
     bottom: 12px; }
 
@@ -3624,7 +3632,7 @@ iframe {
     height: 62px; }
   .menu #nav a:not(.current) {
     color: #777; }
-  @media (max-width: 720px) {
+  @media (max-width: 740px) {
     .menu {
       height: 62px;
       padding: 0;
@@ -3658,7 +3666,7 @@ iframe {
           color: orangered; }
       .menu #logo {
         margin-right: auto;
-        margin-left: 23px; }
+        margin-left: 20px; }
       .menu #nav {
         float: none;
         height: calc(100% - 62px);
@@ -3684,7 +3692,7 @@ iframe {
 
 .search {
   position: relative;
-  height: 32px;
+  height: 34px;
   order: 1;
   margin-left: 1.2em; }
   .search--open .search__block {
@@ -3714,12 +3722,13 @@ iframe {
     padding: 0;
     color: #fff;
     cursor: pointer;
-    border: 1px solid #ccc;
+    border: 1px solid #32709D;
     border-radius: 4px 0 0 4px;
-    background-color: #ccc;
-    transition: background-color .3s; }
+    background-color: #32709D;
+    transition: all .3s; }
     .search__close:hover {
-      background-color: #bbb; }
+      background-color: orangered;
+      border-color: orangered; }
   .search__text {
     flex: 1;
     padding: 0 10px;
@@ -3747,7 +3756,7 @@ iframe {
     .search__button--error {
       border: 1px solid orange !important;
       background-color: orange !important; }
-  @media (max-width: 720px) {
+  @media (max-width: 740px) {
     .search {
       order: 0;
       margin-left: 0;

@@ -1,0 +1,200 @@
+<div id="tabs">
+  <?php get_menu($tabsApi); ?>
+  <a target="_blank" href="https://riot.js.org/api/misc/">Misc</a>
+</div>
+
+<h1>API · Compiler</h1>
+
+<div id="toc"><p><a href="#on-browser">On browser</a></p><p><a href="#on-server">On server</a></p><p><a href="#changes-in-v230">Changes in v2.3.0</a></p></div>
+
+<h2 id="on-browser">On browser</h2>
+
+<p>Following methods apply to browsers only. Jump to <a href="#compile-on-server">server section</a> if you want to compile under node or io.js.</p>
+
+<h3 id="-riotcompilecallback">
+<a name="compile"></a> riot.compile(callback)</h3>
+
+<p>Compile all tags defined with <code class="highlighter-rouge">&lt;script type="riot/tag"&gt;</code> to JavaScript. These can be inlined script definitions or external resources that load scripts defined with <code class="highlighter-rouge">src</code> attribute. After all scripts are compiled the given <code class="highlighter-rouge">callback</code> method is called. For example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>You can leave out the <code class="highlighter-rouge">riot.compile</code> call and write just:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>but you don’t get to know when external resources are loaded and compiled and the return value is an empty array if you have external scripts. If all scripts are defined on the page then <code class="highlighter-rouge">riot.compile</code> step can be left out.</p>
+
+<p>For more details, read the compiler <a href="/guide/compiler/">general introduction</a>.</p>
+
+<h3 id="-riotcompileurl-callback">
+<a name="compile-fn"></a> riot.compile(url, callback)</h3>
+
+<p>Loads the given URL and compiles all tags after which the <code class="highlighter-rouge">callback</code> is called. For example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="s1">'my/tags.tag'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// the loaded tags are ready to be used</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h3 id="-riotcompiletag">
+<a name="compile-tag"></a> riot.compile(tag)</h3>
+
+<p>Compiles and executes the given <code class="highlighter-rouge">tag</code>. For example:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template</span> <span class="na">id=</span><span class="s">"my_tag"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;my-tag&gt;</span>
+    <span class="nt">&lt;p&gt;</span>{greeting}, World!<span class="nt">&lt;/p&gt;</span>
+    this.greeting = 'Hello'
+  <span class="nt">&lt;/my-tag&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">my_tag</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">)</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+
+<p>After the call you can use <code class="highlighter-rouge">my-tag</code> normally.</p>
+
+<p>A tag definition is assumed if the first non- empty character is <code class="highlighter-rouge">&lt;</code>, otherwise the argument is taken as URL.</p>
+
+<p><span class="tag red">Note:</span> In in-browser tag compilation, script tags are not allowed. The last closing tag defines the start of the script part of a tag.</p>
+
+<p>@returns the compiled JavaScript as string</p>
+
+<h3 id="-riotcompiletag-true">
+<a name="compile-to-str"></a> riot.compile(tag, true)</h3>
+
+<p>Compiles the <code class="highlighter-rouge">tag</code> and returns it as a string. Only the transformation from the tag to JavaScript is performed and the tag is not executed on the browser. You can use this method to benchmark the compiler performance for example.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">js</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">my_tag</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="on-server">On server</h2>
+
+<p>After <code class="highlighter-rouge">npm install riot</code> you can do following:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">riot</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'riot-compiler'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fs'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">tagPath</span> <span class="o">=</span> <span class="s1">'./src/components/component.tag'</span>
+<span class="kd">const</span> <span class="nx">tagSource</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">tagPath</span><span class="p">,</span> <span class="s1">'utf8'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<span class="kd">const</span> <span class="nx">js</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">tagSource</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">tagPath</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The compile function takes the tag definition (string) and returns JavaScript (string).</p>
+
+<h4 id="sourcemaps-experimental">Sourcemaps (experimental)</h4>
+
+<p>If you will compile using the <code class="highlighter-rouge">sourcemap=true</code> option the compiler will return an object
+containing <code class="highlighter-rouge">code</code> and <code class="highlighter-rouge">sourcemap</code>. <strong>The current riot compiler doesn’t use a “real parser” so the generated sourcemaps might be inaccurate</strong>
+We will generate better sourcemap results in the next riot major release.</p>
+
+<p>Here you can see how to generate sourcemaps reusing the code of the previous example:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{</span> <span class="nx">code</span><span class="p">,</span> <span class="nx">sourcemap</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">tagSource</span><span class="p">,</span> <span class="p">{</span> <span class="na">sourcemap</span><span class="p">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="nx">tagPath</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Using the <code class="highlighter-rouge">sourcemap='inline'</code> option, the compiler will return the compiled code appending inline the generated sourcemap</p>
+
+<h3 id="-riotparserscss-tagname-css">
+<a name="css-parser"></a> riot.parsers.css [tagName, css]</h3>
+
+<p>Custom parsers that could be used to compile your tags CSS. For example:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">parsers</span><span class="p">.</span><span class="nx">css</span><span class="p">.</span><span class="nx">myparser</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tag</span><span class="p">,</span> <span class="nx">css</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">css</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/@tag/</span><span class="p">,</span> <span class="nx">tag</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;custom-parsers&gt;</span>
+  <span class="nt">&lt;p&gt;</span>hi<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">"text/myparser"</span><span class="nt">&gt;</span>
+    <span class="k">@tag</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;}</span>
+  <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/custom-parsers&gt;</span>
+</code></pre></div></div>
+
+<p>will be compiled to:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;custom-parsers&gt;</span>
+  <span class="nt">&lt;p&gt;</span>hi<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">"text/myparser"</span><span class="nt">&gt;</span>
+    <span class="nt">custom-parsers</span> <span class="p">{</span><span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;}</span>
+  <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/custom-parsers&gt;</span>
+</code></pre></div></div>
+
+<h3 id="-riotparsersjs-js-options">
+<a name="js-parser"></a> riot.parsers.js [js, options]</h3>
+
+<p>Custom parsers that could be used to compile your tags JavaScript. For example</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">parsers</span><span class="p">.</span><span class="nx">js</span><span class="p">.</span><span class="nx">myparser</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">js</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">js</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/@version/</span><span class="p">,</span> <span class="s1">'1.0.0'</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;custom-parsers&gt;</span>
+  <span class="nt">&lt;p&gt;</span>hi<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/myparser"</span><span class="nt">&gt;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">version</span> <span class="o">=</span> <span class="s2">"@version"</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/custom-parsers&gt;</span>
+</code></pre></div></div>
+
+<p>will be compiled to:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;custom-parsers&gt;</span>
+  <span class="nt">&lt;p&gt;</span>hi<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/myparser"</span><span class="nt">&gt;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">version</span> <span class="o">=</span> <span class="s2">"1.0.0"</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/custom-parsers&gt;</span>
+</code></pre></div></div>
+
+<h3 id="-riotparsershtml-html">
+<a name="html-parser"></a> riot.parsers.html [html]</h3>
+
+<p>Custom parsers that could be used to compile your tags HTML.</p>
+
+<p>The predefined parsers are:</p>
+
+<h4 id="html">html</h4>
+<ul>
+  <li><code class="highlighter-rouge">jade</code></li>
+</ul>
+
+<h4 id="css">css</h4>
+<ul>
+  <li><code class="highlighter-rouge">less</code></li>
+  <li><code class="highlighter-rouge">sass</code></li>
+  <li><code class="highlighter-rouge">scss</code></li>
+  <li><code class="highlighter-rouge">stylus</code></li>
+</ul>
+
+<p>* Only <code class="highlighter-rouge">less</code> is available on browsers.</p>
+
+<h4 id="js">js</h4>
+<ul>
+  <li>
+<code class="highlighter-rouge">none</code> or <code class="highlighter-rouge">javascript</code>
+</li>
+  <li><code class="highlighter-rouge">livescript</code></li>
+  <li><code class="highlighter-rouge">typescript</code></li>
+  <li>
+<code class="highlighter-rouge">es6</code> - (using <code class="highlighter-rouge">babel-core</code> v6.x and the <code class="highlighter-rouge">es2015</code> preset)</li>
+  <li><code class="highlighter-rouge">buble</code></li>
+  <li>
+<code class="highlighter-rouge">coffee</code> or <code class="highlighter-rouge">coffeescript</code>
+</li>
+</ul>
+
+<h2 id="changes-in-v230">Changes in v2.3.0</h2>
+
+<p>In previous versions, escaped brackets were preserved, generating incorrect HTML or invalid JavaScript code. This version removes them at an early stage, after passing the tag to the html parser and before the JavaScript code and expressions are sent to the js parser.</p>

@@ -1,0 +1,45 @@
+<h1 id="frequently-asked-questions">Frequently asked questions</h1>
+
+<h2 id="why-is-this-project-called-riot">Why is this project called Riot?</h2>
+<p>Riot is against the current trend of boilerplate and unneeded complexity. We think that a small, powerful API and concise syntax are extremely important things on a client-side library.</p>
+
+<h2 id="is-riot-free">Is Riot free?</h2>
+<p>Riot is free, open source and licensed under the MIT License. There are no <a href="https://github.com/facebook/react/blob/master/PATENTS">Additional Grant of Patent Rights</a>.</p>
+
+<h2 id="can-i-use-riot-in-production">Can I use Riot in production?</h2>
+<p>Absolutely. It’s a mature framework <a href="https://twitter.com/search?q=riotjs">embraced daily</a>.</p>
+
+<h2 id="why-ie8-is-not-supported">Why IE8 is not supported?</h2>
+<p>Because it’s crazy to waste developer time for a dying browser. According to <a href="http://www.w3counter.com/trends">W3 counter</a>, only 1.5% are on IE8:</p>
+
+<p><img src="dist/img/ie8-trend.png" alt=""></p>
+
+<p>Statcounter <a href="http://gs.statcounter.com/#browser_version_partially_combined-ww-monthly-201509-201608">says less than 1%</a>.</p>
+
+<p>This low-quality browser can safely be ignored. Riot 2.0 was launched with IE8 support but since then the use has dropped more than 50%.</p>
+
+<h2 id="should-i-use-dash-on-the-tag-name">Should I use dash on the tag name?</h2>
+<p>W3C specification demands you use a dash in the tag name. Instead of <code class="highlighter-rouge">&lt;person&gt;</code> you must write <code class="highlighter-rouge">&lt;my-person&gt;</code>. Obey this rule if you care about W3C. Both work fine.</p>
+
+<h2 id="why-are-there-no-semicolons-in-the-source-code">Why are there no semicolons in the source code?</h2>
+<p>Leaving out semicolons makes the code less crowded. This is aligned with our general minimalistic approach. We use single quotes for the same reason. If you contribute to Riot, please leave out semicolons and double quotes.</p>
+
+<h2 id="why-the-use-of-evil--operator">Why the use of evil <code class="highlighter-rouge">==</code> operator?</h2>
+<p>The equality operator is good when you know how it works. We do this for example:</p>
+
+<p><code class="highlighter-rouge">node.nodeValue = value == null ? '' : value</code></p>
+
+<p>This causes <code class="highlighter-rouge">0</code> and <code class="highlighter-rouge">false</code> to be printed but <code class="highlighter-rouge">null</code> and <code class="highlighter-rouge">undefined</code> are printed as an empty string. Exactly what we want!</p>
+
+<h2 id="can-i-use-style-tags-in-a-tag-file">Can I use <code class="highlighter-rouge">style</code> tags in a .tag file?</h2>
+<p>Yes. You can use CSS normally inside a tag. The web component standard also has a mechanism of encapsulating of CSS. However, it’s unlikely that this improves the overall manageability of your CSS.</p>
+
+<h2 id="whats-the-role-of-jquery">What’s the role of jQuery?</h2>
+<p>Riot reduces the need for jQuery. You no longer need selectors, traversing, events and manipulation features. Some features like delegated events can be useful. jQuery plugins can be used together with Riot.</p>
+
+<h2 id="isnt-onclick-evil">Isn’t <code class="highlighter-rouge">onclick</code> evil?</h2>
+<p>It’s not evil, it just looks “old”. To have JS and HTML under the same module is more important than aesthetics. The minimal Riot syntax makes event handlers look decent.</p>
+
+<h2 id="any-future-plans">Any future plans?</h2>
+
+<p>Sure. We mostly focus on <a href="https://github.com/riot/riot/issues">stability and performance</a> and try to provide more <a href="https://github.com/riot/examples">examples</a>.</p>

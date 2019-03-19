@@ -667,7 +667,7 @@ a.blue:hover {
     text-decoration: none;
     cursor: default;
 }
-@media (max-width: 720px) {
+@media (max-width: 740px) {
     #nav {
         margin: 0.5rem 0 1.5rem;
         line-height: 2.4;

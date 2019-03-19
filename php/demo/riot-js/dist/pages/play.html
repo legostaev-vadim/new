@@ -2,38 +2,38 @@
   <?php get_menu($tabsPlay); ?>
 </div>
 
-<h1>Live demo</h1>
+<h1>Живое демо</h1>
 
-<p>Change the code of tag definition (left side) freely, then you’ll see the result.</p>
+<p>Измените код определения тега (слева), чтобы увидеть результат.</p>
 
 <iframe src="https://riot.js.org/examples/live-editor/"></iframe>
 
-<h2 id="how-to-use-this-tag">How to use this tag?</h2>
+<h2 id="how-to-use-this-tag">Как использовать этот тег?</h2>
 
-<p>You can mount this tag on HTML easily. Save the source above as <code class="highlighter-rouge">sample.tag</code>, and also create <code class="highlighter-rouge">index.html</code>:</p>
+<p>Вы можете легко смонтироать этот тег в HTML. Сохраните приведенный выше код в <code class="highlighter-rouge">sample.tag</code>, а также создайте <code class="highlighter-rouge">index.html</code>:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
   <span class="nt">&lt;head&gt;</span>
     <span class="nt">&lt;title&gt;</span>Hello Riot.<span class="nt">&lt;/title&gt;</span>
   <span class="nt">&lt;/head&gt;</span>
   <span class="nt">&lt;body&gt;</span>
-    <span class="c">&lt;!-- place the custom tag anywhere inside the body --&gt;</span>
+    <span class="c">&lt;!-- разместить пользовательский тег в любой части страницы --&gt;</span>
     <span class="nt">&lt;sample&gt;&lt;/sample&gt;</span>
-    <span class="c">&lt;!-- include the tag --&gt;</span>
+    <span class="c">&lt;!-- подключить тег --&gt;</span>
     <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"riot/tag"</span> <span class="na">src=</span><span class="s">"sample.tag"</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="c">&lt;!-- include riot.js --&gt;</span>
+    <span class="c">&lt;!-- подключить riot.js --&gt;</span>
     <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/riot@3.13/riot+compiler.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="c">&lt;!-- mount the tag --&gt;</span>
+    <span class="c">&lt;!-- монтировать тег --&gt;</span>
     <span class="nt">&lt;script&gt;</span><span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'sample'</span><span class="p">)</span><span class="nt">&lt;/script&gt;</span>
   <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </code></pre></div></div>
 
-<p>That’s it!</p>
+<p>Вот и всё!</p>
 
-<h2 id="further-reading">Further reading</h2>
+<h2 id="further-reading">Дальнейшее чтение</h2>
 
 <ul>
-  <li><a href="guide">Riot Guide</a></li>
-  <li><a href="api">API - Custom tags</a></li>
+  <li><a href="guide">Riot Учебник</a></li>
+  <li><a href="api">API - Пользовательские теги</a></li>
 </ul>

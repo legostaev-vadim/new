@@ -3,34 +3,34 @@
 $site_name = 'Riot.js';
 
 $menu = [
-  'compare' => 'Compare',
-  'play' => 'PLAY',
-  'guide' => 'Guide',
+  'compare' => 'Сравнение',
+  'play' => 'Играть',
+  'guide' => 'Учебник',
   'api' => 'API',
-  'download' => 'Download',
+  'download' => 'Скачать',
   'faq' => 'FAQ'
 ];
 
 $tabsPlay = [
-  'play' => 'Live demo',
+  'play' => 'Живое демо',
   'play-todo' => 'Todo App',
-  'play-timer' => 'Timer',
-  'play-router' => 'Router',
-  'play-more' => 'More'
+  'play-timer' => 'Таймер',
+  'play-router' => 'Маршрутизатор',
+  'play-more' => 'Больше'
 ];
 
 $tabsGuide = [
-  'guide' => 'Custom tags',
-  'guide-compiler' => 'Compiler',
-  'guide-design' => 'App design',
-  'guide-migration' => 'Migration from riot 2'
+  'guide' => 'Пользовательские теги',
+  'guide-compiler' => 'Компилятор',
+  'guide-design' => 'Разработка приложения',
+  'guide-migration' => 'Миграция из riot 2'
 ];
 
 $tabsApi = [
-  'api' => 'Custom tags',
-  'api-compiler' => 'Compiler',
-  'api-observable' => 'Observable',
-  'api-route' => 'Router'
+  'api' => 'Пользовательские теги',
+  'api-compiler' => 'Компилятор',
+  'api-observable' => 'Наблюдатель',
+  'api-route' => 'Маршрутизатор'
 ];
 
 if(!isset($_GET['id'])) $page = 'index';

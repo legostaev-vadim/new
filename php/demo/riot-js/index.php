@@ -22,8 +22,8 @@
   <link rel="apple-touch-icon-precomposed" sizes="152x152" href="dist/img/favicon-152x152.png">
   <title>
     <?php
-      if($page == 'index') echo $site_name;
-      elseif($page == '404') echo $page;
+      if($page === 'index') echo $site_name;
+      elseif($page === '404') echo $page;
       elseif($_GET['id'] === 'play' || strpos($_GET['id'], 'play-') === 0) echo $tabsPlay[$page] . ' · ' . $site_name;
       elseif($_GET['id'] === 'guide' || strpos($_GET['id'], 'guide-') === 0) echo $tabsGuide[$page] . ' · ' . $site_name;
       elseif($_GET['id'] === 'api' || strpos($_GET['id'], 'api-') === 0) echo $tabsApi[$page] . ' · ' . $site_name;
@@ -39,28 +39,16 @@
     <?php include 'dist/pages/'.$page.'.html'; ?>
   </main>
   <?php include 'dist/includes/footer.php'; ?>
-  <template id="tabs-play">
-    <?php
-      foreach ($tabsPlay as $key => $value) {
-        echo "<a href='$key'>$value</a>";
-      }
-    ?>
-  </template>
-  <template id="tabs-guide">
-    <?php
-      foreach ($tabsGuide as $key => $value) {
-        echo "<a href='$key'>$value</a>";
-      }
-    ?>
-  </template>
-  <template id="tabs-api">
-    <?php
-      foreach ($tabsApi as $key => $value) {
-        echo "<a href='$key'>$value</a>";
-      }
-    ?>
-    <a target="_blank" href="https://riot.js.org/api/misc/">Misc</a>
-  </template>
+  <?php
+    foreach ([$tabsPlay, $tabsGuide, $tabsApi] as $value) {
+      echo '<template data-tabs="'.array_keys($value)[0].'">';
+        foreach ($value as $key => $tabs) {
+          echo "<a href='$key'>$tabs</a>";
+        }
+        if($key === 'api-route') echo '<a target="_blank" href="https://riot.js.org/api/misc/">Разное</a>';
+      echo '</template>';
+    }
+  ?>
   <script src="dist/main.js"></script>
 </body>
 </html>

@@ -90,18 +90,22 @@ $(function() {
   const $menu = $('.menu')
   const $main = $('main')
   const $items = $('#nav a').not('[target="_blank"]')
-  const $tabsPlay = $($('#tabs-play').html())
-  const $tabsGuide = $($('#tabs-guide').html())
-  const $tabsApi = $($('#tabs-api').html())
   const $buttonUp = $('.button-up')
   const duration = 300
   const error = '404'
+  const $tabs = {}
   let page = $main.attr('data-page')
   let oldPage = location.pathname
-  let tabsName = false
-  let $tabs
+  let $currentTabs
+  let tabsName
   let indent
   let href
+
+  if(location.hash) $html.scrollTop($main.find(location.hash).offset().top - 100)
+
+  $('[data-tabs').each(function() {
+    $tabs[$(this).data('tabs')] = $($(this).html())
+  })
 
   pageStore[page] = {
     main: $main.html(),
@@ -110,8 +114,8 @@ $(function() {
 
   function load_page(data, anchor) {
     $main.html(data).attr('data-page', page)
-    if(tabsName) $main.find('#tabs').empty().append($tabs)
-    if(anchor) indent = $main.find('#' + anchor).offset().top
+    if(tabsName) $main.find('#tabs').empty().append($currentTabs)
+    if(anchor) indent = $main.find('#' + anchor).offset().top - 100
     else indent = 0
     $html.scrollTop(indent)
     $main.fadeTo(duration, 1)
@@ -122,7 +126,10 @@ $(function() {
 
   route(function(path, anchor) {
 
-    if(oldPage === location.pathname && anchor) return
+    if(oldPage === location.pathname && anchor) {
+      $html.scrollTop($main.find(location.hash).offset().top - 100)
+      return
+    }
     else $buttonUp.removeClass('button-up--show')
 
     $menu.removeClass('open')
@@ -130,30 +137,16 @@ $(function() {
     tabsName = false
 
     if (!path) page = 'index'
-    else if(path === 'play' || path.indexOf('play-') === 0) {
-      if($tabsPlay.is(`[href="${path}"]`)) {
-        page = path
-        tabsName = 'play'
-        $tabs = $tabsPlay
-      }
-      else page = error
+    else if($tabs[path]) {
+      page = path
+      tabsName = path
+      $currentTabs = $tabs[path]
     }
-    else if(path === 'guide' || path.indexOf('guide-') === 0) {
-      if($tabsGuide.is(`[href="${path}"]`)) {
-        page = path
-        tabsName = 'guide'
-        $tabs = $tabsGuide
-      }
-      else page = error
+    else if(path.indexOf('-') > 0) {
+      page = path
+      tabsName = path.slice(0, path.indexOf('-'))
+      $currentTabs = $tabs[tabsName]
     }
-    else if(path === 'api' || path.indexOf('api-') === 0) {
-      if($tabsApi.is(`[href="${path}"]`)) {
-        page = path
-        tabsName = 'api'
-        $tabs = $tabsApi
-      }
-      else page = error
-    } 
     else if($items.is(`[href="${path}"]`)) page = path
     else page = error
 
@@ -185,7 +178,7 @@ $(function() {
       } else if(tabsName) {
         if(anchor) href = location.href.slice(0, location.href.indexOf('#'))
         else href = location.href
-        $tabs.removeClass('current').each(function() {
+        $currentTabs.removeClass('current').each(function() {
           if($(this)[0].href === href) {
             $(this).addClass('current')
             $title.text(`${$(this).text()} · ${siteName}`)

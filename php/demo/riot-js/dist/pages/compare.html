@@ -1,22 +1,23 @@
-<h1 id="riot-vs-react--polymer">
-  <strong>Riot</strong> vs <strong>React</strong> &amp; <strong>Polymer</strong>
-</h1>
+<h1 id="riot-vs-react--polymer"><strong>Riot</strong> vs <strong>React</strong> &amp; <strong>Polymer</strong></h1>
 
-<p>And how Riot differs from its closest cousins.</p>
+<p>Как Riot отличается от похожих проектов.</p>
 
 <h2 id="react">React</h2>
 
-<p>Riot is inspired by React and from the idea of “cohesion”. According to Facebook developers:</p>
+<p>React и идея “связанности” послужили фундаментом для Riot. Согласно разработчикам Facebook:</p>
 
 <blockquote>
   <p>“Templates separate technologies, not concerns.”</p>
 </blockquote>
 
-<p>We respect this insight. The goal is to build reusable components instead of templates. By separating logic from the templates we are actually keeping out things that should be together.</p>
+<p>Шаблоны разделяют технологии, не ответственность.
+Мы придерживаемся этого принципа. Мы стремимся прийти к созданию повторно используемых компонентов, а не шаблонов. Разделяя логику наших интерфейсов и их шаблоны, мы, на самом деле, лишь усложняем себе жизнь.</p>
 
-<p>By combining these related technologies together under the same component the system becomes cleaner. We respect React because of this important insight.</p>
+<p>Объединяя шаблон с его логикой в одном компоненте, мы делаем всю систему чище. Спасибо React за эту идею!</p>
 
-<h3 id="react-syntax">React syntax</h3>
+<p>React отлично работает, и мы по-прежнему используем его в некоторых наших проектах. Но мы были обеспокоены размером React и его синтаксисом (<em>особенно</em> синтаксисом). Мы стали задумываться о том, что он может быть прощё не только внутренне, но и для конечного пользователя.</p>
+
+<h3 id="react-syntax">Синтаксис React</h3>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="s1">'react'</span>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">render</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'react-dom'</span>
@@ -45,11 +46,11 @@
 <span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">Todo</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">mountNode</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>JSX is mixture of HTML and JavaScript. You can include HTML anywhere on the component; inside methods and in property assignments.</p>
+<p>JSX смешивает HTML и JavaScript. Вы можете использовать HTML где угодно внутри компонента, внутри методов и при определении свойств.</p>
 
-<h3 id="riot-syntax">Riot syntax</h3>
+<h3 id="riot-syntax">Синтаксис Riot</h3>
 
-<p>Here is the above thing with Riot:</p>
+<p>Теперь тоже самое с Riot:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;todo&gt;</span>
   <span class="nt">&lt;h3&gt;</span>TODO<span class="nt">&lt;/h3&gt;</span>
@@ -74,52 +75,52 @@
 <span class="nt">&lt;/todo&gt;</span>
 </code></pre></div></div>
 
-<p>And this is how the above tag is mounted on a page:</p>
+<p>Этот пользовательский тег монтируется в страницу следующим образом:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;todo&gt;&lt;/todo&gt;</span>
 
 <span class="nt">&lt;script&gt;</span><span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'todo'</span><span class="p">)</span><span class="nt">&lt;/script&gt;</span>
 </code></pre></div></div>
 
-<h3 id="same-same--but-different">Same, same — but different</h3>
+<h3 id="same-same--but-different">Похоже, но не одно и то же!</h3>
 
-<p>In Riot HTML and JavaScript appear much more familiar. Both are under the same component, but neatly separated from each other. The HTML can be mixed with JavaScript expressions.</p>
+<p>В Riot HTML и JavaScript используются гораздо более привычным способом. Оба находятся в одном компоненте, но аккуратно отделены друг от друга. При этом, HTML можно смешивать с выражениями JavaScript.</p>
 
-<p>No proprietary stuff, except the notation of enclosing expressions inside curly braces.</p>
+<p>Мы не используем собственный язык, за исключением выражений в фигурных скобках.</p>
 
-<p>You see less boilerplate. Less brackets, commas, system properties and method names. Strings can be interpolated: <code class="highlighter-rouge">"Hello {world}"</code> instead of <code class="highlighter-rouge">"Hello " + this.state.world</code> and methods can be defined with compact ES6 syntax. Just less everything.</p>
+<p>Вам приходится работать с меньшим объёмом кода. Меньше скобок, запятых, системных методов и свойств. Строки можно исползовать как <code class="highlighter-rouge">"Hello {world}"</code> вместо <code class="highlighter-rouge">"Hello " + this.state.world</code>, и методы могут быть определены с помощью компактного ES6 синтаксиса. Меньше во всём.</p>
 
-<p>We think Riot syntax is the cleanest way to separate layout and logic while enjoying the benefits of isolated reusable components.</p>
+<p>Мы считаем, что синтаксис Riot - наиболее чистый способ отделения шаблона и его логики, который позволяет пользоваться всеми преимуществами изолированных, пригодных для повторного использования компонентов.</p>
 
-<h3 id="virtual-dom-vs-expressions-binding">Virtual DOM vs expressions binding</h3>
+<h3 id="virtual-dom-vs-expressions-binding">Virtual DOM vs привязка выражений</h3>
 
-<p>When a component is initialized React creates its Virtual DOM, Riot on the other hand traverses just a DOM tree.</p>
+<p>Когда компонент инициализируется, React создает его Virtual DOM, а Riot, с другой стороны, только перебирает дерево DOM.</p>
 
-<p>Riot takes the expressions from the tree and stores them in an array. Each expression has a pointer to a DOM node. On each run these expressions are evaluated and compared to the values in the DOM. When a value has changed the corresponding DOM node is updated.</p>
+<p>Riot берёт выражения из DOM и сохраняет их в массиве. Каждое выражение имеет указатель на элемент DOM. При каждом выполнении этого выражения, оно сравнивается со значением в DOM. Когда значение меняется, элемент DOM обновляется.</p>
 
-<p>Since these expressions can be cached an update cycle is very fast. Going through 100 or 1000 expressions usually takes 1ms or less.</p>
+<p>Так как выражение может быть закэшировано, цикл обновления очень быстр. Проход 100 или 1000 выражений, обычно занимает 1мс и меньше.</p>
 
-<p>The React sync algorithm is much more complex since the HTML layout can change randomly after each update. Given the enormous challenge, Facebook developers did an impressive job with it.</p>
+<p>Алгоритм React гораздо сложнее из-за того, что HTML может непредвиденно изменяться после каждого обновления. Получив эту проблему, разработчики Facebook проделали впечатляющую работу с ней.</p>
 
-<p>We saw that the complex diffing can be avoided.</p>
+<p>Мы увидели, что сложность, связанную с определением различий, можно избежать.</p>
 
-<p>In Riot the HTML structure is fixed. Only loops and conditionals can add and remove elements. But a <code class="highlighter-rouge">div</code> cannot be converted to a <code class="highlighter-rouge">label</code> for example. Riot only updates the expressions without complex subtree replacements.</p>
+<p>В Riot HTML структура фиксированная. Только циклы и условные выражения могут добавлять и удалять элементы. Но <code class="highlighter-rouge">div</code> не может стать <code class="highlighter-rouge">label</code>, например. Riot только обновляет выражения, без сложных замен поддеревьев.</p>
 
-<h3 id="flux-and-routing">Flux and routing</h3>
+<h3 id="flux-and-routing">Flux и маршрутизация</h3>
 
-<p>React deals with the UI only, which is a good thing. All great software projects have a sharp focus.</p>
+<p>React работает только с UI, и это хорошо. Все хорошие проекты имеют четкую направленность.</p>
 
-<p>Facebook recommends to use <a href="http://facebook.github.io/flux/docs/overview.html">Flux</a> to structure the client-side code. It’s more of a pattern than a framework and is packed with great ideas.</p>
+<p>Facebook рекомендует использовать <a href="http://facebook.github.io/flux/docs/overview.html">Flux</a> для структурирования кода на стороне клиента. Это скорее паттерн проектирования, сочетающий хорошие идеи, чем фреймворк.</p>
 
-<p>Riot comes bundled with custom tags, an event emitter (observable) and an optional router. We believe that these are the fundamental building blocks of client side applications. Events bring modularity, a router takes care of the URL and the back button and custom tags take care of the user interface.</p>
+<p>Riot предоставляется в комплекте с пользовательскими тегами, событийной системой (observable) и маршрутизатором. Мы считаем это минимальным набором для создания приложения на клиенте. События привносят модульность, маршрутизатор заботится об URL и кнопке “назад”, а пользовательские теги берут на себя UI.</p>
 
-<p>Just like Flux, Riot is flexible and leaves the bigger architectural decisions for the developer. It’s just a library to help you achieve the goal.</p>
+<p>Так же, как и Flux, Riot является очень гибким и оставляет основные архитектурные решения за разработчиком. Это просто библиотека, которая помогает вам достичь цели.</p>
 
-<p>You can build a Flux-like system by using Riot’s observable and router. In fact such thing <a href="https://github.com/jimsparkman/RiotControl">already exists</a>.</p>
+<p>Вы можете создать Flux-подобную систему, используя observable и router, встроенные в Riot. Вообще-то, такие инструменты <a href="https://github.com/jimsparkman/RiotControl">уже есть</a>.</p>
 
-<h3 id="3x-bigger">3x bigger</h3>
+<h3 id="3x-bigger">В 3 раза больше</h3>
 
-<p>React (v16.4.0) is 3x bigger than Riot.</p>
+<p>React (v16.4.0) в 3 раза больше, чем Riot.</p>
 
 <p><small><em>react.min.js</em> – 33.27KB (gzip)</small>
 <span class="bar red"></span></p>
@@ -129,7 +130,7 @@
 
 <p><br></p>
 
-<p>The recommended React router (v4.1.1) is 6x larger than Riot router.</p>
+<p>Маршрутизатор рекомендуемый React (v4.1.1) в 6 раз больше маршрутизатора Riot.</p>
 
 <p><small><em>react-router.min.js</em> – 10.95KB (gzip)</small>
 <span class="bar red"></span></p>
@@ -140,34 +141,34 @@
 <p><small><em>riot.route.min.js</em> – 1.77KB (gzip)</small>
 <span class="bar blue" style="width:16.164383561643834%"></span></p>
 
-<p>Admittedly this router comparison is a bit unfair because <a href="https://github.com/rackt/react-router">react-router</a> has a lot more features. But the above chart clearly highlights the goal of Riot: to provide the most minimalistic API for the job.</p>
+<p>Правда, это сравнение немного несправедливо, ведь у <a href="https://github.com/rackt/react-router">react-router</a> гораздо больше возможностей. Но представленные выше графики, прекрасно иллюстрируют главную цель Riot - предоставить наиболее минималистичный API для работы.</p>
 
-<p>The React ecosystem is more frameworky and favors larger API surfaces. The bigger alternative is more popular than <a href="https://github.com/larrymyers/react-mini-router">react-mini-router</a> in the React community.</p>
+<p>Экосистема React более “фреймворковая” и это провоцирует громоздкие API. Компактная альтернатива <a href="https://github.com/larrymyers/react-mini-router">react-mini-router</a> не пользуется популярностью в сообществе React.</p>
 
 <h2 id="polymer">Polymer</h2>
 
-<p>Polymer takes the Web Component standard and makes it available for the latest browsers. This allows you to write custom tags in a standard manner.</p>
+<p>Polymer взял стандартные веб-компоненты и сделал их доступными для современных браузеров. Это позволяет вам создавать пользовательские теги в стандартной манере.</p>
 
-<p>Conceptually Riot is the same thing but there are differences:</p>
+<p>В принципе, Riot делает тоже самое, но иначе.</p>
 
 <ol>
   <li>
-    <p>The Web Components syntax is experimental and complex.</p>
+    <p>Riot обновляет только те элементы, у которых есть изменения, чтобы сократить манипуляции с DOM.</p>
   </li>
   <li>
-    <p>Riot updates only the elements that have changed resulting to less DOM operations.</p>
+    <p>Синтаксис Polymer более сложный и требует изучения многих книг.</p>
   </li>
   <li>
-    <p>Individual components are imported with HTML <code class="highlighter-rouge">link rel="import"</code>. Polyfills must resort to queued up XHRs, which makes it painfully slow unless the dedicated <a href="https://github.com/polymer/vulcanize">vulcanize</a> tool is used. Riot tags are imported with <code class="highlighter-rouge">script src</code> and multiple tags can be combined with regular tooling.</p>
+    <p>Отдельные компоненты импортируются через HTML <code class="highlighter-rouge">link rel="import"</code>. Приходится прибегать к последовательным XHR-запросам, что делает Polymer крайне медленным, если не использовать <a href="https://github.com/polymer/vulcanize">vulcanize</a>. Пользовательские теги в Riot импортируются через <code class="highlighter-rouge">script src</code> и множество тегов могут быть объединены тем же способом, что и обычные js-файлы.</p>
   </li>
   <li>
-    <p>No ability to perform server side rendering.</p>
+    <p>Нет возможности рендеринга на стороне сервера.</p>
   </li>
 </ol>
 
-<h3 id="6x-bigger">6x bigger</h3>
+<h3 id="6x-bigger">В 6 раз больше</h3>
 
-<p>Polymer(v1.8.0) + WebComponents(v0.7.24) is 6x bigger than Riot</p>
+<p>Polymer(v1.8.0) + WebComponents(v0.7.24) в 6 раз больше, чем Riot</p>
 
 <p><small><em>polymer.min.js</em> – 49.38KB (gzip)</small>
 <span class="bar red"></span></p>
@@ -175,14 +176,12 @@
 <p><small><em>riot.min.js</em> – <span class="riot-size">10.85KB (gzip)</span></small>
 <span class="bar blue" style="width: 21.972458485216688%"></span></p>
 
-<p>Web components are said to be the <a href="http://developer.telerik.com/featured/web-components-arent-ready-production-yet/">king of all polyfilling challenges</a> and this is why Polymer requires such a large amount of code.</p>
+<p>Веб-компоненты считаются <a href="http://developer.telerik.com/featured/web-components-arent-ready-production-yet/">основой всех проблем polyfilling</a>. Это главная причина, по которой Polymer нуждается в таком количестве кода.</p>
 
-<h2 id="web-components">Web components</h2>
+<h2 id="web-components">Веб-компоненты</h2>
 
-<p>Because web components is a standard it is ultimately the way to go. It will take <a href="http://caniuse.com/#search=web%20components">years</a>, but eventually the web will be full of these standard components.</p>
+<p>Веб-компоненты — <a href="https://ru.wikipedia.org/wiki/%D0%92%D0%B5%D0%B1-%D0%BA%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82%D1%8B">технология</a>, которая позволяет создавать многократно используемые компоненты в веб-документах и веб-приложениях. Веб-компоненты поддерживаются веб-браузерами напрямую и не требуют дополнительных библиотек для работы.</p>
 
-<p>Because of the complexity involved there is a high chance that these components are not used directly. There will be layers on top of web components. Just like we have jQuery today. Most people are not using the DOM directly.</p>
+<p>Модель веб-компонентов подразумевает инкапсуляцию и совместимость отдельных HTML-элементов.</p>
 
-<p>Riot is one such abstraction. It provides an easy to use API that our applications can stick to. Once the web component specs evolve Riot can start using them <em>internally</em> if there are any true benefits, such as performance gains.</p>
-
-<p>The goal of Riot is to make UI development as easy as possible. The current API is designed to withstand the constant flux of web technologies. Think of it as the “jQuery for web components” - it takes syntaxical shortcuts to achieve the same goal. It simplifies the overall experience of writing reusable components.</p>
+<p>На данный момент, частичная поддержка существует в браузерах Chrome, Firefox, Opera и Safari. Для браузеров не поддерживающих веб-компоненты реализованы полифилы.</p>

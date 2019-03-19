@@ -13,7 +13,7 @@
         <button class="search__button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
       </form><nav id="nav">
       <div class="items"><?php get_menu($menu); ?>
-<a target="_blank" href="https://riot.js.org/made-with-riot/">Showcase</a>
+<a target="_blank" href="https://riot.js.org/made-with-riot/">Примеры</a>
       </div></nav>
     </div>
   </div>

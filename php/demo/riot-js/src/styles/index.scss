@@ -40,6 +40,7 @@ img {
   font-size: 0;
   a {
     font-size: 16px;
+    text-decoration: none;
   }
 }
 
@@ -57,9 +58,18 @@ iframe { border: 1px solid #ddd; width: 100%; height: 400px }
   margin-right: 0;
 }
 
+.sitemail {
+  font-size: 14px;
+  color: #fff;
+  text-align: right;
+}
+
 @include max(660) {
   #main {
     margin-top: 100px;
+  }
+  .sitemail {
+    text-align: left;
   }
 }
 

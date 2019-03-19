@@ -30,7 +30,7 @@
     }
   }
 
-  @include max(720) {
+  @include max(740) {
     height: 62px;
     padding: 0;
     transition-property: height, background-color;
@@ -70,7 +70,7 @@
     }
     #logo {
       margin-right: auto;
-      margin-left: 23px;
+      margin-left: 20px;
     }
     #nav {
       float: none;

@@ -1,28 +1,27 @@
 <div id="hero">
-  <img src="dist/img/riot240x.png">
-  <h1>Simple and elegant component-based UI library</h1>
-  <h4>Custom tags • Enjoyable syntax • Elegant API • Tiny size</h4>
+  <img src="dist/img/riot240x.png" alt="">
+  <h1>React-подобная UI микробиблиотека</h1>
+  <h4>Пользовательские теги • Чистый синтаксис • Виртуальный DOM • Компактность</h4>
 
   <div id="version-slurp">
     <a href="download" class="tag blue">v3.13.2</a> —
-    <a target="_blank" href="https://riot.js.org/release-notes/">More flexible "value" attributes handling…</a>
+    <a target="_blank" href="https://riot.js.org/release-notes/">Более гибкая обработка "значений" атрибутов…</a>
   </div>
-
 </div>
 
-<h1 id="why-do-we-need-a-new-ui-library">Why do we need a new UI library?</h1>
+<h1 id="why-do-we-need-a-new-ui-library">Зачем нам новая UI библиотека?</h1>
 
-<p>The frontend space is indeed crowded, but we honestly feel the solution is still “out there”. We believe Riot offers the right balance for solving the great puzzle. While React seems to do it, they have serious weak points that Riot will solve.</p>
+<p>Фронтенд часто бывает загружен фреймворками и библиотеками, и мы считаем, что это проблема, которую ещё только предстоит решить. Мы верим, что Riot предлагает верный баланс для решения этой сложной задачи. Не смотря на то, что React пытается это делать, он обладает рядом недостатков, которые восполняет в себе Riot.</p>
 
-<p>So — here’s why we need one:</p>
+<p>Итак, вот причины, из-за которых стоит использовать Riot:</p>
 
-<h2 id="1-custom-tags">1. Custom tags</h2>
+<h2 id="1-custom-tags">1. Пользовательские теги</h2>
 
-<p>Riot brings custom tags to all browsers.</p>
+<p>Riot позволяет создавать пользовательские теги в любом браузере.</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;todo&gt;</span>
 
-  <span class="c">&lt;!-- layout --&gt;</span>
+  <span class="c">&lt;!-- шаблон --&gt;</span>
   <span class="nt">&lt;h3&gt;</span>{ opts.title }<span class="nt">&lt;/h3&gt;</span>
 
   <span class="nt">&lt;ul&gt;</span>
@@ -30,24 +29,23 @@
   <span class="nt">&lt;/ul&gt;</span>
 
   <span class="nt">&lt;form</span> <span class="na">onsubmit=</span><span class="s">{</span> <span class="na">add</span> <span class="err">}</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;input</span> <span class="na">ref=</span><span class="s">"input"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input&gt;</span>
     <span class="nt">&lt;button&gt;</span>Add #{ items.length + 1 }<span class="nt">&lt;/button&gt;</span>
   <span class="nt">&lt;/form&gt;</span>
 
-  <span class="c">&lt;!-- style --&gt;</span>
-  <span class="nt">&lt;style&gt;</span>
+  <span class="c">&lt;!-- стили --&gt;</span>
+  <span class="nt">&lt;style </span><span class="na">scoped</span><span class="nt">&gt;</span>
     <span class="nt">h3</span> <span class="p">{</span>
       <span class="nl">font-size</span><span class="p">:</span> <span class="m">14px</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="nt">&lt;/style&gt;</span>
 
-  <span class="c">&lt;!-- logic --&gt;</span>
+  <span class="c">&lt;!-- логика --&gt;</span>
   <span class="nt">&lt;script&gt;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">items</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nx">add</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
-      <span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">refs</span><span class="p">.</span><span class="nx">input</span>
+      <span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
       <span class="nx">input</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="s1">''</span>
     <span class="p">}</span>
@@ -56,11 +54,11 @@
 <span class="nt">&lt;/todo&gt;</span>
 </code></pre></div></div>
 
-<p>A custom tag glues relevant HTML and JavaScript together forming a reusable component. Think React + Polymer but with enjoyable syntax and a small learning curve.</p>
+<p>В пользовательском теге содержатся HTML, его стили и JavaScript, из которых складывается компонент, который можно повторно использовать в любом месте вашего приложения. Это как React + Polymer, но с приятным синтаксисом и простой в изучении.</p>
 
-<h3 id="human-readable">Human-readable</h3>
+<h3 id="human-readable">Легко читаемый</h3>
 
-<p>Custom tags let you build complex views with HTML. Your application might look something like this:</p>
+<p>Пользовательские теги позволяют создавать сложные интерфейсы, используя простой html. Ваше приложение может выглядеть, например, так:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
 
@@ -68,10 +66,10 @@
 
   <span class="nt">&lt;forum-header/&gt;</span>
 
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;forum-content&gt;</span>
     <span class="nt">&lt;forum-threads/&gt;</span>
     <span class="nt">&lt;forum-sidebar/&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/forum-content&gt;</span>
 
   <span class="nt">&lt;forum-footer/&gt;</span>
 
@@ -79,64 +77,60 @@
 <span class="nt">&lt;/body&gt;</span>
 </code></pre></div></div>
 
-<p>HTML syntax is the <em>de facto</em> language of the web and it’s designed for building user interfaces. The syntax is explicit, nesting is inherent to the language, and attributes offer a clean way to provide options for custom tags.</p>
+<p>HTML <em>де-факто</em> - язык веба, спроектированный специально для создания пользовательских интерфейсов. HTML очень наглядный, прекрасно отображает иерархичную структуру и, благодаря атрибутам, мы можем явно передавать данные в пользовательские теги.</p>
 
-<p>Riot tags are <a href="guide-compiler">converted</a> to pure JavaScript before browsers can execute them.</p>
+<p>Пользовательские теги <a href="guide-compiler">компилируются</a> в чистый JavaScript, который будет использоваться в браузере.</p>
 
-<h3 id="dom-expressions-binding">DOM Expressions binding</h3>
+<h3 id="dom-expressions-binding">Привязка выражений к DOM</h3>
 <ul>
-  <li>Absolutely the smallest possible amount of DOM updates and reflows</li>
-  <li>One way data flow: updates and unmounts are propagated downwards from parent to children</li>
-  <li>Expressions are pre-compiled and cached for high performance</li>
-  <li>Lifecycle events for more control</li>
-  <li>Server-side rendering of custom tags for universal (isomorphic) applications</li>
+  <li>Снижение до минимума обращений к DOM</li>
+  <li>Однопоточное связывание: обновления передаются от родителя к дочерним элементам</li>
+  <li>Используется прекомпиляция и кэширование для высокой производительности</li>
+  <li>Возможность использовать хуки</li>
+  <li>Возможность рендерить html на стороне сервера для изоморфных приложений</li>
 </ul>
 
-<h3 id="close-to-standards">Close to standards</h3>
+<h3 id="close-to-standards">Близко к стандартам</h3>
 <ul>
-  <li>No proprietary event system</li>
-  <li>No need for external polyfills or additional libraries</li>
-  <li>The rendered DOM can be freely manipulated with other tools</li>
-  <li>No extra HTML root elements or <code class="highlighter-rouge">data-</code> attributes</li>
-  <li>Plays well with jQuery</li>
+  <li>Мы не используем собственные стандарты, многое вам уже знакомо</li>
+  <li>В результате рендеринга получается простой HTML, пригодный для сторонних инструментов</li>
+  <li>Никаких дополнительных HTML элементов или <code class="highlighter-rouge">data-</code> атрибутов</li>
+  <li>Отлично работает с jQuery</li>
 </ul>
 
-<h3 id="tooling-friendly">Tooling friendly</h3>
+<h3 id="tooling-friendly">Легко применять инструменты</h3>
 <ul>
-  <li>Create tags with ES6, Typescript, CoffeeScript, Jade, LiveScript or <a href="guide-compiler#pre-processors">any pre-processor</a> you want</li>
-  <li>Integrate with NPM, CommonJS, AMD, Bower or Component</li>
-  <li>Develop with <a href="https://github.com/e-jigsaw/gulp-riot">Gulp</a>, <a href="https://github.com/ariesjia/grunt-riot">Grunt</a> or <a href="https://github.com/jhthorsen/riotify">Browserify</a> plugins</li>
+  <li>Используйте ES6, Typescript, CoffeeScript, Pug, LiveScript или любой другой <a href="guide-compiler#pre-processors">препроцессор</a></li>
+  <li>Интегрируйте NPM, CommonJS, AMD, Bower или Component</li>
+  <li>Разрабатывайте с <a href="https://github.com/e-jigsaw/gulp-riot">Gulp</a>, <a href="https://github.com/ariesjia/grunt-riot">Grunt</a> или <a href="https://github.com/jhthorsen/riotify">Browserify</a></li>
 </ul>
 
-<h2 id="2-simple-and-minimalistic">2. Simple and minimalistic</h2>
+<h2 id="2-simple-and-minimalistic">2. Простой и минималистичный</h2>
 
-<p>Minimalism sets Riot apart from others:</p>
+<p>Минимализм - отличительная черта Riot:</p>
 
-<h3 id="1-enjoyable-syntax">1. Enjoyable syntax</h3>
+<h3 id="1-enjoyable-syntax">1. Приятный синтаксис</h3>
 
-<p>One of the design goals was to introduce a powerful tag syntax with as little boilerplate as possible:</p>
-
-<ul>
-  <li>Power shortcuts: <code class="highlighter-rouge">class={ enabled: is_enabled, hidden: hasErrors() }</code>
-</li>
-  <li>No extra brain load such as <code class="highlighter-rouge">render</code>, <code class="highlighter-rouge">state</code>, <code class="highlighter-rouge">constructor</code>
-</li>
-  <li>Interpolation: <code class="highlighter-rouge">Add #{ items.length + 1 }</code> or <code class="highlighter-rouge">class="item { selected: flag }"</code>
-</li>
-  <li>The <code class="highlighter-rouge">&lt;script&gt;</code> tag to enclose the logic is optional</li>
-  <li>Compact ES6 method syntax</li>
-</ul>
-
-<h3 id="2-small-learning-curve">2. Small learning curve</h3>
-
-<p>Riot has between 10 and 100 times fewer API methods than other UI libraries.</p>
+<p>Одна из целей проектирования была ввести мощный синтаксис тегов, который был бы как можно более лаконичен и прост:</p>
 
 <ul>
-  <li>Less to learn. Fewer books and tutorials to view</li>
-  <li>Less proprietary stuff and more standard stuff</li>
+  <li>Возможность использовать выражения: <code class="highlighter-rouge">class={ enabled: is_enabled, hidden: hasErrors() }</code></li>
+  <li>Больше нет мусора, вроде <code class="highlighter-rouge">render</code>, <code class="highlighter-rouge">state</code>, <code class="highlighter-rouge">constructor</code></li>
+  <li>Вставка в html: <code class="highlighter-rouge">Add #{ items.length + 1 }</code> или <code class="highlighter-rouge">class="item { selected: flag }"</code></li>
+  <li>Необязательный тег <code class="highlighter-rouge">&lt;script&gt;</code> для отделения логики и подсветки в редакторах кода</li>
+  <li>Компактный ES6 синтаксис методов</li>
 </ul>
 
-<h3 id="3-tiny-size">3. Tiny size</h3>
+<h3 id="2-small-learning-curve">2. Лёгок в изучении</h3>
+
+<p>Riot в сравнении с другими библиотеками в 10-100 раз проще изучить.</p>
+
+<ul>
+  <li>Меньший объём для изучения</li>
+  <li>Отсутствие редких проприетарных стандартов</li>
+</ul>
+
+<h3 id="3-tiny-size">3. Крошечный размер</h3>
 
 <p><small><em>polymer.html</em> – 49.38KB (gzip)</small>
 <span class="bar red"></span></p>
@@ -148,60 +142,57 @@
 <span class="bar blue" style="width: 32.61196272918545%"></span></p>
 
 <ul>
-  <li>Fewer bugs</li>
-  <li>Faster to parse and cheaper to download</li>
-  <li>Embeddable. The library ought to be smaller than the application</li>
-  <li>Less to maintain. We don’t need a big team to maintain Riot</li>
+  <li>Меньше багов</li>
+  <li>Более быстрая загрузка и обработка браузером</li>
+  <li>Встраиваемость. Библиотека должна быть меньше, чем приложение</li>
+  <li>Меньше поддерживать. Нам не нужна большая команда, чтобы содержать Riot</li>
 </ul>
 
-<h3 id="4-small-but-complete">4. Small, but complete</h3>
+<h3 id="4-small-but-complete">4. Маленький, но самодостаточный</h3>
 
-<p>Riot has all the essential building blocks for modern client-side applications:</p>
+<p>Riot имеет все необходимые модули для современных клиентских приложений:</p>
 
 <ul>
-  <li>“Reactive” views for building user interfaces</li>
-  <li>Event library for building APIs with isolated modules</li>
-  <li>Optional Router for taking care of URL and the back button</li>
+  <li>“Реактивные” интерфейсы</li>
+  <li>Модуль для обработки событий</li>
+  <li>Маршрутизатор, который заботится об URL и кнопке “назад”</li>
 </ul>
 
-<p>Riot is an “open stack”. It’s meant for developers who want to avoid framework specific idioms. The generic tools let you mix and match design patterns. Systems like Facebook Flux can be <a href="https://github.com/jimsparkman/RiotControl">self-made</a>.</p>
+<p>Riot - открытый проект, он не заточен под чьи-либо конкретные потребности. С помощью инструментов, заложенных в Riot, вы можете сочетать и смешивать шаблоны проектирования. Системы, вроде Facebook Flux можно создать всего <a href="https://github.com/jimsparkman/RiotControl">десятком строк</a>.</p>
 
 <blockquote>
-  <p><a href="https://twitter.com/riotjs_">@riotjs_</a> Thanks for creating a library that allows me to make a simple SPA in plain JS without needing to download 13k NPM packages.
-<a href="https://twitter.com/coussej/status/763659990250946561">@coussej</a></p>
+  <p>Я посмотрел на примеры riot.js и он показался мне настолько простым, это классно <a href="https://twitter.com/paulbjensen/status/558378720403419137">@paulbjensen</a></p>
 </blockquote>
 
 <blockquote>
-  <p>Switched my site from #BackboneJS to #RiotJS. Other than compile/mount not blocking for DOM render, it’s great! #JavaScript <a href="https://twitter.com/riotjs_">@riotjs_</a>
-<a href="https://twitter.com/richardtallent/status/766696802066194432">@richardtallent</a></p>
+  <p>Просто возился с #RiotJS в течение часа. Установил его с Gulp, Browsesify, и Babel в кратчайшие сроки. Мне он очень нравится до сих пор! <a href="https://twitter.com/AndrewDelPrete/status/630976295011127296">@AndrewDelPrete</a></p>
 </blockquote>
 
 <blockquote>
-  <p>Like all people fed up with the status quo and the development of the world, I’m voting RiotJS &lt;3 Love you baby <a href="https://twitter.com/plumpNation/status/760803974660390912">@plumpNation</a></p>
+  <p>Сегодня я использовал #riotjs впервые, и я не мог не признать, что это будут долгосрочные отношения #js рекомендуется. <a href="https://twitter.com/gianlucaguarini/status/559756081862574080">@gianlucaguarini</a></p>
 </blockquote>
 
 <blockquote>
-  <p>I looked at the riot.js example, and it feels so clean, it’s scary.
-<a href="https://twitter.com/paulbjensen/status/558378720403419137">@paulbjensen</a></p>
+  <p>Мне понравилась идея о #reactjs с #flux но мне нравится #riotjs с #riotcontrol еще больше! <a href="https://twitter.com/tscok/status/580509124598829056">@tscok</a></p>
 </blockquote>
 
 <blockquote>
-  <p>I liked the idea of #reactjs with #flux but I like #riotjs with #riotcontrol even better!
-<a href="https://twitter.com/tscok/status/580509124598829056">@tscok</a></p>
+  <p>Глядя на RiotJS https://muut.com/riotjs/ — был потрясён его простотой. <a href="https://twitter.com/defeated/status/559215403541757952">@defeated</a></p>
 </blockquote>
 
 <blockquote>
-  <p>Played with riot.js and like it so much more than React. Minimalistic, fast and a comprehensible API. <a href="https://twitter.com/juriansluiman/status/560399379035865088">@juriansluiman</a></p>
+  <p>Поиграл с riot.js и он понравился мне гораздо больше, чем React. Минималистичный, быстрый и с понятным API. <a href="https://twitter.com/juriansluiman/status/560399379035865088">@juriansluiman</a></p>
 </blockquote>
 
-<h2 id="conclusion">Conclusion</h2>
+<h2 id="conclusion">Заключение</h2>
 
-<p>Riot is Web Components for everyone. Think React + Polymer but without the bloat. It’s intuitive to use and it weighs almost nothing. And it works today. No reinventing the wheel, but rather taking the good parts of what’s there and making the simplest tool possible.</p>
+<p>Riot - это веб-компоненты для всех. Это как React + Polymer, но не раздутый. Он интуитивно понятный и почти ничего не весит. И он работает уже сегодня. Это не ещё один велосипед, а, скорее, сочетание лучших идей, которое делает Riot простым и удобным.</p>
 
-<p>We should focus on reusable components instead of templates. According to the developers of React:</p>
+<p>Мы должны сосредоточиться на повторном использовании компонентов, а не на шаблонах. Согласно разработчикам React,</p>
 
 <blockquote>
   <p>“Templates separate technologies, not concerns.”</p>
 </blockquote>
 
-<p>By having related layout and logic together under the same component the overall system becomes cleaner. We respect React for this important insight.</p>        
+<p>Шаблоны разделяют технологии, не ответственность.
+Помещая шаблон и логику вместе в одном компоненте, в целом, мы делаем систему более чистой. Мы уважаем React за это важное открытие.</p>
