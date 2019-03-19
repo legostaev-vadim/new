@@ -754,8 +754,8 @@
 <p>Обработчик DOM-события принимает в качестве первого аргумента стандартный объект события. Ниже приведён список его свойств, которые работают во всех браузерах:</p>
 
 <ul>
-  <li><code class="highlighter-rouge">e.currentTarget</code> указывает на элемент, в котором зарегистрирован работающий в данный момент обработчик события.</li>
-  <li><code class="highlighter-rouge">e.target</code> элемент инициировавший событие (узел, в котором произошло событие). Он может не совпадать с <code class="highlighter-rouge">currentTarget</code>.</li>
+  <li><code class="highlighter-rouge">e.currentTarget</code> идентифицирует текущий DOM-элемент, в котором зарегистрирован работающий в данный момент обработчик события (на этапе всплытия события).</li>
+  <li><code class="highlighter-rouge">e.target</code> идентифицирует элемент - инициатор события (т.е. узел, в котором произошло событие и с которого началась фаза всплывания). Он может не совпадать с <code class="highlighter-rouge">currentTarget</code>.</li>
   <li><code class="highlighter-rouge">e.which</code> код нажатой клавиши, если событие было вызвано нажатием клавиши (<code class="highlighter-rouge">keypress</code>, <code class="highlighter-rouge">keyup</code>, и т.д.).</li>
   <li><code class="highlighter-rouge">e.item</code> текущий элемент в цикле. Смотри подробности в разделе <a href="#loops">циклы</a>.</li>
 </ul>

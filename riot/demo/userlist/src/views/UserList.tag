@@ -1,4 +1,4 @@
-<app-list>
+<r-list>
   <div class="user-list">
     <a href="#!/edit/{ id }" class="user-list-item" each={ list } key={ id }>{ firstName } { lastName }</a>
   </div>
@@ -28,4 +28,4 @@
     this.user.one('updated', this.update)
     this.user.getUsers()
   </script>
-</app-list>
+</r-list>

@@ -1,12 +1,12 @@
-<app-form>
+<r-form>
   <form>
     <label class="label">Имя</label>
     <input type="text" class="input" oninput={ inputValue } data-name="firstName" placeholder="First name" value="{ firstName }">
     <label class="label">Фамилия</label>
     <input type="text" class="input" oninput={ inputValue } data-name="lastName" placeholder="Last name" value="{ lastName }">
-    <button class="btn btn-create" onclick={ clickButton } data-name="createUser">Создать</button>
-    <button class="btn btn-delete" onclick={ clickButton } data-name="deleteUser">Удалить</button>
-    <button class="btn btn-update" onclick={ clickButton } data-name="updateUser">Обновить</button>
+    <button class="btn btn-create" onclick={ clickButton } data-method="createUser">Создать</button>
+    <button class="btn btn-delete" onclick={ clickButton } data-method="deleteUser">Удалить</button>
+    <button class="btn btn-update" onclick={ clickButton } data-method="updateUser">Обновить</button>
   </form>
 
   <style>
@@ -50,10 +50,10 @@
   </style>
 
   <script>
-
     clickButton(e) {
+      e.preventDefault()
       e.preventUpdate = true
-      this.user[e.target.dataset.name]()
+      this.user[e.target.dataset.method]()
     }
 
     inputValue(e) {
@@ -70,4 +70,4 @@
     this.user.one('updated', this.update)
     this.user.one('home', () => route('list'))
   </script>
-</app-form>
+</r-form>

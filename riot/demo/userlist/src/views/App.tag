@@ -1,9 +1,9 @@
 <app>
-  <app-menu />
+  <r-menu />
   
   <main data-is="router">
-    <route path="list"><app-list /></route>
-    <route path="edit/*"><app-form /></route>
+    <route path="list"><r-list /></route>
+    <route path="edit/*"><r-form /></route>
   </main>
 
   <style>

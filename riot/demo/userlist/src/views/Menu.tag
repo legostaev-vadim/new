@@ -1,4 +1,4 @@
-<app-menu>
+<r-menu>
   <nav class="menu">
     <a href="#!/list">Пользователи</a>
   </nav>
@@ -13,4 +13,4 @@
       font-size: 22px;
     }
   </style>
-</app-menu>
+</r-menu>

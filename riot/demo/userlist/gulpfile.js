@@ -16,7 +16,7 @@ function scripts() {
     'node_modules/riot-route/dist/route+tag.min.js',
     'src/views/**/*.tag',
     'src/models/**/*.js',
-    'src/last.js'
+    'src/scripts/**/*.js'
   ])
     .pipe(gulpIf(file => !file.path.includes('/node_modules/'), multipipe(
       gulpIf('*.tag', riot()),
