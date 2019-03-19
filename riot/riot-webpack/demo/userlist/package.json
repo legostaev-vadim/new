@@ -1,0 +1,32 @@
+{
+  "name": "app-riot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "babel-loader": "^8.0.5",
+    "browser-sync": "^2.26.3",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-if": "^2.0.2",
+    "gulp-sass": "^4.0.2",
+    "multipipe": "^3.0.1",
+    "riot-compiler": "^3.5.3",
+    "riot-tag-loader": "^2.1.0",
+    "webpack-stream": "^5.2.1"
+  },
+  "dependencies": {
+    "riot": "^3.13.2",
+    "riot-route": "^3.1.4"
+  }
+}
