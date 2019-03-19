@@ -8,13 +8,15 @@ riot.tag2('app', '<app-menu></app-menu> <main data-is="router"> <route path="lis
 });
 riot.tag2('app-menu', '<nav class="menu"> <a href="#!/list">Пользователи</a> </nav>', 'app-menu .menu,[data-is="app-menu"] .menu{ margin-bottom: 20px; } app-menu .menu a,[data-is="app-menu"] .menu a{ padding: 5px; text-decoration: none; font-size: 22px; }', '', function(opts) {
 });
-riot.tag2('app-form', '<form onsubmit="{submit}"> <label class="label">Имя</label> <input type="text" class="input" oninput="{input}" data-name="firstName" placeholder="First name" riot-value="{firstName}"> <label class="label">Фамилия</label> <input type="text" class="input" oninput="{input}" data-name="lastName" placeholder="Last name" riot-value="{lastName}"> <button type="submit" class="button">Сохранить</button> </form>', 'app-form .label,[data-is="app-form"] .label{ display: block; margin: 0 0 5px; } app-form .input,[data-is="app-form"] .input{ border: 1px solid #ddd; border-radius: 3px; box-sizing: border-box; display: block; margin: 0 0 10px; padding: 10px 15px; width: 100%; } app-form .button,[data-is="app-form"] .button{ background: #ddd; border: 1px solid #ddd; border-radius: 3px; color: #222; cursor: pointer; display: inline-block; margin-top: 20px; padding: 10px 15px; text-decoration: none; } app-form .button:hover,[data-is="app-form"] .button:hover{ background: #222; color: #fff; }', '', function(opts) {
-    this.submit = function(e) {
-      e.preventDefault()
-      this.user.save()
+riot.tag2('app-form', '<form> <label class="label">Имя</label> <input type="text" class="input" oninput="{inputValue}" data-name="firstName" placeholder="First name" riot-value="{firstName}"> <label class="label">Фамилия</label> <input type="text" class="input" oninput="{inputValue}" data-name="lastName" placeholder="Last name" riot-value="{lastName}"> <button class="btn btn-create" onclick="{clickButton}" data-name="createUser">Создать</button> <button class="btn btn-delete" onclick="{clickButton}" data-name="deleteUser">Удалить</button> <button class="btn btn-update" onclick="{clickButton}" data-name="updateUser">Обновить</button> </form>', 'app-form .label,[data-is="app-form"] .label{ display: block; margin: 0 0 5px; } app-form .input,[data-is="app-form"] .input{ border: 1px solid #ddd; border-radius: 3px; box-sizing: border-box; display: block; margin: 0 0 10px; padding: 10px 15px; width: 100%; } app-form .btn,[data-is="app-form"] .btn{ background: #ddd; border: 1px solid #ddd; border-radius: 3px; color: #fff; cursor: pointer; display: inline-block; margin-top: 20px; padding: 10px 15px; text-decoration: none; } app-form .btn-create,[data-is="app-form"] .btn-create{ background: #41BA5E; } app-form .btn-delete,[data-is="app-form"] .btn-delete{ background: #FF0044; } app-form .btn-update,[data-is="app-form"] .btn-update{ background: #0B77B3; } app-form .btn:hover,[data-is="app-form"] .btn:hover{ background: #ddd; color: #222; }', '', function(opts) {
+
+    this.clickButton = function(e) {
+      e.preventUpdate = true
+      this.user[e.target.dataset.name]()
     }.bind(this)
 
-    this.input = function(e) {
+    this.inputValue = function(e) {
+      e.preventUpdate = true
       this.user.current[e.target.dataset.name] = e.target.value
     }.bind(this)
 
@@ -23,34 +25,36 @@ riot.tag2('app-form', '<form onsubmit="{submit}"> <label class="label">Имя</l
       this.lastName = this.user.current.lastName
     })
 
-    this.on('route', (id) => this.user.loadUser(id))
-    this.user.one('loadedUser', this.update)
+    this.on('route', (id) => this.user.getUser(id))
+    this.user.one('updated', this.update)
+    this.user.one('home', () => route('list'))
 });
 riot.tag2('app-list', '<div class="user-list"> <a href="#!/edit/{id}" class="user-list-item" each="{list}" key="{id}">{firstName} {lastName}</a> </div>', 'app-list .user-list,[data-is="app-list"] .user-list{ list-style: none; margin: 0 0 10px; padding: 0; } app-list .user-list-item,[data-is="app-list"] .user-list-item{ background: #fafafa; border: 1px solid #ddd; color: #333; display: block; margin: 0 0 1px; padding: 8px 15px; text-decoration: none; } app-list .user-list-item:hover,[data-is="app-list"] .user-list-item:hover{ text-decoration: underline; }', '', function(opts) {
     this.on('update', () => this.list = this.user.list)
-    this.user.one('loadedList', this.update)
-    this.user.loadList()
+    this.user.one('updated', this.update)
+    this.user.getUsers()
 });
 class User {
+
   constructor() {
+    this.list = []
+    this.current = {}
     riot.observable(this)
   }
 
-  loadList() {
-    this.list = []
-    fetch('https://rem-rest-api.herokuapp.com/api/users', {
+  getUsers() {
+    fetch('https://rem-rest-api.herokuapp.com/api/users?limit=100', {
       method: 'GET',
       credentials: 'include'
     })
       .then(response => response.json())
       .then(result => {
         this.list = result.data
-        this.trigger('loadedList')
+        this.trigger('updated')
       })
   }
 
-  loadUser(id) {
-    this.current = {}
+  getUser(id) {
     fetch('https://rem-rest-api.herokuapp.com/api/users/' + id, {
       method: 'GET',
       credentials: 'include'
@@ -58,17 +62,36 @@ class User {
       .then(response => response.json())
       .then(result => {
         this.current = result
-        this.trigger('loadedUser')
+        this.trigger('updated')
       })
   }
 
-  save(id) {
-    return fetch('https://rem-rest-api.herokuapp.com/api/users/' + this.current.id, {
+  createUser() {
+    fetch('https://rem-rest-api.herokuapp.com/api/users/', {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(this.current)
+    })
+    .then(response => this.trigger('home'))
+  }
+
+  deleteUser() {
+    fetch('https://rem-rest-api.herokuapp.com/api/users/' + this.current.id, {
+      method: 'DELETE',
+      credentials: 'include'
+    })
+    .then(response => this.trigger('home'))
+  }
+
+  updateUser() {
+    fetch('https://rem-rest-api.herokuapp.com/api/users/' + this.current.id, {
       method: 'PUT',
       credentials: 'include',
       body: JSON.stringify(this.current)
     })
+    .then(response => this.trigger('home'))
   }
+  
 }
 riot.mixin({user: new User})
 riot.mount('app')

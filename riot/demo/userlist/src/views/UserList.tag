@@ -25,7 +25,7 @@
 
   <script>
     this.on('update', () => this.list = this.user.list)
-    this.user.one('loadedList', this.update)
-    this.user.loadList()
+    this.user.one('updated', this.update)
+    this.user.getUsers()
   </script>
 </app-list>
