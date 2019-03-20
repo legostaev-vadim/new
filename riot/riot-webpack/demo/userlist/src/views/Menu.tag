@@ -2,7 +2,7 @@
 
   <a href="#!/list">Пользователи</a>
 
-  <style>
+  <style type="plain">
     :scope {
       margin-bottom: 10px;
     }

@@ -10,7 +10,7 @@
     <button class="form__btn form__btn--update" onclick={ clickButton } data-method="updateUser">Обновить</button>
   </form>
 
-  <style>
+  <style type="plain">
     .form__label {
       margin: 0 0 5px;
     }

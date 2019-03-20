@@ -3,7 +3,9 @@ const sass = require('gulp-sass');
 const gulpIf = require('gulp-if');
 const webpack = require('webpack-stream');
 const multipipe = require('multipipe');
-const autoprefixer = require('gulp-autoprefixer');
+const gulpAutoprefixer = require('gulp-autoprefixer');
+const autoprefixer = require('autoprefixer');
+const postcss = require('postcss')
 const cleanCSS = require('gulp-clean-css');
 const browserSync = require('browser-sync').create();
 const del = require('del');
@@ -13,7 +15,7 @@ function styles() {
   return gulp.src('src/styles/build.scss')
     .pipe(sass())
     .pipe(gulpIf(mode === 'production', multipipe(
-      autoprefixer({ browsers: ['last 15 versions'] }),
+      gulpAutoprefixer({ browsers: ['last 15 versions'] }),
       cleanCSS()
     )))
     .pipe(gulp.dest('dist'));
@@ -26,8 +28,41 @@ function tags() {
       output: { filename: 'build.js' },
       module: {
         rules: [
-          { test: /\.tag$/, exclude: /node_modules/, use: ["babel-loader", "riot-tag-loader"] },
-          { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+          {
+            test: /\.tag$/,
+            exclude: /(node_modules|bower_components)/,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  presets: ['@babel/preset-env']
+                }
+              },
+              {
+                loader: "riot-tag-new-loader",
+                options: {
+                  parsers: {
+                    css: {
+                      plain: function(tag, css) {
+                        if(mode === 'production') return postcss([ autoprefixer({ browsers: ['last 15 versions'] }) ]).process(css).css
+                        return css
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            test: /\.js$/,
+            exclude: /(node_modules|bower_components)/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: ['@babel/preset-env']
+              }
+            }
+          }
         ]
       }
     }))
@@ -42,7 +77,8 @@ function copy() {
 function serve(done) {
   browserSync.init({
     server: { baseDir: './' },
-    notify: false
+    notify: false,
+    // open: false
   });
   done();
 }

@@ -4,7 +4,7 @@
     <a href="#!/edit/{ id }" class="list__item" each={ list } key={ id }>{ firstName } { lastName }</a>
   </div>
 
-  <style>
+  <style type="plain">
     .list {
       list-style: none;
       margin: 0 0 10px;

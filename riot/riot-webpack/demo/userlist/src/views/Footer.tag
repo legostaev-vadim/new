@@ -2,7 +2,7 @@
 
   <a href="https://riot.js.org/" target="_blank">Riot</a>
 
-  <style>
+  <style type="plain">
     :scope {
       background: #222;
       margin-top: auto;

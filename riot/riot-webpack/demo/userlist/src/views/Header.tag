@@ -3,7 +3,7 @@
   <nav data-is="r-menu" />
   <img src="dist/img/riot.png" alt="riot">
 
-  <style>
+  <style type="plain">
     :scope {
       margin-top: 15px;
       margin-bottom: 30px;

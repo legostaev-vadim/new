@@ -9,7 +9,7 @@
 
   <footer data-is="r-footer" />
 
-  <style>
+  <style type="plain">
     :scope {
       display: flex;
       flex-direction: column;
