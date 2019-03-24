@@ -13,14 +13,14 @@ html {
 }
 @font-face {
     font-family: 'LatoWebRegular';
-    src: local('Lato Regular'), local('Lato-Regular'), url('dist/fonts/latoregular.woff2') format('woff2'), url('dist/fonts/latoregular.woff') format('woff'), url('dist/fonts/latoregular.ttf') format('truetype');
+    src: local('Lato Regular'), local('Lato-Regular'), url('fonts/latoregular.woff2') format('woff2'), url('fonts/latoregular.woff') format('woff'), url('fonts/latoregular.ttf') format('truetype');
     font-style: normal;
     font-weight: normal;
     text-rendering: optimizeLegibility;
 }
 @font-face {
     font-family: 'LatoWebLight';
-    src: local('Lato Light'), local('Lato-Light'), url('dist/fonts/latolight.woff2') format('woff2'), url('dist/fonts/latolight.woff') format('woff'), url('dist/fonts/latolight.ttf') format('truetype');
+    src: local('Lato Light'), local('Lato-Light'), url('fonts/latolight.woff2') format('woff2'), url('fonts/latolight.woff') format('woff'), url('fonts/latolight.ttf') format('truetype');
     font-style: normal;
     font-weight: normal;
     text-rendering: optimizeLegibility;
@@ -173,7 +173,7 @@ blockquote {
 blockquote p:last-child {
     margin-bottom: 0;
 }
-@media (min-width: 660px) {
+@media (min-width: 760px) {
     blockquote {
         padding-right: 5rem;
         padding-left: 1.25rem;
@@ -459,7 +459,7 @@ pre code {
         transform: rotate(10deg);
     }
 }
-@media (max-width: 660px) {
+@media (max-width: 760px) {
     .github-corner:hover .octo-arm {
         animation: none;
     }
@@ -526,7 +526,7 @@ pre code {
     color: #000;
     cursor: default;
 }
-@media (max-width: 660px) {
+@media (max-width: 760px) {
     #tabs {
         text-align: center;
         padding: 0 1em;
@@ -621,12 +621,12 @@ a.blue:hover {
     clear: both;
     width: 100%;
 }
-@media (max-width: 660px) {
+@media (max-width: 760px) {
     #header {
         padding-bottom: 2rem;
     }
 }
-@media (max-width: 660px) {
+@media (max-width: 760px) {
     #logo {
         width: 100%;
         display: inline-block;
@@ -636,7 +636,7 @@ a.blue:hover {
     width: 80px;
     float: left;
 }
-@media (max-width: 660px) {
+@media (max-width: 760px) {
     #logo #riot-logo {
         float: none;
     }
@@ -667,7 +667,7 @@ a.blue:hover {
     text-decoration: none;
     cursor: default;
 }
-@media (max-width: 740px) {
+@media (max-width: 760px) {
     #nav {
         margin: 0.5rem 0 1.5rem;
         line-height: 2.4;
@@ -697,7 +697,7 @@ a#current-lang:hover {
     background-color: #eee;
     text-decoration: none;
 }
-@media (max-width: 660px) {
+@media (max-width: 760px) {
     a#current-lang {
         position: static;
         margin-left: -4px;
@@ -707,7 +707,7 @@ a#current-lang:hover {
     float: right;
     padding: 4px 0;
 }
-@media (max-width: 660px) {
+@media (max-width: 760px) {
     #search {
         float: left;
     }
@@ -766,7 +766,7 @@ a#current-lang:hover {
     border-radius: 3px;
     margin-right: 0.5em;
 }
-@media (max-width: 660px) {
+@media (max-width: 760px) {
     #langs {
         width: 100%;
         font-size: 90%;
@@ -791,7 +791,7 @@ a#current-lang:hover {
     width: 6em;
     float: left;
 }
-@media (max-width: 660px) {
+@media (max-width: 760px) {
     #footer nav {
         margin-top: 1.2rem;
         width: 100%;
@@ -805,7 +805,7 @@ a#current-lang:hover {
 #footer nav.extra a {
     text-align: right;
 }
-@media (max-width: 660px) {
+@media (max-width: 760px) {
     #footer nav.extra {
         float: left;
         width: auto;

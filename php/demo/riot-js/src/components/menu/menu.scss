@@ -30,7 +30,7 @@
     }
   }
 
-  @include max(740) {
+  @include max(760) {
     height: 62px;
     padding: 0;
     transition-property: height, background-color;

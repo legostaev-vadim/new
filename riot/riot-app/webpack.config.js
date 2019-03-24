@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
 const CopyPlugin = require('copy-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 
 module.exports = (env, options) => {
@@ -56,8 +56,8 @@ module.exports = (env, options) => {
           test: /\.scss$/,
           use: [
             options.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
-            "css-loader",
-            "sass-loader"
+            'css-loader',
+            'sass-loader'
           ]
         }
       ]
@@ -71,7 +71,7 @@ module.exports = (env, options) => {
         }
       ]),
       new MiniCssExtractPlugin({
-        filename: "build.css"
+        filename: 'build.css'
       })
     ]
   }

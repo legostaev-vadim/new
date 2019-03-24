@@ -1,19 +1,20 @@
 <div id="tabs">
   <?php get_menu($tabsGuide); ?>
+  <a target="_blank" href="https://riot.js.org/guide/migration-from-riot2/">Миграция из riot 2</a>
 </div>
 
-<h1>Compiler</h1>
+<h1>Компилятор</h1>
 
-<div id="toc"><p><a href="#in-browser-compilation">In-browser compilation</a></p><p><a href="#pre-compilation">Pre-compilation</a></p><p><a href="#pre-processors">Pre-processors</a></p></div>
+<div id="toc"><p><a href="#in-browser-compilation">Компиляция в браузере</a></p><p><a href="#pre-compilation">Предварительная компиляция</a></p><p><a href="#pre-processors">Препроцессоры</a></p></div>
 
-<h2 id="in-browser-compilation">In-browser compilation</h2>
+<h2 id="in-browser-compilation">Компиляция в браузере</h2>
 
-<p>Custom tags need to be transformed to JavaScript before the browser can execute them. You can do this by setting a <code class="highlighter-rouge">type="riot/tag"</code> attribute for your script tags. For example:</p>
+<p>Пользовательские теги должны быть преобразованы в JavaScript, прежде чем браузер сможет их выполнять. Вы можете сделать это, установив атрибут <code class="highlighter-rouge">type="riot/tag"</code> для подключаемых на странице скриптов. Например:</p>
 
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- mount point --&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- точка монтирования --&gt;</span>
 <span class="nt">&lt;my-tag&gt;&lt;/my-tag&gt;</span>
 
-<span class="c">&lt;!-- inlined tag definition --&gt;</span>
+<span class="c">&lt;!-- определение встроенного тега --&gt;</span>
 <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"riot/tag"</span><span class="nt">&gt;</span>
   <span class="o">&lt;</span><span class="nx">my</span><span class="o">-</span><span class="nx">tag</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="nx">Tag</span> <span class="nx">layout</span><span class="o">&lt;</span><span class="sr">/h3</span><span class="err">&gt;
@@ -21,147 +22,147 @@
   <span class="o">&lt;</span><span class="sr">/my-tag</span><span class="err">&gt;
 </span><span class="nt">&lt;/script&gt;</span>
 
-<span class="c">&lt;!-- &lt;inner-tag/&gt; is specified on external file --&gt;</span>
+<span class="c">&lt;!-- &lt;inner-tag/&gt; тег из внешнего файла --&gt;</span>
 <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"path/to/javascript/with-tags.tag"</span> <span class="na">type=</span><span class="s">"riot/tag"</span><span class="nt">&gt;&lt;/script&gt;</span>
 
-<span class="c">&lt;!-- include riot.js and the compiler --&gt;</span>
+<span class="c">&lt;!-- подключение riot.js с компилятором --&gt;</span>
 <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/riot@3.13/riot+compiler.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 
 
-<span class="c">&lt;!-- mount normally --&gt;</span>
+<span class="c">&lt;!-- монтирование --&gt;</span>
 <span class="nt">&lt;script&gt;</span>
 <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
 <span class="nt">&lt;/script&gt;</span>
 </code></pre></div></div>
 
-<p>The script tag and the external file can contain multiple tags definitions combined with regular javascript.</p>
+<p>Тег script и подключаемые файлы могут содержать множество пользовательских тегов, которые могут сочетаться с обычным JavaScript.</p>
 
-<p>Riot automatically takes inlined and external tags and compiles them before the tags are rendered with the <code class="highlighter-rouge">riot.mount()</code> call.</p>
+<p>Riot автоматически компилирует пользовательские теги, прежде чем они будут использованы при вызове <code class="highlighter-rouge">riot.mount ()</code>.</p>
 
-<p>You might prefer using <code class="highlighter-rouge">data-src</code> instead of <code class="highlighter-rouge">src</code> on your <code class="highlighter-rouge">&lt;script&gt;</code> tags stop your browser prefetching automatically any riot script tag in order to avoid to load the same resources twice. Riot will automatically fetch and compile your tags via ajax.</p>
+<p>Вы можете предпочесть использовать <code class="highlighter-rouge">data-src</code> вместо <code class="highlighter-rouge">src</code> в своих <code class="highlighter-rouge">&lt;script&gt;</code> тегах, чтобы браузер автоматически не загружал скрипты, ссылающиеся на теги riot. Это позволит избежать двойной загрузки одних и тех же ресурсов. Riot автоматически получит и скомпилирует ваши теги через ajax.</p>
 
-<h3 id="access-tag-instances">Access tag instances</h3>
-<p>If you are loading tags with <code class="highlighter-rouge">script src</code> and want to get access to the mounted tags you need to wrap the call with <code class="highlighter-rouge">riot.compile</code> as follows:</p>
+<h3 id="access-tag-instances">Доступ к объектам тегов</h3>
+<p>Если вы загружаете теги с помощью <code class="highlighter-rouge">script src</code> и хотите получить доступ к подключаемым тегам, вам нужно обернуть вызов <code class="highlighter-rouge">riot.compile</code> следующим образом:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span>
 <span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// here tags are compiled and riot.mount works synchronously</span>
+  <span class="c1">// здесь теги компилируются и riot.mount работает синхронно</span>
   <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
 <span class="p">})</span>
 <span class="nt">&lt;/script&gt;</span>
 </code></pre></div></div>
 
-<h3 id="compiler-performance">Compiler performance</h3>
+<h3 id="compiler-performance">Производительность компилятора</h3>
 
-<p>Compilation phase is basically free and takes no time at all. Compiling a <a href="https://github.com/riot/riot/blob/master/test/tag/timer.tag">timer tag</a> 30 times takes 2 milliseconds on a regular laptop. If you have a crazy page with 1000 different timer-sized tags, the compilation takes around 35ms.</p>
+<p>Фаза компиляции не занимает много времени. Компиляция  <a href="https://github.com/riot/riot/blob/master/test/tag/timer.tag">тега таймера</a> 30 раз, занимает 2 миллисекунды на обычном ноутбуке. Если у вас есть сумасшедшая страница с 1000 различными тегами размера таймера, компиляция составит около 35 мс.</p>
 
-<p>The compiler weights only 3.2KB (1.7K gzipped) so you can safely perform client side compilation on production without download or performance or issues.</p>
+<p>Вес компилятора всего лишь 3.2KB (1.7K в сжатом виде), так что вы можете безопасно выполнять на стороне клиента компиляцию на продакшене, без всяких проблем.</p>
 
-<p>Read the <a href="/api/compiler/">compiler API</a> for more details.</p>
+<p>Читайте <a href="api-compiler">API компилятора</a> для более подробной информации.</p>
 
-<h3 id="demos">Demos</h3>
+<h3 id="demos">Демо</h3>
 
 <ul>
-  <li><a href="/examples/todo-app/">In-browser compiled</a></li>
-  <li><a href="/examples/todo-app-precompiled/">Pre-compiled</a></li>
-  <li><a href="https://github.com/riot/examples/tree/gh-pages/todo-app">Source code</a></li>
-  <li>Download the demo as a <a href="https://github.com/riot/examples/archive/gh-pages.zip">zip file</a>
+  <li><a href="https://riot.js.org/examples/todo-app/">Компиляция в браузере</a></li>
+  <li><a href="https://riot.js.org/examples/todo-app-precompiled/">Прекомпиляция</a></li>
+  <li><a href="https://github.com/riot/examples/tree/gh-pages/todo-app">Исходный код</a></li>
+  <li>Скачайте <a href="https://github.com/riot/examples/archive/gh-pages.zip">zip-файл</a>
 </li>
 </ul>
 
-<h2 id="pre-compilation">Pre-compilation</h2>
+<h2 id="pre-compilation">Предварительная компиляция</h2>
 
-<p>Pre- compilation on the server gives you following benefits:</p>
+<p>Прекомпиляция на сервере дает вам следующие преимущества:</p>
 
 <ul>
-  <li>Ability to compile tags with your <a href="#pre-processors">favorite pre-processor</a>.</li>
-  <li>Small performance benefit. No need to load and execute the compiler on browser.</li>
-  <li>Universal (isomorphic) apps and the ability to pre- render tags on the server.</li>
+  <li>Возможность компилировать теги с вашим <a href="#pre-processors">любимым препроцессором</a>.</li>
+  <li>Небольшой выигрыш в производительности. Избавляет от необходимости загружать и запускать компилятор в браузере.</li>
+  <li>Универсальные (изоморфные) приложения и возможность рендерить теги на стороне сервера.</li>
 </ul>
 
-<p>Pre-compilation happens with a <code class="highlighter-rouge">riot</code> executable, which can be installed with NPM as follows:</p>
+<p>Прекомпиляция производится с помощью исполняемой программы <code class="highlighter-rouge">riot</code> , которую можно установить через NPM следующим образом:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install riot <span class="nt">-g</span>
 </code></pre></div></div>
 
-<p>Type <code class="highlighter-rouge">riot --help</code> and make sure it works. <a href="http://nodejs.org/">node.js</a> is required on your machine.</p>
+<p>После установки введите <code class="highlighter-rouge">riot --help</code> чтобы убедиться, что установка прошла успешно. Разумеется, для этого нужен установленный <a href="http://nodejs.org/">node.js</a>.</p>
 
-<p>With pre-compilation your HTML is something like this:</p>
+<p>С предварительной компиляцией, ваш HTML будет выглядеть примерно так:</p>
 
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- mount point --&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- точка монтирования --&gt;</span>
 <span class="nt">&lt;my-tag&gt;&lt;/my-tag&gt;</span>
 
-<span class="c">&lt;!-- include riot.js only --&gt;</span>
+<span class="c">&lt;!-- подключение только riot.js --&gt;</span>
 <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/riot@3.13/riot.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 
-<span class="c">&lt;!-- include pre-compiled tags (normal javascript) --&gt;</span>
+<span class="c">&lt;!-- подключить предварительно скомпилированные теги (обычный javascript) --&gt;</span>
 <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"path/to/javascript/with-tags.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 
-<span class="c">&lt;!-- mount the same way --&gt;</span>
+<span class="c">&lt;!-- монтирование --&gt;</span>
 <span class="nt">&lt;script&gt;</span>
 <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
 <span class="nt">&lt;/script&gt;</span>
 </code></pre></div></div>
 
-<h3 id="using">Using</h3>
+<h3 id="using">Использование</h3>
 
-<p>Here is how <code class="highlighter-rouge">riot</code> command works:</p>
+<p>Команда <code class="highlighter-rouge">riot</code> работает так:</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># compile a file to current folder</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># компилировать файл в текущую папку</span>
 riot some.tag
 
-<span class="c"># compile file to target folder</span>
+<span class="c"># компилировать файл в целевую папку</span>
 riot some.tag some_folder
 
-<span class="c"># compile file to target path</span>
+<span class="c"># компилировать файл в целевую папку с указанием пути</span>
 riot some.tag some_folder/some.js
 
-<span class="c"># compile all files from source folder to target folder</span>
+<span class="c"># компилировать все файлы из исходной папки в целевую папку</span>
 riot some/folder path/to/dist
 
-<span class="c"># compile all files from source folder to a single concatenated file</span>
+<span class="c"># омпилировать все файлы из исходной папки и объединить их в один файл</span>
 riot some/folder all-my-tags.js
 
 </code></pre></div></div>
 
-<p>The source file can contain one or more custom tags and there can be regular JavaScript mixed together with custom tags. The compiler will only transform the custom tags and does not touch other parts of the source file.</p>
+<p>Исходный файл может содержать один или несколько пользовательских тегов, и может быть обычным JavaScript, который можно смешивать с пользовательскими тегами. Компилятор преобразует только пользовательские теги и не затрагивает другие части исходного файла.</p>
 
-<p>For more information, type: <code class="highlighter-rouge">riot --help</code></p>
+<p>Для получения дополнительной информации введите: <code class="highlighter-rouge">riot --help</code></p>
 
-<h3 id="watch-mode">Watch mode</h3>
+<h3 id="watch-mode">Режим просмотра</h3>
 
-<p>You can watch directories and automatically transform files when they are changed.</p>
+<p>Вы можете следить за изменениями в файлах и автоматически их компилировать при изменении.</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># watch for</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># следить за</span>
 riot <span class="nt">-w</span> src dist
 </code></pre></div></div>
 
-<h3 id="custom-extension">Custom extension</h3>
+<h3 id="custom-extension">Любое расширение</h3>
 
-<p>You’re free to use any file extension for your tags (instead of default <code class="highlighter-rouge">.tag</code>):</p>
+<p>Вы можете использовать любое расширение файла для своих тегов (вместо значения по умолчанию <code class="highlighter-rouge">.tag</code>):</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>riot <span class="nt">--ext</span> html
 </code></pre></div></div>
 
-<h3 id="es6-config-file">ES6 Config file</h3>
+<h3 id="es6-config-file">Конфигурационный файл ES6</h3>
 
-<p>You can use a config file to store and configure easily all your riot-cli options and create your custom parsers</p>
+<p>Вы можете использовать конфигурационный файл, чтобы сохранять все ваши настройки riot-cli и создавать свои собственные парсеры</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>riot <span class="nt">--config</span> riot.config
 </code></pre></div></div>
 
-<p>The riot <code class="highlighter-rouge">riot.config.js</code> file:</p>
+<p>Riot <code class="highlighter-rouge">riot.config.js</code> файл:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
   <span class="na">from</span><span class="p">:</span> <span class="s1">'tags/src'</span><span class="p">,</span>
   <span class="na">to</span><span class="p">:</span> <span class="s1">'tags/dist'</span><span class="p">,</span>
-  <span class="c1">// files extension</span>
+  <span class="c1">// расширение файла</span>
   <span class="na">ext</span><span class="p">:</span> <span class="s1">'foo'</span><span class="p">,</span>
-  <span class="c1">// html parser</span>
+  <span class="c1">// html парсер</span>
   <span class="na">template</span><span class="p">:</span> <span class="s1">'foo'</span><span class="p">,</span>
-  <span class="c1">// js parser</span>
+  <span class="c1">// js парсер</span>
   <span class="na">type</span><span class="p">:</span> <span class="s1">'baz'</span><span class="p">,</span>
-  <span class="c1">// css parser</span>
+  <span class="c1">// css парсер</span>
   <span class="na">style</span><span class="p">:</span> <span class="s1">'bar'</span><span class="p">,</span>
   <span class="na">parsers</span><span class="p">:</span> <span class="p">{</span>
     <span class="na">html</span><span class="p">:</span> <span class="p">{</span>
@@ -174,8 +175,8 @@ riot <span class="nt">-w</span> src dist
       <span class="na">baz</span><span class="p">:</span> <span class="p">(</span><span class="nx">js</span><span class="p">,</span> <span class="nx">opts</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'baz'</span><span class="p">).</span><span class="nx">compile</span><span class="p">(</span><span class="nx">js</span><span class="p">),</span>
     <span class="p">},</span>
   <span class="p">},</span>
-  <span class="c1">// special options that may be used to extend</span>
-  <span class="c1">// the default riot parsers options</span>
+  <span class="c1">// специальные параметры, которые могут быть использованы для расширения парсеров</span>
+  <span class="c1">// параметры парсеров riot по умолчанию </span>
   <span class="na">parserOptions</span><span class="p">:</span> <span class="p">{</span>
     <span class="na">js</span><span class="p">:</span> <span class="p">{},</span>
     <span class="na">template</span><span class="p">:</span> <span class="p">{},</span>
@@ -184,28 +185,29 @@ riot <span class="nt">-w</span> src dist
 <span class="p">};</span>
 </code></pre></div></div>
 
-<h3 id="node-module">Node module</h3>
+<h3 id="node-module">Node модуль</h3>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">riot</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'riot'</span><span class="p">)</span>
 
 <span class="kd">var</span> <span class="nx">js</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">source_string</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>The compile function takes a string and returns a string.</p>
+<p>Функция compile принимает строку и возвращает другую строку.</p>
 
-<h3 id="plug-into-your-workflow">Plug into your workflow</h3>
+<h3 id="plug-into-your-workflow">Плагины для популярных сборщиков</h3>
 
 <ul>
-  <li><a href="https://github.com/e-jigsaw/gulp-riot">Gulp</a></li>
+  <li><a href="https://www.npmjs.com/package/riot-tag-new-loader">Webpack</a></li>
+  <li><a href="https://www.npmjs.com/package/gulp-riot-tag">Gulp</a></li>
   <li><a href="https://github.com/ariesjia/grunt-riot">Grunt</a></li>
   <li><a href="https://github.com/jhthorsen/riotify">Browserify</a></li>
 </ul>
 
-<h2 id="pre-processors">Pre-processors</h2>
+<h2 id="pre-processors">Препроцессоры</h2>
 
-<p>This is the main fruit of pre- compilation. You can use your favourite pre- processor to create custom tags. Both HTML and JavaScript processor can be customized.</p>
+<p>Это основной повод использовать прекомпиляцию. Вы можете использовать ваш любимый препроцессор для создания пользовательских тегов. HTML и JavaScript процессор можно настраивать.</p>
 
-<p>The source language is specified with <code class="highlighter-rouge">--type</code> or <code class="highlighter-rouge">-t</code> argument on the command line or you can define the language on the script tag as follows:</p>
+<p>Исходный язык задается через аргумент <code class="highlighter-rouge">--type</code> или <code class="highlighter-rouge">-t</code> в командной строке, либо вы можете определить язык в теге script следующим образом:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
   <span class="nt">&lt;h3&gt;</span>My layout<span class="nt">&lt;/h3&gt;</span>
@@ -218,11 +220,11 @@ riot <span class="nt">-w</span> src dist
 
 <h3 id="coffeescript">CoffeeScript</h3>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># use coffeescript pre-processor</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># использование препроцессора coffeescript</span>
 riot <span class="nt">--type</span> coffee <span class="nt">--expr</span> source.tag
 </code></pre></div></div>
 
-<p>The <code class="highlighter-rouge">--expr</code> argument specifies that all the expressions are also processed as well. You can also use “cs” as an alias to “coffee”. Here is a sample tag written in CoffeeScript:</p>
+<p>Аргумент <code class="highlighter-rouge">--expr</code> указывает, что все выражения также обрабатываются. Вы также можете использовать “cs” в качестве псевдонима “coffee”. Вот пример тэга, написанного на CoffeeScript:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">kids</span><span class="o">&gt;</span>
 
@@ -238,16 +240,16 @@ riot <span class="nt">--type</span> coffee <span class="nt">--expr</span> source
 <span class="o">&lt;</span><span class="sr">/kids</span><span class="err">&gt;
 </span></code></pre></div></div>
 
-<p>Note that <code class="highlighter-rouge">each</code> attribute is CoffeeScript as well. CoffeeScript must be present on your machine:</p>
+<p>Обратите внимание, что <code class="highlighter-rouge">each</code> атрибут также является CoffeeScript. CoffeeScript должен быть установлен на вашем компьютере:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install coffee-script <span class="nt">-g</span>
 </code></pre></div></div>
 
 <h3 id="ecmascript-6">EcmaScript 6</h3>
 
-<p>ECMAScript 6 (babeljs) is enabled with a type “es6”:</p>
+<p>Для ECMAScript 6 (babeljs) используется тип тега “es6”:</p>
 
-<p>A sample tag written in ES6:</p>
+<p>Пример тега, написанного на ES6:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;test&gt;</span>
 
@@ -259,42 +261,42 @@ riot <span class="nt">--type</span> coffee <span class="nt">--expr</span> source
 <span class="nt">&lt;/test&gt;</span>
 </code></pre></div></div>
 
-<p>Before using the es6 compiler you should properly configure your project following the steps below:</p>
+<p>Перед использованием компилятора es6, вы должны правильно настроить свой проект, выполнив следующие действия:</p>
 
 <ol>
-  <li>install our <a href="https://github.com/riot/babel-preset-es2015-riot">babel-preset-es2015-riot</a><br> <code class="highlighter-rouge">npm install babel-preset-es2015-riot --save-dev</code>
+  <li>установите <a href="https://github.com/riot/babel-preset-es2015-riot">babel-preset-es2015-riot</a><br> <code class="highlighter-rouge">npm install babel-preset-es2015-riot --save-dev</code>
 </li>
-  <li>install <code class="highlighter-rouge">babel-core</code> as well <br> <code class="highlighter-rouge">npm install babel-core -g</code>
+  <li>установите также <code class="highlighter-rouge">babel-core</code><br> <code class="highlighter-rouge">npm install babel-core -g</code>
 </li>
-  <li>create a <code class="highlighter-rouge">.babelrc</code> file containing the preset id<br> <code class="highlighter-rouge">{ "presets": ["es2015-riot"] }</code>
+  <li>создайте <code class="highlighter-rouge">.babelrc</code> файл, содержащий необходимый пресет<br> <code class="highlighter-rouge">{ "presets": ["es2015-riot"] }</code>
 </li>
 </ol>
 
-<p>Once you have configured your environment you can compile your tags:</p>
+<p>После настройки среды, вы можете скомпилировать теги:</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># use ES6 pre-processor</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># использовать препроцессор ES6</span>
 riot <span class="nt">--type</span> es6 source.tag
 </code></pre></div></div>
 
-<p><span class="tag red">note</span> Babel generates a lot of extra code in your output so you may consider compiling your tags in 2 separate steps using the <code class="highlighter-rouge">babel-plugin-external-helpers-2</code> as well for example:</p>
+<p><span class="tag red">примечание</span> Babel генерирует много лишнего кода в вашем выводе, поэтому вы можете рассмотреть возможность компиляции ваших тегов в 2 отдельных шага,  <code class="highlighter-rouge">babel-plugin-external-helpers-2</code> например, с помощью:</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># compile your tags using pure es6 code</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># скомпилируйте ваши теги, используя чистый код es6</span>
 riot tags/folder dist/es6.tags.js
-<span class="c"># convert your es6 to valid es5 code</span>
+<span class="c"># конвертируйте ваш es6 в валидный код es5</span>
 babel es6.tags.js <span class="nt">--out-file</span> tags.js
 </code></pre></div></div>
 
-<p>Here is a <a href="https://github.com/GianlucaGuarini/riot-preset-babel-test">simple example</a> on using Babel 6 with Riot.</p>
+<p>Вот <a href="https://github.com/GianlucaGuarini/riot-preset-babel-test">простой пример</a> использования Babel 6 с Riot.</p>
 
 <h3 id="typescript">TypeScript</h3>
 
-<p>TypeScript adds optional static typing to JavaScript. Use <code class="highlighter-rouge">--type typescript</code> to enable it:</p>
+<p>TypeScript добавляет необязательную статическую типизацию в JavaScript. Используйте <code class="highlighter-rouge">--type typescript</code> для включения:</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># use TypeScript pre-processor</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># использование препроцессора TypeScript</span>
 riot <span class="nt">--type</span> typescript source.tag
 </code></pre></div></div>
 
-<p>A sample tag written in TypeScript:</p>
+<p>Пример тега, написанного на TypeScript:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;test&gt;</span>
 
@@ -306,22 +308,22 @@ riot <span class="nt">--type</span> typescript source.tag
 <span class="nt">&lt;/test&gt;</span>
 </code></pre></div></div>
 
-<p><a href="https://github.com/teppeis/typescript-simple">typescript-simple</a> is used for the transformation:</p>
+<p><a href="https://github.com/teppeis/typescript-simple">typescript-simple</a> используется для трансформации:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install typescript-simple
 </code></pre></div></div>
 
 <h3 id="livescript">LiveScript</h3>
 
-<p>Check out <a href="http://livescript.net">LiveScript</a> for language features and documentation.</p>
+<p>Посмотрите особенности языка <a href="http://livescript.net">LiveScript</a> в документации.</p>
 
-<p>The source language is specified with <code class="highlighter-rouge">--type</code> or <code class="highlighter-rouge">-t</code> argument:</p>
+<p>Исходный язык указывается с помощью аргумента <code class="highlighter-rouge">--type</code> или <code class="highlighter-rouge">-t</code>:</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># use livescript pre-processor</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># использование препроцессора livescript</span>
 riot <span class="nt">--type</span> livescript <span class="nt">--expr</span> source.tag
 </code></pre></div></div>
 
-<p>The <code class="highlighter-rouge">--expr</code> argument specifies that all the expressions are also processed as well. You can also use “ls” as an alias to “livescript”. Here is a sample tag written in LiveScript:</p>
+<p>Аргумент <code class="highlighter-rouge">--expr</code> указывает, что все выражения также обрабатываются. Вы также можете использовать “ls” в качестве псевдонима “livescript”. Вот пример тэга, написанного на LiveScript:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;kids&gt;</span>
 
@@ -336,20 +338,20 @@ this.kids =
 <span class="nt">&lt;/kids&gt;</span>
 </code></pre></div></div>
 
-<p>Note that <code class="highlighter-rouge">each</code> attribute is LiveScript as well. LiveScript must be present on your machine:</p>
+<p>Обратите внимание, что <code class="highlighter-rouge">each</code> атрибут также является LiveScript. LiveScript должен быть установлен на вашем компьютере:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install LiveScript <span class="nt">-g</span>
 </code></pre></div></div>
 
 <h3 id="pug-jade">Pug (Jade)</h3>
 
-<p>HTML layout can be processed with <code class="highlighter-rouge">template</code> configuration option. Here’s an example with pug – a “clean, whitespace sensitive syntax for writing html”</p>
+<p>HTML-макет может быть обработан с указанием опции<code class="highlighter-rouge">template</code>. Вот пример с pug – “чистый, чувствительный к пробелам синтаксис для написания HTML”</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># use Pug HTML pre-processor</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># использовать HTML препроцессор Pug</span>
 riot <span class="nt">--template</span> pug source.tag
 </code></pre></div></div>
 
-<p>A Pug sample:</p>
+<p>Пример Pug:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>todo
   h3 Todo
@@ -386,32 +388,32 @@ riot <span class="nt">--template</span> pug source.tag
     }
 </code></pre></div></div>
 
-<p>As you notice, you can define the script type on the template as well. <a href="https://github.com/pugjs/pug">pug</a> is used for the transformation:</p>
+<p>Вы также можете определить тип скрипта в шаблоне. <a href="https://pugjs.org/">Pug</a> должен быть установлен на вашем компьютере:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install pug <span class="nt">-g</span>
 </code></pre></div></div>
 
-<h3 id="any-language">Any language</h3>
+<h3 id="any-language">Любой язык</h3>
 
-<p>You can configure your favourite language by making a custom parser function. For example:</p>
+<p>Вы можете использовать любой язык для компиляции пользовательских тегов. Для этого вам нужно создать специальную функцию. Например:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">myParser</span><span class="p">(</span><span class="nx">js</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">doYourThing</span><span class="p">(</span><span class="nx">js</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>This parser is then passed for the compiler with <code class="highlighter-rouge">parser</code> option:</p>
+<p>И передать её как параметр <code class="highlighter-rouge">parser</code> в <code class="highlighter-rouge">riot.compile</code></p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">riot</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'riot'</span><span class="p">)</span>
 
 <span class="kd">var</span> <span class="nx">js</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">source_string</span><span class="p">,</span> <span class="p">{</span> <span class="na">parser</span><span class="p">:</span> <span class="nx">myParser</span><span class="p">,</span> <span class="na">expr</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
 </code></pre></div></div>
 
-<p>Set <code class="highlighter-rouge">expr: true</code> if you want the expressions to be parsed as well.</p>
+<p>Установите <code class="highlighter-rouge">expr: true</code> если вы хотите, чтобы выражения также обрабатывались.</p>
 
-<h4 id="riotparsers-on-the-browser-and-the-server">riot.parsers on the browser and the server</h4>
+<h4 id="riotparsers-on-the-browser-and-the-server">riot.parsers в браузере и на сервере</h4>
 
-<p>You can also create your custom riot parsers adding them to the <code class="highlighter-rouge">riot.parsers</code> property and share them across the browsers and server. For example</p>
+<p>Вы также можете создавать свои собственные парсеры для Riot, добавляя их в <code class="highlighter-rouge">riot.parsers</code>. Например:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">parsers</span><span class="p">.</span><span class="nx">js</span><span class="p">.</span><span class="nx">myJsParser</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">js</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">doYourThing</span><span class="p">(</span><span class="nx">js</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
@@ -422,7 +424,7 @@ riot <span class="nt">--template</span> pug source.tag
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>Once you have created your own <code class="highlighter-rouge">riot.parsers</code> you will be able to compile your tags using them in the following way</p>
+<p>Создав парсер и добавив его в <code class="highlighter-rouge">riot.parsers</code>, вы можете использовать его следующим образом:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;custom-parsers&gt;</span>
   <span class="nt">&lt;p&gt;</span>hi<span class="nt">&lt;/p&gt;</span>
@@ -435,25 +437,25 @@ riot <span class="nt">--template</span> pug source.tag
 <span class="nt">&lt;/custom-parsers&gt;</span>
 </code></pre></div></div>
 
-<h3 id="no-transformation">No transformation</h3>
+<h3 id="no-transformation">Без трансформации</h3>
 
-<p>By default Riot uses a build-in transpiler that simply enables shorter ES6- stylish method signatures. You can disable all transformation with <code class="highlighter-rouge">--type none</code>:</p>
+<p>По умолчанию, Riot использует встроенный преобразователь, что позволяет использовать некоторые ES6-фичи. Вы можете отключить все преобразования с помощью <code class="highlighter-rouge">--type none</code>:</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># no pre-processor</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># без преобразований</span>
 riot <span class="nt">--type</span> none <span class="nt">--expr</span> source.tag
 </code></pre></div></div>
 
-<h3 id="amd-and-commonjs">AMD and CommonJS</h3>
+<h3 id="amd-and-commonjs">AMD и CommonJS</h3>
 
-<p>Riot tags can be compiled with <code class="highlighter-rouge">AMD</code> (Asynchronous Module Definition) and <code class="highlighter-rouge">CommonJS</code> support. This configuration option is necessary if Riot is used with an AMD loader such as <a href="http://requirejs.org/">RequireJS</a> or a CommonJS loader such as <a href="http://browserify.org/">Browserify</a>.</p>
+<p>Теги Riot могут быть скомпилированы с помощью <code class="highlighter-rouge">AMD</code> и <code class="highlighter-rouge">CommonJS</code>. Эта может быть необходимо, если Riot используется с загрузчиком AMD, таким как <a href="http://requirejs.org/">RequireJS</a> или загрузчиком CommonJS, например, <a href="http://browserify.org/">Browserify</a>.</p>
 
-<p>The Riot library must be defined / required as <code class="highlighter-rouge">riot</code> in both cases.</p>
+<p>Библиотека Riot должна быть подключена как <code class="highlighter-rouge">riot</code>, в обоих случаях.</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># enable AMD and CommonJS</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># включение AMD и CommonJS</span>
 riot <span class="nt">-m</span>
 </code></pre></div></div>
 
-<p>Example AMD:</p>
+<p>Пример AMD:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="nx">define</span><span class="p">([</span><span class="s1">'riot'</span><span class="p">,</span> <span class="s1">'tags'</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">riot</span><span class="p">)</span> <span class="p">{</span>
@@ -461,7 +463,7 @@ riot <span class="nt">-m</span>
 <span class="p">})</span>
 </code></pre></div></div>
 
-<p>Example CommonJS:</p>
+<p>Пример CommonJS:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">riot</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'riot'</span><span class="p">)</span>
 <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tags'</span><span class="p">)</span>
@@ -469,4 +471,4 @@ riot <span class="nt">-m</span>
 <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>If you make something great, please <a href="https://github.com/riot/made-with-riot">share it</a> !</p>
+<p>Если вы сделали что-то интересное, пожалуйста, <a href="https://github.com/riot/made-with-riot">поделитесь этим</a>!</p>

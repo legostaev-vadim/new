@@ -1,70 +1,71 @@
 <div id="tabs">
   <?php get_menu($tabsGuide); ?>
+  <a target="_blank" href="https://riot.js.org/guide/migration-from-riot2/">Миграция из riot 2</a>
 </div>
 
-<h1>Application design</h1>
+<h1>Структура приложения</h1>
 
-<div id="toc"><p><a href="#tools-not-policy">Tools, not policy</a></p><p><a href="#observable">Observable</a></p><p><a href="#routing">Routing</a></p><p><a href="#modularity">Modularity</a></p></div>
+<div id="toc"><p><a href="#tools-not-policy">Инструменты, а не политика</a></p><p><a href="#observable">Наблюдатель</a></p><p><a href="#routing">Маршрутизация</a></p><p><a href="#modularity">Модульность</a></p></div>
 
-<h2 id="tools-not-policy">Tools, not policy</h2>
+<h2 id="tools-not-policy">Инструменты, а не политика</h2>
 
-<p>Riot comes bundled with custom tags, an event emitter (observable) and an optional router. We believe that these are the fundamental building blocks for client-side applications:</p>
-
-<ol>
-  <li>Custom tags for the user interface,</li>
-  <li>Events for modularity, and</li>
-  <li>Router for URL and the back button.</li>
-</ol>
-
-<p>Riot tries not to enforce strict rules, but rather provide basic tools for you to use creatively. This flexible approach leaves the bigger architectural decisions up to the developer.</p>
-
-<p>We also think that these building blocks should be minimal in terms of file size and API size. Elementary stuff should be simple so there’s minimal cognitive load.</p>
-
-<h2 id="observable">Observable</h2>
-
-<p>Observable is a generic tool to send and receive events. It’s a common pattern to isolate modules without forming a dependency or “coupling”. By using events a large program can be broken into smaller and simpler units. Modules can be added, removed, or modified without affecting the other parts of the application.</p>
-
-<p>A common practice is to split the application into a single core and multiple extensions. The core sends events any time something remarkable happens: a new item is being added, an existing item is being removed, or something is loaded from the server.</p>
-
-<p>By using the observable the extensions can listen to these events and react to them. They extend the core so that the core is not aware of these modules. This is called “loose coupling”.</p>
-
-<p>These extensions can be custom tags (UI components) or non-UI modules.</p>
-
-<p>Once the core and events are carefully designed the team members are enabled to develop the system on their own without disturbing others.</p>
-
-<p><a href="/api/observable/">Observable API</a></p>
-
-<h2 id="routing">Routing</h2>
-
-<p>Router is a generic tool to take care of the URL and the back button. It’s the smallest implementation you can find. It can do the following:</p>
+<p>Riot включает в себя пользовательские теги, слушатель событий и маршрутизатор. Мы считаем, что это основные строительные блоки для клиентских приложений:</p>
 
 <ol>
-  <li>Change the hash part of the URL</li>
-  <li>Notify when the hash changes</li>
-  <li>Study the current hash</li>
+  <li>Пользовательские теги для пользовательского интерфейса,</li>
+  <li>Слушатель событий для модульности, и</li>
+  <li>Маршрутизатор для URL и кнопки возврата.</li>
 </ol>
 
-<p>You can place routing logic everywhere; in custom tags or non-UI modules. Some application frameworks make the router a central element that dispatches work to the other pieces of the application. Some take a milder approach where URL events are like keyboard events, not affecting the overall architecture.</p>
+<p>Riot стремится  не применять строгие правила, а, скорее, обеспечить основные инструменты. Такой подход оставляет архитектурные решения за разработчиком, но избавляет его от рутины.</p>
 
-<p>Every browser application needs routing since there is always an URL in the location bar.</p>
+<p>Мы также считаем, что эти строительные блоки должны быть минимальными с точки зрения размера файла и размера API. Это упрощает их понимание и ускоряет загрузку.</p>
 
-<p><a href="/api/route/">Router API</a></p>
+<h2 id="observable">Наблюдатель</h2>
 
-<h2 id="modularity">Modularity</h2>
+<p>Наблюдатель - это основной инструмент, который отправляет и принимает события. С его помощью реализуется шаблон проектирования, помогающий создать модульность без образования зависимостей и связей. Используя события, большая программа может быть разбита на более мелкие и простые единицы. Модули могут быть добавлены, удалены или изменены, не затрагивая другие части приложения.</p>
 
-<p>Custom tags make the view part of your application. In modular application these tags should not be aware of each other and they should be isolated. Ideally you can use the same tag across projects regardless of the outer HTML layout.</p>
+<p>Обычной практикой является разделение приложения на ядро и несколько расширений. Ядро отправляет события каждый раз, когда происходит что-то значимое: новый элемент добавляется, удаляется существующий элемент или что-то загружается с сервера.</p>
 
-<p>If two tags know about each other they become dependent and a “tight coupling” is introduced. These tags cannot be freely moved around without breaking the system.</p>
+<p>При использовании наблюдателя, расширения могут слушать эти события и реагировать на них. Они относятся к ядру так, что ядро не знает об этих модулях. Это называется “слабая связь”.</p>
 
-<p>To reduce coupling, have the tags listen for events rather than call each other directly. What you need is a publish/subscribe system built with <code class="highlighter-rouge">riot.observable</code> or similar.</p>
+<p>Эти модули могут быть пользовательскими тегами (компоненты пользовательского интерфейса) или модулями без пользовательского интерфейса.</p>
 
-<p>This event emitting system can range from a simple API to a larger architectural choice like Facebook Flux or Redux.</p>
+<p>Если ядро и события тщательно спроектированы, члены команды могут самостоятельно разрабатывать систему, не мешая другим.</p>
 
-<h3 id="example-riot-application-design">Example Riot application design</h3>
+<p><a href="api-observable">API Наблюдателя</a></p>
 
-<p>Here is a very bare bones Riot application structure for user login:</p>
+<h2 id="routing">Маршрутизация</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Login API</span>
+<p>Маршрутизатор - это универсальный инструмент для работы с URL и кнопкой возврата. Это самая маленькая реализация, которую вы можете найти. Он может сделать следующее:</p>
+
+<ol>
+  <li>Изменение хэш-части URL (часть после символа #)</li>
+  <li>Отслеживание изменений хеш-части URL</li>
+  <li>Парсинг текущей хэш-части</li>
+</ol>
+
+<p>Вы можете размещать логику маршрутизации где угодно: в пользовательских тегах или в модулях без пользовательского интерфейса. Некоторые каркасы приложений делают маршрутизатор центральным элементом, который отправляет работу другим частям приложения. Некоторые придерживаются более мягкого подхода, когда события URL похожи на события клавиатуры, не влияя на общую архитектуру.</p>
+
+<p>Практически каждое приложение для браузера нуждается в маршрутизации, так как в строке адреса всегда есть URL.</p>
+
+<p><a href="api-route">API Маршрутизатора</a></p>
+
+<h2 id="modularity">Модульность</h2>
+
+<p>Пользовательские теги являются представлением вашего приложения. В модульном применении эти теги не должны знать друг о друге, они должны быть изолированы. В идеале, вы можете использовать один и тот же тег в разных проектах, независимо от внешнего макета HTML.</p>
+
+<p>Если два тега знают друг о друге, они становятся зависимым и появляется “тесная связь”. Эти теги нельзя свободно перемещать, не нарушая систему.</p>
+
+<p>Чтобы уменьшить связь, теги должны прослушивать события, а не вызывать друг друга напрямую.  Всё, что вам нужно, это система публикации и подписка на события, построенная на <code class="highlighter-rouge">riot.observable</code> или похожей.</p>
+
+<p>Эта система событий может иметь простой API или быть более сложной, такой, как Facebook Flux.</p>
+
+<h3 id="example-riot-application-design">Пример модульного приложения Riot</h3>
+
+<p>Вот очень простая структура приложения Riot для авторизации пользователя:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// API логина</span>
 <span class="kd">var</span> <span class="nx">auth</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">observable</span><span class="p">()</span>
 
 <span class="nx">auth</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
@@ -73,7 +74,7 @@
   <span class="p">})</span>
 <span class="p">}</span>
 </code></pre></div></div>
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- login view --&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- представление логина --&gt;</span>
 <span class="nt">&lt;login&gt;</span>
   <span class="nt">&lt;form</span> <span class="na">onsubmit=</span><span class="s">"{ login }"</span><span class="nt">&gt;</span>
     <span class="nt">&lt;input</span> <span class="na">ref=</span><span class="s">"username"</span> <span class="na">name=</span><span class="s">"username"</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">placeholder=</span><span class="s">"username"</span><span class="nt">&gt;</span>
@@ -94,7 +95,7 @@
 <span class="nt">&lt;/login&gt;</span>
 </code></pre></div></div>
 
-<p>And here we mount the application</p>
+<p>И вот мы монтируем приложение</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
   <span class="nt">&lt;login&gt;&lt;/login&gt;</span>
@@ -102,6 +103,6 @@
 <span class="nt">&lt;/body&gt;</span>
 </code></pre></div></div>
 
-<p>On the above setup the other tags on the system do not need to know about each other since they can simply listen to the “login” event and do what they please.</p>
+<p>На приведенном выше примере, теги в системе не должны знать друг о друге, так как они могут просто слушать событие “login” и делать то, что им заблагорассудится.</p>
 
-<p>Observable is a classic building block for a decoupled (modular) application.</p>
+<p>Наблюдатель - это классический строительный блок для создания модульного приложения.</p>

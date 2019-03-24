@@ -15,6 +15,7 @@ $tabsPlay = [
   'play' => 'Живое демо',
   'play-todo' => 'Todo App',
   'play-timer' => 'Таймер',
+  'play-list' => 'Список',
   'play-router' => 'Маршрутизатор',
   'play-more' => 'Больше'
 ];
@@ -22,8 +23,7 @@ $tabsPlay = [
 $tabsGuide = [
   'guide' => 'Пользовательские теги',
   'guide-compiler' => 'Компилятор',
-  'guide-design' => 'Разработка приложения',
-  'guide-migration' => 'Миграция из riot 2'
+  'guide-design' => 'Разработка приложения'
 ];
 
 $tabsApi = [

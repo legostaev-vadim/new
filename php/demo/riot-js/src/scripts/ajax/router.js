@@ -16,7 +16,7 @@ $(function() {
   const error = '404'
   const $tabs = {}
   let page = $main.attr('data-page')
-  let oldPage = location.pathname
+  let prevPage = location.pathname
   let $currentTabs
   let tabsName
   let indent
@@ -44,17 +44,24 @@ $(function() {
 
   $(window).trigger('scroll.button-up')
 
+  $main.on('click', '#toc a', function(e) {
+    if(location.hash === $(this).attr('href')) {
+      $html.scrollTop($main.find($(this).attr('href')).offset().top - 100)
+    }
+  })
+
 
   route(function(path, anchor) {
 
-    if(oldPage === location.pathname && anchor) {
+    if(prevPage === location.pathname && anchor) {
       $html.scrollTop($main.find(location.hash).offset().top - 100)
       return
     }
-    else $buttonUp.removeClass('button-up--show')
-
+    
     $menu.removeClass('open')
-    oldPage = location.pathname
+    $buttonUp.removeClass('button-up--show')
+
+    prevPage = location.pathname
     tabsName = false
 
     if (!path) page = 'index'

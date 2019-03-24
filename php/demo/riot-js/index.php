@@ -45,6 +45,7 @@
         foreach ($value as $key => $tabs) {
           echo "<a href='$key'>$tabs</a>";
         }
+        if($key === 'guide-design') echo '<a target="_blank" href="https://riot.js.org/guide/migration-from-riot2/">Миграция из riot 2</a>';
         if($key === 'api-route') echo '<a target="_blank" href="https://riot.js.org/api/misc/">Разное</a>';
       echo '</template>';
     }
