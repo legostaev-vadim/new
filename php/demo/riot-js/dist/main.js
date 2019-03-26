@@ -123,12 +123,11 @@ $(function() {
 
   $(window).trigger('scroll.button-up')
 
-  $main.on('click', '#toc a', function(e) {
+  $main.on('click', 'a[href^="#"]', function(e) {
     if(location.hash === $(this).attr('href')) {
       $html.scrollTop($main.find($(this).attr('href')).offset().top - 100)
     }
   })
-
 
   route(function(path, anchor) {
 
@@ -154,7 +153,7 @@ $(function() {
       tabsName = path.slice(0, path.indexOf('-'))
       $currentTabs = $tabs[tabsName]
     }
-    else if($items.is(`[href="${path}"]`)) page = path
+    else if($items.is(`[href="/${path}"]`)) page = path
     else page = error
 
     $main.fadeTo(duration, 0, function() {
@@ -190,7 +189,7 @@ $(function() {
             $(this).addClass('current')
             $title.text(`${$(this).text()} · ${siteName}`)
             $items.each(function() {
-              if($(this).attr('href') === tabsName) {
+              if($(this).attr('href') === `/${tabsName}`) {
                 $(this).addClass('current')
                 return false
               }

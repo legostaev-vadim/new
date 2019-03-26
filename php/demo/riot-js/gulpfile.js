@@ -104,6 +104,7 @@ function styles() {
     // 'src/libs/animate.min.css',
     'src/styles/fonts/**/*.{scss,css}',
     'src/styles/base/**/*.{scss,css}',
+    'src/styles/code/**/*.{scss,css}',
     'src/styles/index.scss',
     'src/components/**/*.scss',
     'src/styles/layouts/**/*.scss'

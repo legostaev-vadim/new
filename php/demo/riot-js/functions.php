@@ -10,9 +10,10 @@ function get_menu($list) {
   else $href = $_GET['id'];
 
   if($list === $menu) {
-    if(strpos($href, 'play-') === 0) $href = 'play';
-    elseif(strpos($href, 'guide-') === 0) $href = 'guide';
-    elseif(strpos($href, 'api-') === 0) $href = 'api';
+    if(strpos($href, 'play-') === 0) $href = '/play';
+    elseif(strpos($href, 'guide-') === 0) $href = '/guide';
+    elseif(strpos($href, 'api-') === 0) $href = '/api';
+    else $href = '/' . $href;
   }
 
   foreach ($list as $key => $value) {

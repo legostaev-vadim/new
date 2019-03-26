@@ -17,9 +17,9 @@
     else
       include 'dist/description/404.txt';
   ?>">
-  <link rel="shortcut icon" type="image/x-icon" href="dist/img/favicon.ico">
-  <link rel="icon" type="image/png" sizes="152x152" href="dist/img/favicon-152x152.png">
-  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="dist/img/favicon-152x152.png">
+  <link rel="shortcut icon" type="image/x-icon" href="/dist/img/favicon.ico">
+  <link rel="icon" type="image/png" sizes="152x152" href="/dist/img/favicon-152x152.png">
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/dist/img/favicon-152x152.png">
   <title>
     <?php
       if($page === 'index') echo $site_name;
@@ -27,11 +27,11 @@
       elseif($_GET['id'] === 'play' || strpos($_GET['id'], 'play-') === 0) echo $tabsPlay[$page] . ' · ' . $site_name;
       elseif($_GET['id'] === 'guide' || strpos($_GET['id'], 'guide-') === 0) echo $tabsGuide[$page] . ' · ' . $site_name;
       elseif($_GET['id'] === 'api' || strpos($_GET['id'], 'api-') === 0) echo $tabsApi[$page] . ' · ' . $site_name;
-      else echo $menu[$page] . ' · ' . $site_name;
+      else echo $menu['/'.$page] . ' · ' . $site_name;
     ?>
   </title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
-  <link rel="stylesheet" href="dist/main.css">
+  <link rel="stylesheet" href="/dist/main.css">
 </head>
 <body>
   <?php include 'dist/includes/header.php'; ?>
@@ -50,6 +50,6 @@
       echo '</template>';
     }
   ?>
-  <script src="dist/main.js"></script>
+  <script src="/dist/main.js"></script>
 </body>
 </html>

@@ -3,12 +3,13 @@
 $site_name = 'Riot.js';
 
 $menu = [
-  'compare' => 'Сравнение',
-  'play' => 'Играть',
-  'guide' => 'Учебник',
-  'api' => 'API',
-  'download' => 'Скачать',
-  'faq' => 'FAQ'
+  '/compare' => 'Сравнение',
+  '/play' => 'Играть',
+  '/guide' => 'Учебник',
+  '/tutorial' => 'Руководство',
+  '/api' => 'API',
+  '/download' => 'Скачать',
+  '/faq' => 'FAQ'
 ];
 
 $tabsPlay = [

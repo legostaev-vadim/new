@@ -3,42 +3,44 @@
   <a target="_blank" href="https://riot.js.org/api/misc/">Разное</a>
 </div>
 
-<h1>API · Custom tags</h1>
+<section class="apidoc">
 
-<div id="toc"><p><a href="#mounting">Mounting</a></p><p><a href="#rendering">Rendering</a></p><p><a href="#tag-instance">Tag instance</a></p><p><a href="#updating">Updating</a></p><p><a href="#unmounting">Unmounting</a></p><p><a href="#nested-tags">Nested tags</a></p><p><a href="#-yielding-nested-html">Yielding nested HTML</a></p><p><a href="#mixins">Mixins</a></p><p><a href="#events">Events</a></p><p><a href="#reserved-words">Reserved words</a></p><p><a href="#manual-construction">Manual construction</a></p></div>
+<h1>API · Пользовательские теги</h1>
 
-<h2 id="mounting">Mounting</h2>
+<div id="toc"><p><a href="#mounting">Монтирование</a></p><p><a href="#rendering">Рендеринг</a></p><p><a href="#tag-instance">Экземпляр тега</a></p><p><a href="#updating">Обновление</a></p><p><a href="#unmounting">Размонтирование</a></p><p><a href="#nested-tags">Вложенные теги</a></p><p><a href="#-yielding-nested-html">Встраивание HTML в тег</a></p><p><a href="#mixins">Примеси</a></p><p><a href="#events">События</a></p><p><a href="#reserved-words">Зарезервированные слова</a></p><p><a href="#manual-construction">Создание тега вручную</a></p></div>
+
+<h2 id="mounting">Монтирование</h2>
 
 <h3 id="-riotmountcustomtagselector-opts">
 <a name="mount"></a> riot.mount(customTagSelector, [opts])</h3>
 
-<p><code class="highlighter-rouge">customTagSelector</code> selects elements from the page and mounts them with a custom tag. The selected elements’ name must match the custom tag name.</p>
+<p><code class="highlighter-rouge">customTagSelector</code> выбирает элементы со страницы и монтирует их как пользовательские теги. Имя выбранного элемента должно совпадать с именем пользовательского тега.</p>
 
-<p><code class="highlighter-rouge">opts</code> optional object is passed for the tags to consume. This can be anything, ranging from a simple object to a full application API. Or it can be a Flux- store. Really depends on how you want to structure your client-side applications. Read more about <a href="/guide/application-design/#modularity">modular Riot applications</a>. <em>Also note</em> that attributes you set on your tags as options will take precedence over ones specified with same names via <code class="highlighter-rouge">opts</code> argument.</p>
+<p><code class="highlighter-rouge">opts</code> - необязательный объект параметров, который передаётся в теги. Это может быть что угодно, начиная от простого объекта до большого API приложения. Или это может быть Flux-хранилище. Это зависит от того, как вы структурируете ваше приложение. Вы можете узнать больше о модульности <a href="guide-design#modularity">здесь</a>. <em>Обратите внимание,</em> что атрибуты монтируемого тега имеют более высокий приоритет над атрибутами, указанными с такими же именами через аргумент <code class="highlighter-rouge">opts</code>.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// selects and mounts all &lt;pricing&gt; tags on the page</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// выбрать и смонтировать все &lt;pricing&gt; теги на странице</span>
 <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'pricing'</span><span class="p">)</span>
 
-<span class="c1">// mount all custom tags with a class name .customer</span>
+<span class="c1">// смонтировать все пользовательские теги с классом .customer</span>
 <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'.customer'</span><span class="p">)</span>
 
-<span class="c1">// mount &lt;account&gt; tag and pass an API object as options</span>
+<span class="c1">// смонтировать тег &lt;account&gt; и передать ему объект API в качестве параметра</span>
 <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'account'</span><span class="p">,</span> <span class="nx">api</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>@returns: an array of the mounted <a href="#tag-instance">tag instances</a></p>
+<p>@returns: массив смонтированных <a href="#tag-instance">тегов</a></p>
 
-<p>Note: users of <a href="/guide/compiler/#in-browser-compilation">In-browser compilation</a> will need to wrap calls to <code class="highlighter-rouge">riot.mount</code> in <code class="highlighter-rouge">riot.compile</code> in order to get returned <a href="#tag-instance">tag instances</a>. Without this, calls to <code class="highlighter-rouge">riot.mount</code> will return <code class="highlighter-rouge">undefined</code>.</p>
+<p>Примечание: при использовании <a href="guide-compiler#in-browser-compilation">компиляции в браузере</a> необходимо будет обернуть вызовы <code class="highlighter-rouge">riot.mount</code> в <code class="highlighter-rouge">riot.compile</code> для того, чтобы получить возвращаемые <a href="#tag-instance">экземпляры тегов</a>. Без этого, вызовы <code class="highlighter-rouge">riot.mount</code> будут возвращать <code class="highlighter-rouge">undefined</code>.</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// here tags are compiled and riot.mount works synchronously</span>
+  <span class="c1">// здесь теги компилируются и riot.mount работает синхронно</span>
   <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
 <span class="p">})</span>
 </code></pre></div></div>
 
 <p><span class="tag red">&gt;=3.12.0</span></p>
 
-<p>The <code class="highlighter-rouge">opts</code> argument can be also a function in order to avoid sharing the same object across several tag instances <a href="https://github.com/riot/riot/issues/2613">riot/2613</a></p>
+<p>Аргумент <code class="highlighter-rouge">opts</code> также может быть функцией, чтобы избежать совместного использования одного и того же объекта несколькими экземплярами тегов <a href="https://github.com/riot/riot/issues/2613">riot/2613</a></p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'my-tag'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="p">{</span>
@@ -50,109 +52,108 @@
 <h3 id="-riotmount-opts">
 <a name="mount-star"></a> riot.mount(‘*’, [opts])</h3>
 
-<p>A special Riot specific selector “*” can be used to mount all custom tags on the page:</p>
+<p>Специальный селектор Riot “*” используется для монтирования всех пользовательских тегов на странице:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>@returns: an array of the mounted <a href="#tag-instance">tag instances</a></p>
+<p>@returns: массив смонтированных <a href="#tag-instance">тегов</a></p>
 
 <h3 id="-riotmountselector-tagname-opts">
 <a name="mount-tag"></a> riot.mount(selector, tagName, [opts])</h3>
 
-<p>Where</p>
+<p>Здесь</p>
 
 <ul>
   <li>
-<code class="highlighter-rouge">selector</code> selects any DOM nodes from the page to be mounted</li>
+<code class="highlighter-rouge">selector</code> выбирает любой элемент DOM, к которому будет примонтирован тег</li>
   <li>
-<code class="highlighter-rouge">tagName</code> specifies the custom tag name to be used</li>
+<code class="highlighter-rouge">tagName</code> указывает имя используемого тега</li>
   <li>
-<code class="highlighter-rouge">opts</code> optional object is passed for the tags to consume</li>
+<code class="highlighter-rouge">opts</code> необязательный объект, содержащий параметры</li>
 </ul>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// mounts custom tag "my-tag" to div#main and pass api as options</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// монтирует тег "my-tag" в div#main и передаёт в него параметры из объекта api</span>
 <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'div#main'</span><span class="p">,</span> <span class="s1">'my-tag'</span><span class="p">,</span> <span class="nx">api</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>@returns: an array of the mounted <a href="#tag-instance">tag instances</a></p>
+<p>@returns: массив смонтированных <a href="#tag-instance">тегов</a></p>
 
 <h3 id="-riotmountdomnode-tagname-opts">
 <a name="mount-dom"></a> riot.mount(domNode, tagName, [opts])</h3>
 
-<p>Mount a custom tag named tagName on a given domNode passing optional data with opts. For example:</p>
+<p>Монтирует пользовательский тег tagName в конкретный элемент DOM domNode, передавая необязательный объект с параметрами. Например:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// mounts "users" tag to #slide node and pass api as options
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// монтирует тег "users" в элемент #slide и передаёт в него объект api в качестве параметра
 riot.mount(document.getElementById('slide'), 'users', api)
 </code></pre></div></div>
 
-<p>@returns: an array of the mounted <a href="#tag-instance">tag instances</a></p>
+<p>@returns: массив смонтированных <a href="#tag-instance">тегов</a></p>
 
 <h3 id="-riotunregistertagname">
 <a name="unregister"></a> riot.unregister(tagName)</h3>
 
-<p>Unregistering a tag previously created via compiler or via <code class="highlighter-rouge">riot.tag()</code>
-This method could be handy in case you need to test your app and you want to create multiple
-tags using the same name for example</p>
+<p>Отмена регистрации тега, ранее созданного с помощью компилятора или с помощью <code class="highlighter-rouge">riot.tag()</code>
+  Этот метод может быть полезен в случае, если вам нужно протестировать ваше приложение и вы хотите создать несколько тегов, используя, например, одно и то же имя.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// create a test tag</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// создать тестовый тег</span>
 <span class="nx">riot</span><span class="p">.</span><span class="nx">tag</span><span class="p">(</span><span class="s1">'test-tag'</span><span class="p">,</span> <span class="s1">'&lt;p&gt;{ message }&lt;/p&gt;'</span><span class="p">)</span>
 
-<span class="c1">// mount it</span>
+<span class="c1">// смонтировать его</span>
 <span class="kd">var</span> <span class="nx">tag</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'div'</span><span class="p">),</span> <span class="s1">'test-tag'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="nx">expect</span><span class="p">(</span><span class="nx">tag</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'p'</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">ok</span>
 
-<span class="c1">// unregister the tag</span>
+<span class="c1">// отменить регистрацию тега</span>
 <span class="nx">riot</span><span class="p">.</span><span class="nx">unregister</span><span class="p">(</span><span class="s1">'test-tag'</span><span class="p">)</span>
 
-<span class="c1">// recreate the same tag using a different template</span>
+<span class="c1">// воссоздать тот же тег, используя другой шаблон</span>
 <span class="nx">riot</span><span class="p">.</span><span class="nx">tag</span><span class="p">(</span><span class="s1">'test-tag'</span><span class="p">,</span> <span class="s1">'&lt;div&gt;{ message }&lt;/div&gt;'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<h2 id="rendering">Rendering</h2>
+<h2 id="rendering">Рендеринг</h2>
 
 <h3 id="-riotrendertagname-opts">
 <a name="render"></a> riot.render(tagName, [opts])</h3>
 
-<p>Rendering a tag to html.<br>
-<strong>Only available on <em>server-side</em></strong>. For example:</p>
+<p>Рендерит пользовательский тег в html.<br>
+<strong>Доступен только <em>на серверной стороне</em></strong> (Node/io.js). Например:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// render "my-tag" to html
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// рендерим "my-tag" в html
 var mytag = require('my-tag')
 riot.render(mytag, { foo: 'bar' })
 </code></pre></div></div>
 
-<p>@returns: tags render as html</p>
+<p>@returns: строка html</p>
 
 <h3 id="-riotrequiretagpath-opts">
 <a name="mount-dom"></a> riot.require(tagPath, [opts])</h3>
-<p>Requiring and compiling riot tags in runtime<br>
-<strong>Only available on <em>server-side</em></strong>.<br>
-It works like <code class="highlighter-rouge">require('./my-tag.tag')</code> but it gives you the possibility to compile your tags using any of the given <a href="/api/compiler/#on-server">riot-compiler options</a>. For example you can require and use a preprocessor at same time.</p>
+<p>Запрашивает и компилирует теги riot во время выполнения.<br>
+  <strong>Доступен только <em>на серверной стороне</em></strong> (Node/io.js).<br>
+Он работает как и <code class="highlighter-rouge">require('./my-tag.tag')</code>, но дает вам возможность скомпилировать ваши теги, используя любые <a href="api-compiler#on-server">параметры компилятора</a>. Например, вы можете запросить тег и использовать препроцессор одновременно.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">tag</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="s1">'./my-tag.jade'</span><span class="p">,</span> <span class="p">{</span> <span class="na">template</span><span class="p">:</span> <span class="s1">'jade'</span> <span class="p">})</span>
 </code></pre></div></div>
 
-<p>@returns: the tag name</p>
+<p>@returns: имя тега</p>
 
 <h3 id="-riotrenderasynctagname-opts">
 <a name="renderasync"></a> riot.renderAsync(tagName, [opts])</h3>
 
-<p>Rendering asynchronously a tag to html.<br>
-<strong>Only available on <em>server-side</em></strong>.<br>
-This method returns a promise that will be resolved only when a “ready” event will be triggered by your tags during the mounting process. For example:</p>
+<p>Асинхронно рендерит пользовательский тег в html.<br>
+<strong>Доступен только <em>на серверной стороне</em></strong> (Node/io.js).<br>
+Этот метод возвращает обещание, которое будет разрешено только тогда, когда ваши теги вызовут событие “ready” во время процесса монтирования. Например:</p>
 
-<h4 id="on-the-server">On the server:</h4>
+<h4 id="on-the-server">На сервере:</h4>
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">renderAsync</span><span class="p">(</span><span class="nx">tagName</span><span class="p">,</span> <span class="nx">opts</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// do something with your html</span>
+    <span class="c1">// делает что-то с вашим html</span>
   <span class="p">})</span>
   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// it took too much time!</span>
+    <span class="c1">// Ошибка времени выполения!</span>
   <span class="p">})</span>
 </code></pre></div></div>
 
-<h4 id="in-your-tag">In your tag:</h4>
+<h4 id="in-your-tag">Ваш тег:</h4>
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;async-rendering&gt;</span>
   <span class="nt">&lt;p&gt;</span>{ message }<span class="nt">&lt;/p&gt;</span>
 
@@ -160,36 +161,35 @@ This method returns a promise that will be resolved only when a “ready” even
     <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="s1">'hi'</span>
 
     <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="c1">// triggering the "ready" event will resolve the promise</span>
+      <span class="c1">// запуск события "ready" если обещание разрешено</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'ready'</span><span class="p">)</span>
     <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">),</span> <span class="mi">500</span><span class="p">)</span>
   <span class="nt">&lt;/script&gt;</span>
 <span class="nt">&lt;/async-rendering&gt;</span>
 </code></pre></div></div>
 
-<p>It’s important to notice that if the “ready” event will not be triggered, the promise will be rejected after 1 second.
-You can configure the internal riot promises timeout via <code class="highlighter-rouge">riot.settings.asyncRenderTimeout</code> (default 1000ms)</p>
+<p>Важно отметить, что если событие “ready” не будет запущено, обещание будет отклонено через 1 секунду. Вы можете настроить тайм-аут внутренних обещаний riot, с помощью  <code class="highlighter-rouge">riot.settings.asyncRenderTimeout</code> (по умолчанию 1000ms)</p>
 
-<p>@returns: Promise</p>
+<p>@returns: Обещание (Promise)</p>
 
-<h2 id="tag-instance">Tag instance</h2>
+<h2 id="tag-instance">Экземпляр тега</h2>
 
-<p>Following properties are set for each tag instance:</p>
+<p>Следующие свойства установлены для каждого экземпляра тега:</p>
 
 <ul>
   <li>
-<code class="highlighter-rouge">opts</code> - the options object</li>
+<code class="highlighter-rouge">opts</code> - объект, который передаётся в тег в качестве параметров</li>
   <li>
-<code class="highlighter-rouge">refs</code> - named DOM nodes to cache</li>
+<code class="highlighter-rouge">refs</code> - элементы DOM для кеширования</li>
   <li>
-<code class="highlighter-rouge">parent</code> - the parent tag if any</li>
+<code class="highlighter-rouge">parent</code> - родительский тег, если есть</li>
   <li>
-<code class="highlighter-rouge">root</code> - root DOM node</li>
+<code class="highlighter-rouge">root</code> - корневой элементы DOM, к которому примонтирован тег</li>
   <li>
-<code class="highlighter-rouge">tags</code> - nested custom tags</li>
+<code class="highlighter-rouge">tags</code> - вложенные пользовательские теги</li>
 </ul>
 
-<p>You can use these references in both the HTML and JavaScript code. For example:</p>
+<p>Вы можете использовать эти свойства как в HTML, так и в JavaScript. Например:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
   <span class="nt">&lt;h3&gt;</span>{ opts.title }<span class="nt">&lt;/h3&gt;</span>
@@ -198,7 +198,7 @@ You can configure the internal riot promises timeout via <code class="highlighte
 <span class="nt">&lt;/my-tag&gt;</span>
 </code></pre></div></div>
 
-<p>You can freely set any data to the instance (aka “context”) and they are available in the HTML expressions. For example:</p>
+<p>Вы можете свободно устанавливать любые данные для экземпляра тега (называемого “контекст”), и они будут доступны в выражениях HTML. Например:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
   <span class="nt">&lt;h3&gt;</span>{ title }<span class="nt">&lt;/h3&gt;</span>
@@ -207,7 +207,7 @@ You can configure the internal riot promises timeout via <code class="highlighte
 <span class="nt">&lt;/my-tag&gt;</span>
 </code></pre></div></div>
 
-<p>Note: if you have some globals, you can also use these references in both the HTML and JavaScript code:</p>
+<p>Примечание: если у вас есть глобальные переменные, вы также можете использовать эти ссылки как в HTML, так и в JavaScript-коде:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nx">someGlobalVariable</span> <span class="o">=</span> <span class="s1">'Hello!'</span>
 </code></pre></div></div>
@@ -219,14 +219,14 @@ You can configure the internal riot promises timeout via <code class="highlighte
 <span class="nt">&lt;/my-tag&gt;</span>
 </code></pre></div></div>
 
-<h2 id="updating">Updating</h2>
+<h2 id="updating">Обновление</h2>
 
 <h3 id="-thisupdate">
 <a name="tag-update"></a> this.update()</h3>
 
-<p>Updates all the expressions on the current tag instance as well as on all the children. This method is automatically called every time an event handler is called when user interacts with the application.</p>
+<p>Обновляет все выражения в текущем экземпляре тега, а также во всех дочерних элементах. Этот метод вызывается автоматически каждый раз, когда вызывается обработчик события, например, когда пользователь взаимодействует с приложением.</p>
 
-<p>You can skip the riot automatic updates by setting the <code class="highlighter-rouge">preventUpdate = true</code> property to your event object for example:</p>
+<p>Вы можете отменить автоматическое обновление, установив свойство <code class="highlighter-rouge">preventUpdate = true</code> для вашего объекта события, например:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
   <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">{</span> <span class="na">click</span> <span class="err">}</span><span class="nt">&gt;</span>{ message }<span class="nt">&lt;/button&gt;</span>
@@ -235,14 +235,14 @@ You can configure the internal riot promises timeout via <code class="highlighte
     <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="s1">'hi'</span>
 
     <span class="nx">click</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">e</span><span class="p">.</span><span class="nx">preventUpdate</span> <span class="o">=</span> <span class="kc">true</span> <span class="c1">// your tag will not update automatically</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">preventUpdate</span> <span class="o">=</span> <span class="kc">true</span> <span class="c1">// ваш тег не будет обновляться автоматически</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="s1">'goodbye'</span>
     <span class="p">}</span>
   <span class="nt">&lt;/script&gt;</span>
 <span class="nt">&lt;/my-tag&gt;</span>
 </code></pre></div></div>
 
-<p>Other than that riot does not update the UI automatically so you need to call this method manually. This typically happens after some non-UI related event: after <code class="highlighter-rouge">setTimeout</code>, AJAX call or on some server event. For example:</p>
+<p>Riot не обновляет пользовательский интерфейс автоматически, поэтому вам нужно вызвать этот метод вручную. Обычно это происходит после некоторого события, не связанного с пользовательским интерфейсом: после <code class="highlighter-rouge">setTimeout</code>, вызова AJAX или какого-либо события сервера. Например:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
 
@@ -261,9 +261,9 @@ You can configure the internal riot promises timeout via <code class="highlighte
 <span class="nt">&lt;/my-tag&gt;</span>
 </code></pre></div></div>
 
-<p>On above example the error message is displayed on the UI after the <code class="highlighter-rouge">update()</code> method has been called. (We are able to keep using <code class="highlighter-rouge">this</code> in reference to our tag instance because we <code class="highlighter-rouge">.bind(this)</code> in our network call’s <code class="highlighter-rouge">fail</code> handler.)</p>
+<p>В приведенном выше примере, сообщение об ошибке отображается в пользовательском интерфейсе после вызова метода <code class="highlighter-rouge">update()</code>. (Мы можем продолжать использовать <code class="highlighter-rouge">this</code> ссылаясь на наш экземпляра тега, потому что мы использовали метод <code class="highlighter-rouge">.bind(this)</code> для обработчика <code class="highlighter-rouge">fail</code> ошибок.)</p>
 
-<p>If you want to have more control over your tags DOM updates you can set a custom <code class="highlighter-rouge">shouldUpdate</code> function, and your tag will update only if that function will return <code class="highlighter-rouge">true</code></p>
+<p>Если вы хотите больше контролировать обновления тегов DOM, вы можете установить пользовательскую функцию <code class="highlighter-rouge">shouldUpdate</code>, и ваш тег будет обновляться только в том случае, если эта функция вернёт <code class="highlighter-rouge">true</code></p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
   <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">{</span> <span class="na">click</span> <span class="err">}</span><span class="nt">&gt;</span>{ message }<span class="nt">&lt;/button&gt;</span>
@@ -274,19 +274,19 @@ You can configure the internal riot promises timeout via <code class="highlighte
     <span class="nx">click</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="s1">'goodbye'</span>
     <span class="p">}</span>
-    <span class="c1">// data here is what you have passed to your update method</span>
-    <span class="c1">// in case of this.update() it will be undefined</span>
+    <span class="c1">// первый параметр, это данные, которые вы передаёте в метод обновления</span>
+    <span class="c1">// при вызове this.update(), он будет иметь значение undefined</span>
     <span class="nx">shouldUpdate</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">nextOpts</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1">// do not update</span>
+      <span class="c1">// не обновлять</span>
       <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">===</span> <span class="s1">'goodbye'</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span>
-      <span class="c1">// if this.message is different from 'goodbye' we could update the tag</span>
+      <span class="c1">// если this.message отличается от 'goodbye', то мы можем обновить тег</span>
       <span class="k">return</span> <span class="kc">true</span>
     <span class="p">}</span>
   <span class="nt">&lt;/script&gt;</span>
 <span class="nt">&lt;/my-tag&gt;</span>
 </code></pre></div></div>
 
-<p>The <code class="highlighter-rouge">shouldUpdate</code> method will always receive 2 arguments: the first one contains the values you want to update via the <code class="highlighter-rouge">tag.update</code> method and the second argument will be the new options received via tag attributes and normally stored in the <code class="highlighter-rouge">opts</code> object.</p>
+<p>Метод <code class="highlighter-rouge">shouldUpdate</code> всегда получает 2 аргумента: первый из них содержит значения , которые вы хотите обновить с помощью метода <code class="highlighter-rouge">tag.update</code>, а второй аргумент содержит новые параметры, полученные с помощью атрибутов тегов и, как правило, хранящиеся в объекте<code class="highlighter-rouge">opts</code>.</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-tag&gt;</span>
   <span class="nt">&lt;child-tag</span> <span class="na">message=</span><span class="s">{</span> <span class="na">message</span> <span class="err">}</span><span class="nt">&gt;&lt;/child-tag&gt;</span>
@@ -306,7 +306,7 @@ You can configure the internal riot promises timeout via <code class="highlighte
 
   <span class="nt">&lt;script&gt;</span>
     <span class="nx">shouldUpdate</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">nextOpts</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1">// update the DOM depending on the new options received</span>
+      <span class="c1">// обновить DOM в зависимости от полученных параметров</span>
       <span class="k">return</span> <span class="nx">nextOpts</span><span class="p">.</span><span class="nx">message</span> <span class="o">!==</span> <span class="s1">'goodbye'</span>
     <span class="p">}</span>
   <span class="nt">&lt;/script&gt;</span>
@@ -316,45 +316,45 @@ You can configure the internal riot promises timeout via <code class="highlighte
 <h3 id="-thisupdatedata">
 <a name="tag-update-data"></a> this.update(data)</h3>
 
-<p>Set values of the current instance and update the expressions. This is same as <code class="highlighter-rouge">this.update()</code> but allows you to set context data at the same time. So instead of this:</p>
+<p>Устанавливает значения свойств текущего элемента и обновляет выражения. Равнозначен <code class="highlighter-rouge">this.update()</code>, но позволяет вам одновременно передавать контекстные данные. Например, вместо этого:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">self</span><span class="p">.</span><span class="nx">error</span> <span class="o">=</span> <span class="nx">error_message</span>
 <span class="nb">self</span><span class="p">.</span><span class="nx">update</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>you can do this:</p>
+<p>вы можете сделать так:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">self</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span> <span class="na">error</span><span class="p">:</span> <span class="nx">error_message</span> <span class="p">})</span>
 </code></pre></div></div>
 
-<p>which is shorter and cleaner.</p>
+<p>что выглядит чище и короче.</p>
 
 <h3 id="-riotupdate">
 <a name="update"></a> riot.update()</h3>
 
-<p>Updates all the mounted tags and their expressions on the page.</p>
+<p>Обновляет все смонтированные теги и их выражения на странице.</p>
 
-<p>@returns: an array of <a href="#tag-instance">tag instances</a> that are mounted on the page.</p>
+<p>@returns: массив <a href="#tag-instance">тегов</a>, которые смонтированы на странице.</p>
 
-<h2 id="unmounting">Unmounting</h2>
+<h2 id="unmounting">Размонтирование</h2>
 
 <h3 id="-thisunmountkeeptheparent">
 <a name="tag-unmount"></a> this.unmount(keepTheParent)</h3>
 
-<p>Detaches the tag and its children from the page. An “unmount” event is fired.
-If you want to unmount a tag without removing the parent tag you need to pass <code class="highlighter-rouge">true</code> to the unmount method</p>
+<p>Отсоединяет тег и его дочерние элементы от страницы и запускает событие “unmount”.
+Если вы хотите размонтировать тег без удаления родительского тега, вам нужно передать параметр <code class="highlighter-rouge">true</code> при вызове этого метода.</p>
 
-<p>Remove the tag from the DOM:</p>
+<p>Удаляет тег из DOM:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">mytag</span><span class="p">.</span><span class="nx">unmount</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>Remove the tag children and keep only the parent tag:</p>
+<p>Удаляет всех потомков и оставляет только родительский тег:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">mytag</span><span class="p">.</span><span class="nx">unmount</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
 </code></pre></div></div>
-
-<h2 id="nested-tags">Nested tags</h2>
+<!-- закладка -->
+<h2 id="nested-tags">Вложенные теги</h2>
 
 <p>You have access to nested tag instances via <code class="highlighter-rouge">tags</code> variable:</p>
 
@@ -822,3 +822,5 @@ If you want to create your riot tag you need to extend the <code class="highligh
   <span class="p">{</span> <span class="na">log</span><span class="p">:</span> <span class="s1">'well done!!!'</span> <span class="p">}</span>
 <span class="p">).</span><span class="nx">mount</span><span class="p">()</span>
 </code></pre></div></div>
+
+</section>
