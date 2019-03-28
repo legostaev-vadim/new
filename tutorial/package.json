@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "del": "^4.0.0",
     "gulp": "^4.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-markdown": "^3.0.0"

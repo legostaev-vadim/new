@@ -3,8 +3,16 @@
 <blockquote>
 <p>Данное руководство распространяется совершенно бесплатно и без каких-либо ограничений. Авторство остаётся за сайтом <a href="http://riot-js.ru">riot-js.ru</a>.</p>
 </blockquote>
+
+<div id="toc">
+  <p><a href="#preparatory-work">Подготовительные работы</a></p>
+  <p><a href="#configuration-file">Создание файла конфигурации Webpack</a></p>
+  <p><a href="#create-component">Создание компонента Hello</a></p>
+</div>
+
 <p><em>Давайте разработаем простое приложение, которое охватывает некоторые основные аспекты одностраничных приложений. Мы пройдём вес цикл разработки и в конечном итоге, создадим небольшое приложение использующее <a href="https://ru.wikipedia.org/wiki/REST">REST API</a> и реализующее все основные операции <a href="https://ru.wikipedia.org/wiki/CRUD">CRUD</a> (Создание, Чтение, Обновление и Удаление). Для работы мы будем использовать <a href="https://riot.js.org/">Riot</a> версии <strong>3.13.2</strong> (на момент написания руководства), <a href="https://webpack.js.org/">Webpack</a> последней версии и <a href="https://nodejs.org/en/">Node.js</a> должен быть у вас установлен.</em></p>
-<h3 id="-">Подготовительные работы</h3>
+<h3 id="preparatory-work">Подготовительные работы</h3>
+
 <p>Интерактивный пример работы нашего будущего приложения, вы можете увидеть здесь: <a href="http://272758.playcode.io/#!/list">Riot Application</a></p>
 <p>Вначале, давайте создадим рабочую директорию и точку входа для нашего приложения. Создайте папку с названием <strong>app</strong>, а в ней создайте файл <strong>index.html</strong>:</p>
 <pre><code class="lang-html"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
@@ -108,7 +116,8 @@
 <p>Мы не создавали папку <strong>node_modules</strong>, она была создана <strong>npm</strong> (менеджер пакетов Node.js) автоматически, во время установки пакетов.</p>
 </blockquote>
 <p>На этом, подготовительные работы для нашего проекта закончены. Следующим этапом будет создание файла конфигурации для <strong>Webpack</strong> и пробный запуск приложения.</p>
-<h3 id="-webpack">Создание файла конфигурации Webpack</h3>
+<h3 id="configuration-file">Создание файла конфигурации Webpack</h3>
+
 <p>В нашей папке <strong>app</strong> создайте файл <strong>webpack.config.js</strong> и введите в него следующий код:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>)
 
@@ -143,7 +152,8 @@
 <pre><code class="lang-js"><span class="hljs-blockquote">&gt; Hello Riot!</span>
 </code></pre>
 <p>Мы ещё не раз вернёмся к файлу <strong>webpack.config.js</strong>, а пока, вы можете его закрыть и перейти в папку <strong>views</strong>, где мы создадим наш первый компонент <strong>Hello</strong>, который будет выводить приветственное сообщение на странице.</p>
-<h3 id="-hello">Создание компонента Hello</h3>
+<h3 id="create-component">Создание компонента Hello</h3>
+
 <p>В папке <strong>views</strong> создайте файл <strong>Hello.tag</strong>. В данном файле будет распологаться наш компонент, который мы назовем <strong>r-hello</strong>.</p>
 <blockquote>
 <p>Все компоненты мы будем хранить в этой папке, поскольку они являются <strong>представлениями</strong>, что исходит из самого её названия.</p>
@@ -184,7 +194,7 @@ You may need an appropriate loader to handle this file type.
 <p>Откройте терминал из папки <strong>app</strong> или переведите терминал в неё другим способом, и введите команду:</p>
 <pre><code><span class="hljs-built_in">npm</span> i -D riot-tag-<span class="hljs-keyword">new</span>-loader
 </code></pre><blockquote>
-<p>Флаг <strong>-D</strong> указывает на зависимость <strong>devDependencies</strong>, которая используется для процесса разработки, а флаг <strong>-S</strong> на <strong>dependencies</strong>, в которой указываются пакеты используемые для работы самого приложения.</p>
+<p>Флаг <strong>-D</strong> указывает на зависимость <strong>devDependencies</strong>, которая используется для процесса разработки, а флаг <strong>-S</strong> на <strong>dependencies</strong>, в которой указываются пакеты, используемые для работы самого приложения.</p>
 </blockquote>
 <p>Наш файл <strong>package.json</strong> теперь выглядит так:</p>
 <pre><code class="lang-js">{
@@ -286,8 +296,7 @@ riot.mount(<span class="hljs-string">'r-hello'</span>)
 <p>И вот теперь, мы снова можем запустить <strong>Webpack</strong>:</p>
 <pre><code><span class="hljs-built_in">npm</span> run dev
 </code></pre><p>после чего откроется страница в браузере с приветственным сообщением:</p>
-<h1>Hello Riot!</h1>
-
+<h1 id="hello-riot-">Hello Riot!</h1>
 <p>Мы можем менять наше сообщение в компоненте <strong>Hello</strong>, и браузер автоматически будет обновлять страницу.</p>
 <p>Это достигается благодаря тому, что мы в самом начале установили <strong>webpack-dev-server</strong>, а за само открытие страницы в браузере, отвечает его флаг <strong>--open</strong> команды <strong>dev</strong> в секции <strong>scripts</strong> файла <strong>package.json</strong></p>
 <pre><code class="lang-js"><span class="hljs-string">"scripts"</span>: {

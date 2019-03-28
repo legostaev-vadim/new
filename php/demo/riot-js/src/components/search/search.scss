@@ -88,9 +88,9 @@
     }
   }
 
-  @include max(760) {
+  @include max(880) {
     order: 0;
     margin-left: 0;
-    margin-right: 10px;
+    margin-right: 12px;
   }
 }

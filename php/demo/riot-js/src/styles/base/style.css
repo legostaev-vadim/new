@@ -43,9 +43,14 @@ body {
     -ms-text-size-adjust: 100%;
 }
 .wrap {
-    max-width: 960px;
-    padding: 0 0.6rem;
+    max-width: 1200px;
+    padding: 0 30px;
     margin: 0 auto;
+}
+@media (max-width: 880px) {
+    .wrap {
+        padding: 0 15px;
+    }
 }
 a {
     color: #268bd2;
@@ -173,7 +178,7 @@ blockquote {
 blockquote p:last-child {
     margin-bottom: 0;
 }
-@media (min-width: 760px) {
+@media (min-width: 880px) {
     blockquote {
         padding-right: 5rem;
         padding-left: 1.25rem;
@@ -459,7 +464,7 @@ pre code {
         transform: rotate(10deg);
     }
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     .github-corner:hover .octo-arm {
         animation: none;
     }
@@ -526,7 +531,7 @@ pre code {
     color: #000;
     cursor: default;
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     #tabs {
         text-align: center;
         padding: 0 1em;
@@ -560,6 +565,12 @@ h2:hover:before {
     content: '#';
     margin-left: -.8em;
     color: #268bd2;
+}
+@media (max-width: 880px) {
+    .apidoc h3:hover:before,
+    h2:hover:before {
+        display: none;
+    }
 }
 .download #main p {
     margin-bottom: 0.5em;
@@ -621,12 +632,12 @@ a.blue:hover {
     clear: both;
     width: 100%;
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     #header {
         padding-bottom: 2rem;
     }
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     #logo {
         width: 100%;
         display: inline-block;
@@ -636,7 +647,7 @@ a.blue:hover {
     width: 80px;
     float: left;
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     #logo #riot-logo {
         float: none;
     }
@@ -667,7 +678,7 @@ a.blue:hover {
     text-decoration: none;
     cursor: default;
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     #nav {
         margin: 0.5rem 0 1.5rem;
         line-height: 2.4;
@@ -697,7 +708,7 @@ a#current-lang:hover {
     background-color: #eee;
     text-decoration: none;
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     a#current-lang {
         position: static;
         margin-left: -4px;
@@ -707,7 +718,7 @@ a#current-lang:hover {
     float: right;
     padding: 4px 0;
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     #search {
         float: left;
     }
@@ -766,7 +777,7 @@ a#current-lang:hover {
     border-radius: 3px;
     margin-right: 0.5em;
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     #langs {
         width: 100%;
         font-size: 90%;
@@ -791,7 +802,7 @@ a#current-lang:hover {
     width: 6em;
     float: left;
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     #footer nav {
         margin-top: 1.2rem;
         width: 100%;
@@ -805,7 +816,7 @@ a#current-lang:hover {
 #footer nav.extra a {
     text-align: right;
 }
-@media (max-width: 760px) {
+@media (max-width: 880px) {
     #footer nav.extra {
         float: left;
         width: auto;

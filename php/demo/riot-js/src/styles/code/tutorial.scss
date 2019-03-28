@@ -1,5 +1,9 @@
 main[data-page=tutorial] {
 
+  h2:first-child {
+    margin-top: 28px;
+  }
+
   // Original style
 
   .hljs {
@@ -150,13 +154,6 @@ main[data-page=tutorial] {
   }
 
   // Custom style
-
-  a{ color: #0645ad; text-decoration:none;}
-  a:visited{ color: #0b0080; }
-  a:hover{ color: #06e; }
-  a:active{ color:#faa700; }
-  a:focus{ outline: thin dotted; }
-  a:hover, a:active{ outline: 0; }
 
   p{margin:1em 0;}
 

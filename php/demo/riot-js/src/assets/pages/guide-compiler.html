@@ -278,7 +278,7 @@ riot <span class="nt">--type</span> coffee <span class="nt">--expr</span> source
 riot <span class="nt">--type</span> es6 source.tag
 </code></pre></div></div>
 
-<p><span class="tag red">примечание</span> Babel генерирует много лишнего кода в вашем выводе, поэтому вы можете рассмотреть возможность компиляции ваших тегов в 2 отдельных шага,  <code class="highlighter-rouge">babel-plugin-external-helpers-2</code> например, с помощью:</p>
+<p><span class="tag red">Примечание</span> Babel генерирует много лишнего кода в вашем выводе, поэтому вы можете рассмотреть возможность компиляции ваших тегов в 2 отдельных шага,  <code class="highlighter-rouge">babel-plugin-external-helpers-2</code> например, с помощью:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># скомпилируйте ваши теги, используя чистый код es6</span>
 riot tags/folder dist/es6.tags.js
