@@ -5,50 +5,50 @@
 
 <section class="apidoc">
 
-<h1>API · Observable</h1>
+<h1>API · Наблюдатель</h1>
 
 <div id="toc"></div>
 
 <h3 id="-riotobservableel">
 <a name="constructor"></a> riot.observable(el)</h3>
 
-<p>Adds <a href="http://en.wikipedia.org/wiki/Observer_pattern">Observer</a> support for the given object <code class="highlighter-rouge">el</code> or if the argument is empty a new observable instance is created and returned. After this the object is able to trigger and listen to events. For example:</p>
+<p>Добавляет функционал <a href="https://ru.wikipedia.org/wiki/%D0%9D%D0%B0%D0%B1%D0%BB%D1%8E%D0%B4%D0%B0%D1%82%D0%B5%D0%BB%D1%8C_(%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD_%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F)">Наблюдателя</a> для данного объекта <code class="highlighter-rouge">el</code> или, если аргумент пуст, создаёт и возвращает новый экземпляр наблюдателя. После этого, объект может вызвать и слушать события. Например:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Car</span><span class="p">()</span> <span class="p">{</span>
 
-  <span class="c1">// Make Car instances observable</span>
+  <span class="c1">// Создаём объект наблюдателя Car</span>
   <span class="nx">riot</span><span class="p">.</span><span class="nx">observable</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
 
-  <span class="c1">// listen to 'start' event</span>
+  <span class="c1">// Слушаем событие 'start'</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// engine started</span>
+    <span class="c1">// тело функции</span>
   <span class="p">})</span>
 
 <span class="p">}</span>
 
-<span class="c1">// make a new Car instance</span>
+<span class="c1">// Создаём новый экземпляр Car</span>
 <span class="kd">var</span> <span class="nx">car</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Car</span><span class="p">()</span>
 
-<span class="c1">// trigger 'start' event</span>
+<span class="c1">// Вызываем событие 'start'</span>
 <span class="nx">car</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'start'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>@returns the given object <code class="highlighter-rouge">el</code> or a new observable instance</p>
+<p>@returns заданный объект <code class="highlighter-rouge">el</code> или новый экземпляр наблюдателя</p>
 
 <h3 id="-elonevents-callback">
 <a name="on"></a> el.on(events, callback)</h3>
 
-<p>Listen to the given <code class="highlighter-rouge">event</code> and execute the <code class="highlighter-rouge">callback</code> each time an event is triggered.</p>
+<p>Прослушивает события <code class="highlighter-rouge">events</code> и выполняет функцию <code class="highlighter-rouge">callback</code> каждый раз, когда какое-либо из событий срабатывает.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// listen to single event</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// прослушивает одно событие</span>
 <span class="nx">el</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
 
 <span class="p">})</span>
 
-<span class="c1">// listen all the events of this observable</span>
+<span class="c1">// прослушивает все события данного наблюдателя</span>
 <span class="nx">el</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'*'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">param1</span><span class="p">,</span> <span class="nx">param2</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// event will be the name of any event triggered</span>
-  <span class="c1">// do something with the parameters</span>
+  <span class="c1">// event будет содержать имя вызванного события</span>
+  <span class="c1">// манипуляции с переданными параметрами</span>
 <span class="p">})</span>
 
 </code></pre></div></div>
@@ -56,11 +56,11 @@
 <p>@returns <code class="highlighter-rouge">el</code></p>
 
 <h3 id="-eloneevent-callback">
-<a name="one"></a> el.one(event, callback)</h3>
+<a name="one"></a> el.one(events, callback)</h3>
 
-<p>Listen to the given <code class="highlighter-rouge">event</code> and execute the <code class="highlighter-rouge">callback</code> at most once</p>
+<p>Прослушивает события <code class="highlighter-rouge">events</code> и выполняет функцию <code class="highlighter-rouge">callback</code> только один раз.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// run the function once, even if 'start' is triggered multiple times</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// выполнит функцию один раз, даже если событие было вызвано более одного раза</span>
 <span class="nx">el</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 
 <span class="p">})</span>
@@ -71,7 +71,7 @@
 <h3 id="-eloffevents">
 <a name="off"></a> el.off(events)</h3>
 
-<p>Removes the given <code class="highlighter-rouge">event</code> listeners.</p>
+<p>Удаляет всех слушателей событий <code class="highlighter-rouge">events</code>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">el</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="s1">'start'</span><span class="p">)</span>
 </code></pre></div></div>
@@ -81,7 +81,7 @@
 <h3 id="-eloffevents-fn">
 <a name="off-fn"></a> el.off(events, fn)</h3>
 
-<p>Removes the given callback listening to the <code class="highlighter-rouge">event</code></p>
+<p>Удаляет конкретного слушателя событий <code class="highlighter-rouge">events</code>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">doIt</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'starting or ending'</span><span class="p">)</span>
@@ -89,7 +89,7 @@
 
 <span class="nx">el</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="nx">doIt</span><span class="p">)</span>
 
-<span class="c1">// remove a specific listener</span>
+<span class="c1">// удалит конкретного слушателя</span>
 <span class="nx">el</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="nx">doIt</span><span class="p">)</span>
 </code></pre></div></div>
 
@@ -98,21 +98,21 @@
 <h3 id="-eloff">
 <a name="off-all"></a> el.off(‘*’)</h3>
 
-<p>Removes all listeners from all event types.</p>
+<p>Удаляет всех слушателей из всех типов событий.</p>
 
 <p>@returns <code class="highlighter-rouge">el</code></p>
 
 <h3 id="-eloff-fn">
 <a name="off-all-fn"></a> el.off(‘*’, fn)</h3>
 
-<p>Removes the specific callback function called on all the events</p>
+<p>Удаляет конкретного слушателя, вызываемого для всех событий.</p>
 
 <p>@returns <code class="highlighter-rouge">el</code></p>
 
 <h3 id="-eltriggerevents">
 <a name="trigger"></a> el.trigger(events)</h3>
 
-<p>Execute all callback functions that listen to the given <code class="highlighter-rouge">event</code>.</p>
+<p>Выполняет все функции обратного вызова, которые слушают события <code class="highlighter-rouge">events</code>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">el</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'start'</span><span class="p">)</span>
 <span class="nx">el</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'render'</span><span class="p">)</span>
@@ -123,14 +123,14 @@
 <h3 id="-eltriggerevent-arg1--argn">
 <a name="trigger-args"></a> el.trigger(event, arg1 … argN)</h3>
 
-<p>Execute all callback functions that listen to the given <code class="highlighter-rouge">event</code>. Any number of extra parameters can be provided for the listeners.</p>
+<p>Выполняет все функции обратного вызова, которые слушают событие <code class="highlighter-rouge">event</code>. Любое количество дополнительных параметров, может быть передано для слушателей.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// listen to 'start' event and expect extra arguments</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// слушает событие 'start' и принимает дополнительные параметры</span>
 <span class="nx">el</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">engine_details</span><span class="p">,</span> <span class="nx">is_rainy_day</span><span class="p">)</span> <span class="p">{</span>
 
 <span class="p">})</span>
 
-<span class="c1">// trigger start event with extra parameters</span>
+<span class="c1">// запускает событие 'start' с дополнительными аргументами</span>
 <span class="nx">el</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fuel</span><span class="p">:</span> <span class="mi">89</span> <span class="p">},</span> <span class="kc">true</span><span class="p">)</span>
 
 </code></pre></div></div>
