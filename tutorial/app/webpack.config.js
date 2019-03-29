@@ -4,8 +4,10 @@ module.exports = {
   entry: './src/App.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'build.js'
+    filename: 'build.js',
+    publicPath: 'dist/'
   },
+  // добавляем новое правило для файлов компонентов (.tag)
   module: {
     rules: [
       {

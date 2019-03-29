@@ -1,20 +1,21 @@
 <h2 id="-riot-js">Простое приложение на Riot.js</h2>
 <p><img src="https://riot.js.org/img/logo/riot120x.png" alt="Riot"></p>
 <blockquote>
-<p>Данное руководство распространяется совершенно бесплатно и без каких-либо ограничений. Авторство остаётся за сайтом <a href="http://riot-js.ru">riot-js.ru</a>.</p>
+<p>Данное руководство распространяется совершенно бесплатно и без каких-либо ограничений. Авторство остаётся за сайтом <strong><a href="http://riot-js.ru/">riot-js.ru</a></strong>.</p>
 </blockquote>
-
 <div id="toc">
   <p><a href="#preparatory-work">Подготовительные работы</a></p>
   <p><a href="#configuration-file">Создание файла конфигурации Webpack</a></p>
-  <p><a href="#create-component">Создание компонента Hello</a></p>
+  <p><a href="#create-component-hello">Создание компонента Hello</a></p>
+  <p><a href="#storage-module">Модуль хранения состояния</a></p>
+  <p><a href="#create-component-userlist">Создание компонента UserList</a></p>
 </div>
 
-<p><em>Давайте разработаем простое приложение, которое охватывает некоторые основные аспекты одностраничных приложений. Мы пройдём вес цикл разработки и в конечном итоге, создадим небольшое приложение использующее <a href="https://ru.wikipedia.org/wiki/REST">REST API</a> и реализующее все основные операции <a href="https://ru.wikipedia.org/wiki/CRUD">CRUD</a> (Создание, Чтение, Обновление и Удаление). Для работы мы будем использовать <a href="https://riot.js.org/">Riot</a> версии <strong>3.13.2</strong> (на момент написания руководства), <a href="https://webpack.js.org/">Webpack</a> последней версии и <a href="https://nodejs.org/en/">Node.js</a> должен быть у вас установлен.</em></p>
+<p><em>Давайте разработаем простое приложение, которое охватывает некоторые основные аспекты одностраничных приложений. Мы пройдём вес цикл разработки и в конечном итоге, создадим небольшое приложение использующее <strong><a href="https://ru.wikipedia.org/wiki/REST">REST</a> API</strong> и реализующее все основные операции <strong><a href="https://ru.wikipedia.org/wiki/CRUD">CRUD</a></strong> (Создание, Чтение, Обновление и Удаление). Для работы мы будем использовать <strong><a href="https://riot.js.org/">Riot.js</a></strong> версии <strong>3.13.2</strong> (на момент написания руководства), <strong><a href="https://webpack.js.org/">Webpack</a></strong> последней версии и <strong><a href="https://nodejs.org/en/">Node.js</a></strong> должен быть у вас установлен. Кроме этого, вы должны иметь базовые знания по <strong>Riot.js</strong>, поэтому, если их у вас нет, прочитайте <strong><a href="guide">Учебник</a></strong> и изучите <strong><a href="api">API</a></strong>.</em></p>
 <h3 id="preparatory-work">Подготовительные работы</h3>
 
-<p>Интерактивный пример работы нашего будущего приложения, вы можете увидеть здесь: <a href="http://272758.playcode.io/#!/list">Riot Application</a></p>
-<p>Вначале, давайте создадим рабочую директорию и точку входа для нашего приложения. Создайте папку с названием <strong>app</strong>, а в ней создайте файл <strong>index.html</strong>:</p>
+<p>Интерактивный пример работы нашего будущего приложения, вы можете увидеть здесь: <strong><a href="http://272758.playcode.io/#!/list">Riot Application</a></strong></p>
+<p>Мы начнём с создания рабочей директории и точки входа для нашего приложения. Создайте папку с названием <strong>app</strong>, а в ней создайте файл <strong>index.html</strong>:</p>
 <pre><code class="lang-html"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span class="hljs-value">"en"</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
@@ -28,13 +29,15 @@
 <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
 </code></pre>
-<p>Мы могли бы создать всё приложение в одном файле Javascript, но в дальнейшем, это затруднило бы навигацию по нашему коду. Вместо этого, давайте разделим код на модули и соберём эти модули в файл <strong>dist/build.js</strong>.</p>
+<blockquote>
+<p>Мы могли бы создать всё приложение в одном файле <strong>Javascript</strong>, но в дальнейшем, это затруднило бы навигацию по нашему коду. Вместо этого, давайте разделим код на модули и соберём эти модули в файл <strong>dist/build.js</strong>.</p>
+</blockquote>
 <p>Перейдите в наш рабочий каталог <strong>app</strong>, затем откройте терминал командной строки, перейдите в эту папку в терминале и введите команду:</p>
 <pre><code><span class="hljs-built_in">npm</span> init -y
 </code></pre><blockquote>
-<p>Не забывайте в терминале переходить в папку <strong>app</strong>!</p>
+<p>Не забывайте в терминале переходить в папку <strong>app</strong>! Терминал должен ссылаться на неё при вводе всех команд.</p>
 </blockquote>
-<p>Она создаст файл <strong>package.json</strong>, который содержит описание нашего проекта и управляет его зависимостями. Если вы всё сделали правильно, то вот так вот сейчас выглядит этот файл:</p>
+<p>Она создаст файл <strong>package.json</strong>, который содержит описание нашего проекта и управляет его зависимостями. Если вы всё сделали правильно, то вот так сейчас выглядит этот файл:</p>
 <pre><code class="lang-js">{
   "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"app"</span></span>,
   "<span class="hljs-attribute">version</span>": <span class="hljs-value"><span class="hljs-string">"1.0.0"</span></span>,
@@ -99,7 +102,7 @@
   </span>}
 </span>}
 </code></pre>
-<p>Создадим в нашей папке <strong>app</strong> подпапку <strong>src</strong>, а в ней ещё три папки:</p>
+<p>Создадим в нашей папке <strong>app</strong> подпапку <strong>src</strong>, а в неё добавим ещё три папки:</p>
 <pre><code class="lang-js">assets, models и views
 </code></pre>
 <p>Структура нашего проекта примет следующий вид:</p>
@@ -115,7 +118,7 @@
 <blockquote>
 <p>Мы не создавали папку <strong>node_modules</strong>, она была создана <strong>npm</strong> (менеджер пакетов Node.js) автоматически, во время установки пакетов.</p>
 </blockquote>
-<p>На этом, подготовительные работы для нашего проекта закончены. Следующим этапом будет создание файла конфигурации для <strong>Webpack</strong> и пробный запуск приложения.</p>
+<p>На этом, подготовительные работы для нашего проекта окончены. Следующим шагом будет создание файла конфигурации для <strong>Webpack</strong> и пробный запуск приложения.</p>
 <h3 id="configuration-file">Создание файла конфигурации Webpack</h3>
 
 <p>В нашей папке <strong>app</strong> создайте файл <strong>webpack.config.js</strong> и введите в него следующий код:</p>
@@ -125,13 +128,12 @@
   entry: <span class="hljs-string">'./src/App.js'</span>,
   output: {
     path: path.resolve(__dirname, <span class="hljs-string">'dist'</span>),
-    filename: <span class="hljs-string">'build.js'</span>
+    filename: <span class="hljs-string">'build.js'</span>,
+    publicPath: <span class="hljs-string">'dist/'</span>
   }
 }
 </code></pre>
-<blockquote>
-<p>Точкой входа <strong>entry</strong> будет файл <strong>App.js</strong>, расположенный в папке <strong>src</strong>, а выводить <strong>output</strong> наш код мы будем в файл <strong>build.js</strong>, расположеный в папке <strong>dist</strong>.</p>
-</blockquote>
+<p>Точкой входа приложения будет файл <strong>App.js</strong>, расположенный в папке <strong>src</strong>, а выводить наш код мы будем в файл <strong>build.js</strong>, расположеный в папке <strong>dist</strong>.</p>
 <p>Создайте в папке <strong>src</strong> файл <strong>App.js</strong> и введите в него:</p>
 <pre><code class="lang-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Hello Riot!'</span>)
 </code></pre>
@@ -146,35 +148,40 @@
     <span class="hljs-keyword">index</span>.html
     <span class="hljs-keyword">package</span>.json
 </code></pre>
-<p>Сохраните файл и запустите терминал из папки <strong>app</strong>. В терминале введите:</p>
+<p>Сохраните файл и запустите терминал из папки <strong>app</strong>. В терминале введите команду:</p>
 <pre><code><span class="hljs-built_in">npm</span> run dev
 </code></pre><p>После этого откроется страница в браузере, соответствующая файлу <strong>index.html</strong>. Перейдите в консоль браузера, там вы должны увидеть приветственное сообщение:</p>
 <pre><code class="lang-js"><span class="hljs-blockquote">&gt; Hello Riot!</span>
 </code></pre>
-<p>Мы ещё не раз вернёмся к файлу <strong>webpack.config.js</strong>, а пока, вы можете его закрыть и перейти в папку <strong>views</strong>, где мы создадим наш первый компонент <strong>Hello</strong>, который будет выводить приветственное сообщение на странице.</p>
-<h3 id="create-component">Создание компонента Hello</h3>
+<p>Закройте файл <strong>webpack.config.js</strong> и перейдите в папку <strong>views</strong>, где мы создадим наш первый компонент <strong>Hello</strong>, который будет выводить приветственное сообщение на странице.</p>
+<h3 id="create-component-hello">Создание компонента Hello</h3>
 
+<blockquote>
+<p>Постарайтесь найти для своего редактора расширение, поддерживающие синтаксис <strong>riot</strong> в файлах <strong>.tag</strong>. Это сильно облегчит вам работу в дальнешей. Для редактора <strong><a href="https://code.visualstudio.com/">Visual Studio Code</a></strong>, такое <strong><a href="https://github.com/crisward/riot-tag">дополнение</a></strong> имеется.</p>
+</blockquote>
 <p>В папке <strong>views</strong> создайте файл <strong>Hello.tag</strong>. В данном файле будет распологаться наш компонент, который мы назовем <strong>r-hello</strong>.</p>
 <blockquote>
-<p>Все компоненты мы будем хранить в этой папке, поскольку они являются <strong>представлениями</strong>, что исходит из самого её названия.</p>
-<p>Префикс <strong>r-</strong> не является обязательным в названии тега компонента. Этим действием, мы лишь показываем его принадлежность к пользовательским тегам <strong>Riot</strong> и, одновременно, избегаем пересечения в пространстве имён со стандартными <strong>html-элементами</strong>, наподобие <strong>header</strong>. Например, если бы нам потребовался компонент <strong>header</strong>, то мы назвали бы его <strong>r-header</strong>.</p>
+<p>Все компоненты мы будем хранить в этой папке, поскольку они являются <strong>представлениями</strong> в терминологии <strong>Riot.js</strong>.</p>
 </blockquote>
+<p>Префикс <strong>r-</strong> не является обязательным в названии тега компонента. Этим действием, мы лишь показываем его принадлежность к пользовательским тегам <strong>riot</strong> и, одновременно, избегаем пересечения в пространстве имён со стандартными <strong>html-элементами</strong>, наподобие <strong>header</strong>. Например, если бы нам потребовался компонент <strong>header</strong>, то мы назвали бы его <strong>r-header</strong>.</p>
 <p>В файле <strong>Hello.tag</strong> введите:</p>
 <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">r-hello</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>Hello Riot!<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-title">r-hello</span>&gt;</span>
 </code></pre>
-<p>Затем, откройте файл <strong>App.js</strong>, закомментируйте или удалите приветствие, и подключите наш тег к приложению:</p>
-<pre><code class="lang-js"><span class="hljs-comment">// подключаем тег в приложение</span>
+<p>Затем, откройте файл <strong>App.js</strong>, удалите приветствие и подключите наш компонент к приложению:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// подключаем компонент Hello</span>
 <span class="hljs-keyword">import</span> <span class="hljs-string">'./views/Hello.tag'</span>
 </code></pre>
+<p>Точка в начале названия пути <strong>'./views/Hello.tag'</strong> компонента, определяет относительный путь к нему от файла <strong>App.js</strong>.</p>
 <blockquote>
-<p>Точка в начале названия пути <strong>'./views/Hello.tag'</strong>, указывает на его относительную принадлежность.</p>
+<p>Нам <strong>не требуется</strong> импортировать наш компонент в переменную, вида:</p>
 </blockquote>
-<p>Нам <strong>не требуется</strong> импортировать наш тег в переменную, вида:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">import</span> Hello <span class="hljs-keyword">from</span> <span class="hljs-string">'./views/Hello.tag'</span>
 </code></pre>
-<p>поскольку файлы компонентов <strong>не содержат</strong> ни какого экспорта. Мы импортируем тег прямо в файл.</p>
+<blockquote>
+<p>Поскольку файлы компонентов <strong>не содержат</strong> никакого экспорта, мы импортируем их содержимое прямо в файл нашего приложения.</p>
+</blockquote>
 <p>Если мы сейчас попытаемся запустить <strong>Webpack</strong> командой:</p>
 <pre><code><span class="hljs-built_in">npm</span> run dev
 </code></pre><p>то неизбежно получим сообщение об ошибке синтаксического разбора:</p>
@@ -190,7 +197,7 @@ You may need an appropriate loader to handle this file type.
 <blockquote>
 <p>Несмотря на ошибку, <strong>Webpack</strong> не завершает своё выполнение в терминале. Остановить его работу можно командой <strong>Ctrl+C</strong></p>
 </blockquote>
-<p>Мы будем использовать загрузчик <a href="https://www.npmjs.com/package/riot-tag-new-loader">riot-tag-new-loader</a>.</p>
+<p>Мы будем использовать загрузчик <strong><a href="https://www.npmjs.com/package/riot-tag-new-loader">riot-tag-new-loader</a></strong>.</p>
 <p>Откройте терминал из папки <strong>app</strong> или переведите терминал в неё другим способом, и введите команду:</p>
 <pre><code><span class="hljs-built_in">npm</span> i -D riot-tag-<span class="hljs-keyword">new</span>-loader
 </code></pre><blockquote>
@@ -221,9 +228,7 @@ You may need an appropriate loader to handle this file type.
   </span>}
 </span>}
 </code></pre>
-<blockquote>
 <p>Простая установка загрузчика, не избавит нас о вышеуказанной проблемы. Нам нужно будет добавить соответствующие <strong>правила</strong> в файле <strong>webpack.config.js</strong>.</p>
-</blockquote>
 <p>Откроем файл <strong>webpack.config.js</strong> и добавим новое правило в свойство <strong>rules</strong>:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>)
 
@@ -231,9 +236,10 @@ You may need an appropriate loader to handle this file type.
   entry: <span class="hljs-string">'./src/App.js'</span>,
   output: {
     path: path.resolve(__dirname, <span class="hljs-string">'dist'</span>),
-    filename: <span class="hljs-string">'build.js'</span>
+    filename: <span class="hljs-string">'build.js'</span>,
+    publicPath: <span class="hljs-string">'dist/'</span>
   },
-  <span class="hljs-comment">// добавляем новое правило для файлов тегов (.tag)</span>
+  <span class="hljs-comment">// добавляем новое правило для файлов компонентов (.tag)</span>
   <span class="hljs-built_in">module</span>: {
     rules: [
       {
@@ -249,33 +255,32 @@ You may need an appropriate loader to handle this file type.
 <pre><code><span class="hljs-built_in">npm</span> run dev
 </code></pre><p>то ошибка исчезнет, но ничего интересного, кроме пустой страницы в браузере, мы не увидим.</p>
 <blockquote>
-<p>Загрузчик лишь компилирует содержимое файлов тегов в обычный <strong>JavaScript</strong>, который <strong>Webpack</strong> подключает к нашему приложению.</p>
+<p>Загрузчик лишь компилирует содержимое файлов компонентов в обычный <strong>JavaScript</strong>, который <strong>Webpack</strong> затем подключает к нашему приложению.</p>
 </blockquote>
 <p>Нам потребуется выполнить три завершающих действия:</p>
 <ul>
-<li>подключить <strong>riot.js</strong> к нашему приложению</li>
-<li>передать <strong>riot.js</strong> тег <strong>Hello</strong> для монтирования</li>
+<li>подключить <strong>Riot.js</strong> к нашему приложению</li>
+<li>передать <strong>Riot.js</strong> тег <strong>Hello</strong> для монтирования</li>
 <li>подключить тег к странице <strong>index.html</strong></li>
 </ul>
-<p>Откроем файл <strong>App.js</strong> и в самом верху, <strong>перед</strong> подключением тега, добавим команду импорта:</p>
+<p>Откроем файл <strong>App.js</strong> и в самом его верху, <strong>перед</strong> подключением компонента, добавим команду импорта:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">import</span> riot <span class="hljs-keyword">from</span> <span class="hljs-string">'riot'</span>
 </code></pre>
-<p>а в его конце, <strong>после</strong> команды подключения тега, добавим команду монтирования:</p>
+<p>а в конце файла, <strong>после</strong> подключением компонента, команду монтирования:</p>
 <pre><code class="lang-js">riot.mount(<span class="hljs-string">'r-hello'</span>)
 </code></pre>
-<p>Теперь наш файл <strong>App.js</strong> должен выглядеть вот так:</p>
-<pre><code class="lang-js"><span class="hljs-comment">// подключаем riot.js в приложение</span>
+<p>Теперь наш файл <strong>App.js</strong> должен выглядеть так:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// подключаем Riot.js</span>
 <span class="hljs-keyword">import</span> riot from <span class="hljs-string">'riot'</span>
-<span class="hljs-comment">// подключаем тег в приложение</span>
+
+<span class="hljs-comment">// подключаем компонент Hello</span>
 <span class="hljs-keyword">import</span> <span class="hljs-string">'./views/Hello.tag'</span>
 
-<span class="hljs-comment">// передаём тег для монтирования в riot.js</span>
+<span class="hljs-comment">// монтируем компонент Hello</span>
 riot.mount(<span class="hljs-string">'r-hello'</span>)
 </code></pre>
-<blockquote>
-<p>Мы передаём <strong>riot.js</strong> название тега так, как мы указали его в файле <strong>Hello.tag</strong>, т.е. <strong>r-hello</strong>. Это же название мы будем использовать и при подключении тега на странице, а <strong>Hello.tag</strong> - это просто название файла, в котором хранится наш компонент.</p>
-</blockquote>
-<p>Откроем файл <strong>index.html</strong> и подключим тег в <strong>body</strong>:</p>
+<p>Мы передаём в <strong>Riot.js</strong> название компонента так, как мы указали его в файле <strong>Hello.tag</strong>, т.е. <strong>r-hello</strong>. Это же название мы будем использовать и при подключении компонента к странице, а <strong>Hello.tag</strong> - это просто название файла, в котором хранится наш компонент.</p>
+<p>Откроем файл <strong>index.html</strong> и подключим компонент к странице:</p>
 <pre><code class="lang-html"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span class="hljs-value">"en"</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
@@ -286,16 +291,16 @@ riot.mount(<span class="hljs-string">'r-hello'</span>)
 <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
 
-  <span class="hljs-comment">&lt;!-- подключаем тег --&gt;</span>
+  <span class="hljs-comment">&lt;!-- подключаем компонент Hello к странице --&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-title">r-hello</span> /&gt;</span>
 
-  <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"build.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"dist/build.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
 </code></pre>
-<p>И вот теперь, мы снова можем запустить <strong>Webpack</strong>:</p>
+<p>И вот теперь, мы снова можем перезапустить <strong>Webpack</strong>:</p>
 <pre><code><span class="hljs-built_in">npm</span> run dev
-</code></pre><p>после чего откроется страница в браузере с приветственным сообщением:</p>
+</code></pre><p>после чего, откроется наша страница в браузере с приветственным сообщением:</p>
 <h1 id="hello-riot-">Hello Riot!</h1>
 <p>Мы можем менять наше сообщение в компоненте <strong>Hello</strong>, и браузер автоматически будет обновлять страницу.</p>
 <p>Это достигается благодаря тому, что мы в самом начале установили <strong>webpack-dev-server</strong>, а за само открытие страницы в браузере, отвечает его флаг <strong>--open</strong> команды <strong>dev</strong> в секции <strong>scripts</strong> файла <strong>package.json</strong></p>
@@ -304,4 +309,436 @@ riot.mount(<span class="hljs-string">'r-hello'</span>)
   <span class="hljs-string">"build"</span>: <span class="hljs-string">"webpack -p"</span>
 }
 </code></pre>
-<p>На этом, мы заканчиваем с ознакомительной частью данного руководства и, уже в следующей части, перейдём непосредственно к написанию нашего приложения.</p>
+<p>Мы закончили с ознакомительной частью данного руководства и, уже в следующей, перейдём непосредственно к написанию нашего приложения. И начнём мы с создания модуля для хранения его состояния.</p>
+<h3 id="storage-module">Модуль хранения состояния</h3>
+
+<p>В папке <strong>models</strong> создайте файл <strong>User.js</strong>. Наше состояние будет храниться в экземпляре класса <strong>User</strong>. Давайте создадим этот класс, который будет иметь два свойства для хранения данных:</p>
+<pre><code class="lang-js"><span class="hljs-reserved">export</span> <span class="hljs-reserved">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> {</span>
+
+  constructor() {
+    <span class="hljs-keyword">this</span>.list = []
+    <span class="hljs-keyword">this</span>.current = {}
+  }
+
+}
+</code></pre>
+<ul>
+<li>свойство <strong>list</strong> - это список пользователей</li>
+<li>свойство <strong>current</strong> - это текущий пользователь</li>
+</ul>
+<blockquote>
+<p>Заметьте, что мы используем <strong>экспорт по умолчанию</strong> для нашего класса. Это обычная практика при работе с модулями, содержащими один единственный класс для экспорта, что не отменяет одновременно и <strong>именованный экспорт</strong>, если в этом возникнет такая необходимость.</p>
+</blockquote>
+<p>Теперь давайте добавим код для загрузки некоторых данных с сервера. Для связи с сервером мы будем использовать <strong><a href="https://developer.mozilla.org/ru/docs/Web/API/Fetch_API/Using_Fetch">Fetch</a> API</strong>, который является <strong><a href="https://developer.mozilla.org/ru/docs/Web/API/XMLHttpRequest">XMLHttpRequest</a></strong> нового поколения.</p>
+<p>Создайте метод <strong>getUsers</strong>, который будет запускать вызов <strong>XHR</strong> и получать список пользователей с сервера:</p>
+<pre><code class="lang-js"><span class="hljs-reserved">export</span> <span class="hljs-reserved">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> {</span>
+
+  constructor() {
+    <span class="hljs-keyword">this</span>.list = []
+    <span class="hljs-keyword">this</span>.current = {}
+  }
+
+  getUsers() {
+
+  }
+
+}
+</code></pre>
+<blockquote>
+<p>В этом руководстве, мы будем делать вызовы <strong>XHR</strong> для <strong><a href="http://rem-rest-api.herokuapp.com/">REM</a> API</strong>, который является фиктивным <strong><a href="https://ru.wikipedia.org/wiki/REST">REST</a> API</strong> для быстрого создания прототипов. Этот <strong>API</strong> возвращает список пользователей из конечной точки.</p>
+</blockquote>
+<p>Используя <strong>fetch</strong>, выполним <strong>XHR</strong>-запрос и заполним наш список <strong>list</strong> данными из конечной точки:</p>
+<pre><code class="lang-js"><span class="hljs-reserved">export</span> <span class="hljs-reserved">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> {</span>
+
+  constructor() {
+    <span class="hljs-keyword">this</span>.list = []
+    <span class="hljs-keyword">this</span>.current = {}
+  }
+
+  getUsers() {
+    fetch(<span class="hljs-string">'https://rem-rest-api.herokuapp.com/api/users'</span>, {
+      <span class="hljs-attribute">method</span>: <span class="hljs-string">'GET'</span>,
+      <span class="hljs-attribute">credentials</span>: <span class="hljs-string">'include'</span>
+    })
+      .<span class="hljs-keyword">then</span>(response =&gt; response.json())
+      .<span class="hljs-keyword">then</span>(result =&gt; {
+        <span class="hljs-keyword">this</span>.list = result.data
+      })
+  }
+
+}
+</code></pre>
+<ul>
+<li>свойство <strong>method</strong> - это метод <strong><a href="https://ru.wikipedia.org/wiki/HTTP">HTTP</a></strong></li>
+<li>свойство <strong>credentials</strong> - отвечает за <strong><a href="https://ru.wikipedia.org/wiki/Cookie">Cookie</a></strong></li>
+</ul>
+<p>В первом аргументе <strong>fetch</strong> передаётся <strong>url</strong> адрес для конечной точки <strong>API</strong>, второй аргумент представляет собой объект с параметрами запроса. В свойстве <strong>method</strong> этого объекта пишем <strong>GET</strong>, а для свойства <strong>credentials</strong> задаём значение <strong>include</strong>, которое указывает на то, что мы используем <strong>куки</strong>, поскольку это является обязательным требованием для <strong><a href="http://rem-rest-api.herokuapp.com/">REM</a> API</strong>.</p>
+<p>Вызов <strong>fetch</strong> возвращает <strong>промис</strong>, который, когда ответ будет получен, выполняет функции обратного вызова с объектом <strong><a href="https://developer.mozilla.org/ru/docs/Web/API/Response">Response</a></strong> или с ошибкой, если запрос не удался. Объект <strong>response</strong> предоставляет методы, позволяющие прочитать тело ответа в необходимом нам формате. В нашем случае, сервер возвращает нам ответ в формате <strong>JSON</strong>, который, с помощью метода <strong>json()</strong> объекта <strong>response</strong> в первом вызове <strong>.then</strong>, преобразуется в объект <strong>JavaScript</strong> и возвращается промис. Следующий <strong>.then</strong> присваивает полученные данные, которые представляют собой массив объектов <strong>JavaScript</strong>, свойству <strong>list</strong> нашего экземпляра класса <strong>User</strong>.</p>
+<p>Теперь мы создадим компонет <strong>UserList</strong>, который является представлением и служит для отображения данных из нашего модуля состояния.</p>
+<h3 id="create-component-userlist">Создание компонента UserList</h3>
+
+<p>Из папки <strong>views</strong>  удалите файл <strong>Hello.tag</strong>, поскольку компонент <strong>Hello</strong> нам больше не нужен. Удалите и его подключение из файлов <strong>App.js</strong> и <strong>index.html</strong>. Вот так теперь они должны у вас выглядеть:</p>
+<p><strong>App.js</strong></p>
+<pre><code class="lang-js"><span class="hljs-comment">// подключаем Riot.js</span>
+import riot <span class="hljs-keyword">from</span> <span class="hljs-string">'riot'</span>
+</code></pre>
+<p><strong>index.html</strong></p>
+<pre><code class="lang-html"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span class="hljs-value">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"viewport"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"width=device-width, initial-scale=1.0"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">http-equiv</span>=<span class="hljs-value">"X-UA-Compatible"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"ie=edge"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>Riot Application<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"build.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
+</code></pre>
+<p>В папке <strong>views</strong> создайте файл <strong>UserList.tag</strong>:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">r-list</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"list"</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-title">r-list</span>&gt;</span>
+</code></pre>
+<p>Наш компонент пока содержит только шаблон, в виде пустого списка с классом <strong>list</strong>. Стили и логику мы добавим позже.</p>
+<p>Теперь давайте обратимся к списку пользователей из модели, которую мы создали ранее, чтобы динамически пройти по всем данным. Добавьте в компонент <strong>UserList</strong> ссылки на пользователей:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">r-list</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"list"</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- добавляем ссылки на пользователей --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#!/edit/{ id }"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"list__item"</span> <span class="hljs-attribute">each</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">list</span> } <span class="hljs-attribute">key</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">id</span> }&gt;</span>{ firstName } { lastName }<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-title">r-list</span>&gt;</span>
+</code></pre>
+<p>В ссылке имеется атрибут <strong>each</strong>, который отвечает за реализацию циклов в <strong>Riot.js</strong>. Он получает свойство <strong>list</strong> объекта компонента, которое, впоследствии, будет ссылаться на одноимённое свойство экземпляра объекта класса <strong>User</strong>, и представляет из себя массив объектов получаемых от сервера. Каждый объект в этом массиве содержит свойства: <strong>id</strong>, <strong>firstName</strong> и <strong>lastName</strong>. В приведённом выше примере, мы просто выводим содержимое этих свойст в ссылку для каждого пользователя.</p>
+<p>Вот как выглядит <strong><a href="https://ru.wikipedia.org/wiki/JSON">JSON</a></strong>-файл получаемый с сервера:</p>
+<pre><code class="lang-js">{
+  "<span class="hljs-attribute">data</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+      "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"Peter"</span></span>,
+      "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Mackenzie"</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+      "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"Cindy"</span></span>,
+      "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Zhang"</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">3</span></span>,
+      "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"Ted"</span></span>,
+      "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Smith"</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">4</span></span>,
+      "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"Susan"</span></span>,
+      "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Fernbrook"</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+      "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"Emily"</span></span>,
+      "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Kim"</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">6</span></span>,
+      "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"Peter"</span></span>,
+      "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Zhang"</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">7</span></span>,
+      "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"Cindy"</span></span>,
+      "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Smith"</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">8</span></span>,
+      "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"Ted"</span></span>,
+      "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Fernbrook"</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">9</span></span>,
+      "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"Susan"</span></span>,
+      "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Kim"</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">10</span></span>,
+      "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"Emily"</span></span>,
+      "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Mackenzie"</span>
+    </span>}
+  ]</span>,
+  "<span class="hljs-attribute">offset</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+  "<span class="hljs-attribute">limit</span>": <span class="hljs-value"><span class="hljs-number">10</span></span>,
+  "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">25</span>
+</span>}
+</code></pre>
+<p>В объекте нашей модели данных класса <strong>User</strong>, мы определили свойство <strong>list</strong>, которое является массивом и будет хранить содержимое свойства <strong>data</strong>, возвращаемого с сервера файла <strong>JSON</strong>. Последние три свойства в этом файле: <strong>offset</strong>, <strong>limit</strong> и <strong>total</strong> используются исключительно для уточнения запросов. Мы воспользуемся свойством <strong>limit</strong> позже, для указания количества выводимых пользователей. По умолчанию оно равно 10.</p>
+<p>Добавим немного стилей в наш компонент. Стили в компоненте размещаются между стандартными тегами <strong>style</strong>:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">r-list</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"list"</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- добавляем ссылки на пользователей --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#!/edit/{ id }"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"list__item"</span> <span class="hljs-attribute">each</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">list</span> } <span class="hljs-attribute">key</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">id</span> }&gt;</span>{ firstName } { lastName }<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+
+  <span class="hljs-comment">&lt;!--  добавляем стили  --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
+    <span class="hljs-class">.list</span> <span class="hljs-rules">{
+      <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">10px</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule">}</span></span>
+    <span class="hljs-class">.list__item</span> <span class="hljs-rules">{
+      <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#fafafa</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1px</span> solid <span class="hljs-hexcolor">#ddd</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#333</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1px</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">8px</span> <span class="hljs-number">15px</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">text-decoration</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule">}</span></span>
+    <span class="hljs-class">.list__item</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+      <span class="hljs-rule"><span class="hljs-attribute">text-decoration</span>:<span class="hljs-value"> underline</span></span>;
+    <span class="hljs-rule">}</span></span>
+  </span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-title">r-list</span>&gt;</span>
+</code></pre>
+<blockquote>
+<p>Файл компонента представляет из себя обычный <strong>HTML</strong>, но с некоторыми усовершенствованиями, засчет возможностей <strong>Riot.js</strong>.</p>
+</blockquote>
+<p>Последнее, что нам осталось сделать, это определить логику нашего компонента. Её можно разместить как между тегами <strong>script</strong>, так и просто в теле компонента. Мы будем использовать первый вариант.</p>
+<p>Итак, нам нужно получить список пользователей с сервера и вывести их в нашем компоненте. Т.е. нам нужно вызвать метод <strong>getUsers</strong> экземплара класса <strong>User</strong>. Этот метод заполнит массив <strong>list</strong> данного класса полученными данными от сервера, а уже потом, мы сможем на него сослаться из нашего компонента и прогнать в цикле.</p>
+<p>Для подобных целей, <strong>Riot.js</strong> предоставляет <strong>примеси</strong> и <strong>наблюдателя</strong>. Наблюдатель позволяет отслеживать события и выполнять соответствующие действия при их наступлении, а примеси, позволят расширить функциональность нашего компонента, добавив в него возможность эти события ловить и правильно на нах реагировать.</p>
+<p>Давайте сделаем нашу модель данных наблюдаемой. Откройте файл <strong>User.js</strong> и в конструктор класса <strong>User</strong> добавьте параметр <strong>riot</strong>, через который мы будем ссылаться на библиотеку <strong>Riot.js</strong>, и в конце этого конструктора, добавьте команду:</p>
+<pre><code class="lang-js">riot.observable(<span class="hljs-keyword">this</span>)
+</code></pre>
+<p>Эта команда делает <strong>наблюдаемым</strong>, каждый возвращаемый экземпляр объекта класса <strong>User</strong>:</p>
+<pre><code class="lang-js">constructor(riot) {
+  <span class="hljs-keyword">this</span>.<span class="hljs-built_in">list</span> = []
+  <span class="hljs-keyword">this</span>.current = {}
+  <span class="hljs-comment">// делаем объект модели данных наблюдаемым</span>
+  riot.observable(<span class="hljs-keyword">this</span>)
+}
+</code></pre>
+<p>Теперь наш модуль хранения состояния выглядит так:</p>
+<pre><code class="lang-js"><span class="hljs-reserved">export</span> <span class="hljs-reserved">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> {</span>
+
+  constructor(riot) {
+    <span class="hljs-keyword">this</span>.list = []
+    <span class="hljs-keyword">this</span>.current = {}
+    <span class="hljs-regexp">//</span> делаем объект модели данных наблюдаемым
+    riot.observable(<span class="hljs-keyword">this</span>)
+  }
+
+  getUsers() {
+    fetch(<span class="hljs-string">'https://rem-rest-api.herokuapp.com/api/users'</span>, {
+      <span class="hljs-attribute">method</span>: <span class="hljs-string">'GET'</span>,
+      <span class="hljs-attribute">credentials</span>: <span class="hljs-string">'include'</span>
+    })
+      .<span class="hljs-keyword">then</span>(response =&gt; response.json())
+      .<span class="hljs-keyword">then</span>(result =&gt; {
+        <span class="hljs-keyword">this</span>.list = result.data
+      })
+  }
+
+}
+</code></pre>
+<p>Наш объект модели данных теперь сможет запускать события, но в этом не будет никакого смысла, поскольку обработчики этих событий должны распологаться в компонентах, а они, попросту пока не могут контактировать с нашим наблюдателем. И для этого, в <strong>Riot.js</strong> предусмотрены <strong>примеси</strong>, которые позволяют расширить функциональность наблюдателя нашей модели данных на любые компонеты.</p>
+<p>Откройте главный файл приложения <strong>App.js</strong>. Давайте создадим примесь <strong>user</strong>, которая будет ссылаться на экземпляр наблюдаемой модели данных класса <strong>User</strong>:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// подключаем Riot.js</span>
+import riot <span class="hljs-keyword">from</span> <span class="hljs-string">'riot'</span>
+
+<span class="hljs-comment">// подключаем модель данных User</span>
+import User <span class="hljs-keyword">from</span> <span class="hljs-string">'./models/User'</span>
+
+<span class="hljs-comment">// создаём общую примесь user и передаём в конструктор модели данных User</span>
+<span class="hljs-comment">// ссылку на библиотеку Riot.js, в виде аргумента riot</span>
+riot.mixin({ user: <span class="hljs-keyword">new</span> User(riot) })
+</code></pre>
+<blockquote>
+<p>Обратите внимание, что во время создания примеси <strong>user</strong>, мы передали в наш класс <strong>ссылку</strong> на библиотеку <strong>Riot.js</strong>, через аргумент <strong>riot</strong> класса <strong>User</strong>, которая будет доступна через одноимённый параметр данного класса. Также заметьте, что перед этим, мы подключили <strong>модель данных</strong> в приложение.</p>
+</blockquote>
+<p>Осталось научить наши компоненты реагировать на события, которые будет генерировать наша модель данных, после успешного получения данных от сервера. Но прежде, давайте на минуту вернёмся в модуль нашей модели данных и научим нашу модель запускать эти самые события, после успешного ответа сервера.</p>
+<p>Откройте файл <strong>User.js</strong> и в функции <strong>getUsers</strong>, в конце последнего <strong>.then</strong>, добавьте команду:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>.trigger(<span class="hljs-string">'updated'</span>)
+</code></pre>
+<p>Она будет следовать сразу, после присвоения данных ответа сервера свойству <strong>list</strong>, нашей модели данных класса <strong>User</strong>:</p>
+<pre><code class="lang-js">.then(result =&gt; {
+  <span class="hljs-comment">// присваиваем результат ответа сервера свойству list модели данных</span>
+  <span class="hljs-keyword">this</span>.list = result.data
+  <span class="hljs-comment">// запускаем событие updated, после успешного получения данных от сервера</span>
+  <span class="hljs-keyword">this</span>.trigger(<span class="hljs-string">'updated'</span>)
+})
+</code></pre>
+<p>Полный код модуля хранения состояния должен выглядеть так:</p>
+<pre><code class="lang-js">export <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title">User</span> {
+
+  constructor(riot) {
+    <span class="hljs-keyword">this</span>.list = []
+    <span class="hljs-keyword">this</span>.current = {}
+    <span class="hljs-comment">// делаем объект модели данных наблюдаемым</span>
+    riot.observable(<span class="hljs-keyword">this</span>)
+  }
+
+  getUsers() {
+    fetch(<span class="hljs-string">'https://rem-rest-api.herokuapp.com/api/users'</span>, {
+      method: <span class="hljs-string">'GET'</span>,
+      credentials: <span class="hljs-string">'include'</span>
+    })
+      .then(response =&gt; response.json())
+      .then(result =&gt; {
+        <span class="hljs-comment">// присваиваем результат ответа сервера свойству list модели данных</span>
+        <span class="hljs-keyword">this</span>.list = result.data
+        <span class="hljs-comment">// запускаем событие updated, после успешного получения данных от сервера</span>
+        <span class="hljs-keyword">this</span>.trigger(<span class="hljs-string">'updated'</span>)
+      })
+  }
+
+}
+</code></pre>
+<p>Закончим с компонентом <strong>UserList</strong>. Откройте файл <strong>UserList.tag</strong>, добавьте в конце тела компонента теги <strong>script</strong>, и введите следующий код:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+
+  <span class="hljs-comment">// запускаем метод getUsers, нашей модели данных</span>
+  <span class="hljs-keyword">this</span>.user.getUsers()
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre>
+<p>Поскольку мы расширили экземпляр модели данных класса <strong>User</strong> для любых компонентов с помощью примеси <strong>user</strong>, мы можем ссылаться на этот экземпляр данных, через одноимённое свойство самого <strong>объекта компонента</strong>, на которое указывает ключевое слово <strong>this</strong>.</p>
+<p>Данный код будет выполнен до монтирования тега на страницу. Он запускает метод <strong>getUsers</strong> нашей модели данных, который, внутри себя, запускает <strong>fetch</strong>, который выполняется асинхронно, и после загрузки данных с сервера, вызывает событие <strong>updated</strong>.</p>
+<p>Теперь нам нужно отловить это событие модели данных в нашем компоненте и запустить событие <strong>update</strong> самого компонента:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+
+  <span class="hljs-comment">// запускаем метод getUsers, нашей модели данных</span>
+  <span class="hljs-keyword">this</span>.user.getUsers()
+
+  <span class="hljs-comment">// запускаем событие обновления компонента (this.update)</span>
+  <span class="hljs-comment">// при получении события updated от модели данных</span>
+  <span class="hljs-keyword">this</span>.user.one(<span class="hljs-string">'updated'</span>, <span class="hljs-keyword">this</span>.update)
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre>
+<p>В котором, в свою очередь, мы присваиваем свойству <strong>list</strong> объекта компонента значение, одноимённого свойства <strong>list</strong> нашей модели данных:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+
+  <span class="hljs-comment">// запускаем метод getUsers, нашей модели данных</span>
+  <span class="hljs-keyword">this</span>.user.getUsers()
+
+  <span class="hljs-comment">// запускаем событие обновления компонента (this.update)</span>
+  <span class="hljs-comment">// при получении события updated от модели данных</span>
+  <span class="hljs-keyword">this</span>.user.one(<span class="hljs-string">'updated'</span>, <span class="hljs-keyword">this</span>.update)
+
+  <span class="hljs-comment">// присваиваем свойству list нашего компонента значение</span>
+  <span class="hljs-comment">// полученное моделью данных при запуске её метода getUsers()</span>
+  <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'update'</span>, () =&gt; <span class="hljs-keyword">this</span>.list = <span class="hljs-keyword">this</span>.user.list)
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre>
+<p>после чего, компонет обновляется и полученные данные отображаются на странице.</p>
+<p>Итоговый код компонента <strong>UserList</strong>:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">r-list</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"list"</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- добавляем ссылки на пользователей --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#!/edit/{ id }"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"list__item"</span> <span class="hljs-attribute">each</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">list</span> } <span class="hljs-attribute">key</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">id</span> }&gt;</span>{ firstName } { lastName }<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+
+  <span class="hljs-comment">&lt;!--  добавляем стили  --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
+    <span class="hljs-class">.list</span> <span class="hljs-rules">{
+      <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">10px</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule">}</span></span>
+    <span class="hljs-class">.list__item</span> <span class="hljs-rules">{
+      <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#fafafa</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1px</span> solid <span class="hljs-hexcolor">#ddd</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#333</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1px</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">8px</span> <span class="hljs-number">15px</span></span></span>;
+      <span class="hljs-rule"><span class="hljs-attribute">text-decoration</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule">}</span></span>
+    <span class="hljs-class">.list__item</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+      <span class="hljs-rule"><span class="hljs-attribute">text-decoration</span>:<span class="hljs-value"> underline</span></span>;
+    <span class="hljs-rule">}</span></span>
+  </span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+
+  <span class="hljs-comment">&lt;!--  добавляем логику  --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+
+    <span class="hljs-comment">// запускаем метод getUsers, нашей модели данных</span>
+    <span class="hljs-keyword">this</span>.user.getUsers()
+
+    <span class="hljs-comment">// запускаем событие обновления компонента (this.update)</span>
+    <span class="hljs-comment">// при получении события updated от модели данных</span>
+    <span class="hljs-keyword">this</span>.user.one(<span class="hljs-string">'updated'</span>, <span class="hljs-keyword">this</span>.update)
+
+    <span class="hljs-comment">// присваиваем свойству list нашего компонента значение</span>
+    <span class="hljs-comment">// полученное моделью данных при запуске её метода getUsers()</span>
+    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'update'</span>, () =&gt; <span class="hljs-keyword">this</span>.list = <span class="hljs-keyword">this</span>.user.list)
+
+  </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-title">r-list</span>&gt;</span>
+</code></pre>
+<p>Подключим компонент к приложению и примонтируем его в файле <strong>App.js</strong>:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// подключаем Riot.js</span>
+<span class="hljs-keyword">import</span> riot from <span class="hljs-string">'riot'</span>
+
+<span class="hljs-comment">// подключаем модель данных User</span>
+<span class="hljs-keyword">import</span> User from <span class="hljs-string">'./models/User'</span>
+
+<span class="hljs-comment">// подключаем компонент UserList</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'./views/UserList.tag'</span>
+
+<span class="hljs-comment">// создаём общую примесь user и передаём в конструктор модели данных User</span>
+<span class="hljs-comment">// ссылку на библиотеку Riot.js, в виде аргумента riot</span>
+riot.mixin({ user: <span class="hljs-keyword">new</span> User(riot) })
+
+<span class="hljs-comment">// монтируем компонент UserList</span>
+riot.mount(<span class="hljs-string">'r-list'</span>)
+</code></pre>
+<p>а затем, подключим и к странице в файле <strong>index.html</strong>:</p>
+<pre><code class="lang-html"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span class="hljs-value">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"viewport"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"width=device-width, initial-scale=1.0"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">http-equiv</span>=<span class="hljs-value">"X-UA-Compatible"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"ie=edge"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>Riot Application<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+
+  <span class="hljs-comment">&lt;!-- подключаем компонент UserList к странице --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">r-list</span> /&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"dist/build.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
+</code></pre>
+<p>Если мы теперь запустим из терминала команду:</p>
+<pre><code><span class="hljs-built_in">npm</span> run dev
+</code></pre><p>то, откроется страница браузера со списком из 10 пользователей:</p>
+<pre><code><span class="hljs-title">Peter</span> Mackenzie
+Cindy Zhang
+Ted Smith
+Susan Fernbrook
+Emily Kim
+Peter Zhang
+Cindy Smith
+Ted Fernbrook
+Susan Kim
+Emily Mackenzie
+</code></pre><p>Мы увеличим лимит пользователей позже, когда будем реализовывать операции <strong><a href="https://ru.wikipedia.org/wiki/CRUD">CRUD</a></strong> в другом компоненте, который мы тоже вскоре создадим.</p>
