@@ -1,7 +1,7 @@
 <h2 id="-riot-js">Простое приложение на Riot.js</h2>
 <p><img src="https://riot.js.org/img/logo/riot120x.png" alt="Riot"></p>
 <blockquote>
-<p>Данное руководство распространяется совершенно бесплатно и без каких-либо ограничений. Авторство остаётся за сайтом <strong><a href="http://riot-js.ru/">riot-js.ru</a></strong>.</p>
+<p>Данное руководство распространяется совершенно бесплатно и без каких-либо ограничений. Авторство остаётся за сайтом <a href="http://riot-js.ru/">riot-js.ru</a>.</p>
 </blockquote>
 <div id="toc">
   <p><a href="#preparatory-work">Подготовительные работы</a></p>
@@ -11,10 +11,10 @@
   <p><a href="#create-component-userlist">Создание компонента UserList</a></p>
 </div>
 
-<p><em>Давайте разработаем простое приложение, которое охватывает некоторые основные аспекты одностраничных приложений. Мы пройдём вес цикл разработки и в конечном итоге, создадим небольшое приложение использующее <strong><a href="https://ru.wikipedia.org/wiki/REST">REST</a> API</strong> и реализующее все основные операции <strong><a href="https://ru.wikipedia.org/wiki/CRUD">CRUD</a></strong> (Создание, Чтение, Обновление и Удаление). Для работы мы будем использовать <strong><a href="https://riot.js.org/">Riot.js</a></strong> версии <strong>3.13.2</strong> (на момент написания руководства), <strong><a href="https://webpack.js.org/">Webpack</a></strong> последней версии и <strong><a href="https://nodejs.org/en/">Node.js</a></strong> должен быть у вас установлен. Кроме этого, вы должны иметь базовые знания по <strong>Riot.js</strong>, поэтому, если их у вас нет, прочитайте <strong><a href="http://riot-js.ru/guide">Учебник</a></strong> и изучите <strong><a href="http://riot-js.ru/api">API</a></strong>.</em></p>
+<p><em>Давайте разработаем простое приложение, которое охватывает некоторые основные аспекты одностраничных приложений. Мы пройдём вес цикл разработки и в конечном итоге, создадим небольшое приложение использующее <a href="https://ru.wikipedia.org/wiki/REST">REST</a> API и реализующее все основные операции <a href="https://ru.wikipedia.org/wiki/CRUD">CRUD</a> (Создание, Чтение, Обновление и Удаление). Для работы мы будем использовать <a href="https://riot.js.org/">Riot.js</a> версии <strong>3.13.2</strong> (на момент написания руководства), <a href="https://webpack.js.org/">Webpack</a> последней версии и <a href="https://nodejs.org/en/">Node.js</a> должен быть у вас установлен. Кроме этого, вы должны иметь базовые знания по <strong>Riot.js</strong>, поэтому, если их у вас нет, прочитайте <a href="http://riot-js.ru/guide">Учебник</a> и изучите <a href="http://riot-js.ru/api">API</a>.</em></p>
 <h3 id="preparatory-work">Подготовительные работы</h3>
 
-<p>Интерактивный пример работы нашего будущего приложения, вы можете увидеть здесь: <strong><a href="http://272758.playcode.io/#!/list">Riot Application</a></strong></p>
+<p>Интерактивный пример работы нашего будущего приложения, вы можете увидеть здесь: <a href="http://272758.playcode.io/#!/list">Riot Application</a></p>
 <p>Мы начнём с создания рабочей директории и точки входа для нашего приложения. Создайте папку с названием <strong>app</strong>, а в ней создайте файл <strong>index.html</strong>:</p>
 <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
@@ -141,7 +141,7 @@ module.exports = {
 <h3 id="create-component-hello">Создание компонента Hello</h3>
 
 <blockquote>
-<p>Постарайтесь найти для своего редактора расширение, поддерживающие синтаксис <strong>riot</strong> в файлах <strong>.tag</strong>. Это сильно облегчит вам работу в дальнешей. Для редактора <strong><a href="https://code.visualstudio.com/">Visual Studio Code</a></strong>, такое <strong><a href="https://github.com/crisward/riot-tag">дополнение</a></strong> имеется.</p>
+<p>Постарайтесь найти для своего редактора расширение, поддерживающие синтаксис <strong>riot</strong> в файлах <strong>.tag</strong>. Это сильно облегчит вам работу в дальнешей. Для редактора <a href="https://code.visualstudio.com/">Visual Studio Code</a>, такое <a href="https://github.com/crisward/riot-tag">дополнение</a> имеется.</p>
 </blockquote>
 <p>В папке <strong>views</strong> создайте файл <strong>Hello.tag</strong>. В данном файле будет распологаться наш компонент, который мы назовем <strong>r-hello</strong>.</p>
 <blockquote>
@@ -176,7 +176,7 @@ You may need an appropriate loader to handle this file type.
 <blockquote>
 <p>Несмотря на ошибку, <strong>Webpack</strong> не завершает своё выполнение в терминале. Остановить его работу можно командой <strong>Ctrl+C</strong></p>
 </blockquote>
-<p>Мы будем использовать загрузчик <strong><a href="https://www.npmjs.com/package/riot-tag-new-loader">riot-tag-new-loader</a></strong>.</p>
+<p>Мы будем использовать загрузчик <a href="https://www.npmjs.com/package/riot-tag-new-loader">riot-tag-new-loader</a>.</p>
 <p>Откройте терминал из папки <strong>app</strong> или переведите терминал в неё другим способом, и введите команду:</p>
 <pre><code>npm i -D riot-tag-new-loader</code></pre><blockquote>
 <p>Флаг <strong>-D</strong> указывает на зависимость <strong>devDependencies</strong>, которая используется для процесса разработки, а флаг <strong>-S</strong> на <strong>dependencies</strong>, в которой указываются пакеты, используемые для работы самого приложения.</p>
@@ -297,7 +297,7 @@ riot.mount(&#39;r-hello&#39;)</code></pre>
 <blockquote>
 <p>Заметьте, что мы используем <strong>экспорт по умолчанию</strong> для нашего класса. Это обычная практика при работе с модулями, содержащими один единственный класс для экспорта, что не отменяет одновременно и <strong>именованный экспорт</strong>, если в этом возникнет такая необходимость.</p>
 </blockquote>
-<p>Теперь давайте добавим код для загрузки некоторых данных с сервера. Для связи с сервером мы будем использовать <strong><a href="https://developer.mozilla.org/ru/docs/Web/API/Fetch_API/Using_Fetch">Fetch</a> API</strong>, который является <strong><a href="https://developer.mozilla.org/ru/docs/Web/API/XMLHttpRequest">XMLHttpRequest</a></strong> нового поколения.</p>
+<p>Теперь давайте добавим код для загрузки некоторых данных с сервера. Для связи с сервером мы будем использовать <a href="https://developer.mozilla.org/ru/docs/Web/API/Fetch_API/Using_Fetch">Fetch</a> API, который является <a href="https://developer.mozilla.org/ru/docs/Web/API/XMLHttpRequest">XMLHttpRequest</a> нового поколения.</p>
 <p>Создайте метод <strong>getUsers</strong>, который будет запускать вызов <strong>XHR</strong> и получать список пользователей с сервера:</p>
 <pre><code class="language-js">export default class User {
 
@@ -312,7 +312,7 @@ riot.mount(&#39;r-hello&#39;)</code></pre>
 
 }</code></pre>
 <blockquote>
-<p>В этом руководстве, мы будем делать вызовы <strong>XHR</strong> для <strong><a href="http://rem-rest-api.herokuapp.com/">REM</a> API</strong>, который является фиктивным <strong><a href="https://ru.wikipedia.org/wiki/REST">REST</a> API</strong> для быстрого создания прототипов. Этот <strong>API</strong> возвращает список пользователей из конечной точки.</p>
+<p>В этом руководстве, мы будем делать вызовы <strong>XHR</strong> для <a href="http://rem-rest-api.herokuapp.com/">REM</a> API, который является фиктивным <a href="https://ru.wikipedia.org/wiki/REST">REST</a> API для быстрого создания прототипов. Этот <strong>API</strong> возвращает список пользователей из конечной точки.</p>
 </blockquote>
 <p>Используя <strong>fetch</strong>, выполним <strong>XHR</strong>-запрос и заполним наш список <strong>list</strong> данными из конечной точки:</p>
 <pre><code class="language-js">export default class User {
@@ -335,11 +335,11 @@ riot.mount(&#39;r-hello&#39;)</code></pre>
 
 }</code></pre>
 <ul>
-<li>свойство <strong>method</strong> - это метод <strong><a href="https://ru.wikipedia.org/wiki/HTTP">HTTP</a></strong></li>
-<li>свойство <strong>credentials</strong> - отвечает за <strong><a href="https://ru.wikipedia.org/wiki/Cookie">Cookie</a></strong></li>
+<li>свойство <strong>method</strong> - это метод <a href="https://ru.wikipedia.org/wiki/HTTP">HTTP</a></li>
+<li>свойство <strong>credentials</strong> - отвечает за <a href="https://ru.wikipedia.org/wiki/Cookie">Cookie</a></li>
 </ul>
-<p>В первом аргументе <strong>fetch</strong> передаётся <strong>url</strong> адрес для конечной точки <strong>API</strong>, второй аргумент представляет собой объект с параметрами запроса. В свойстве <strong>method</strong> этого объекта пишем <strong>GET</strong>, а для свойства <strong>credentials</strong> задаём значение <strong>include</strong>, которое указывает на то, что мы используем <strong>куки</strong>, поскольку это является обязательным требованием для <strong><a href="http://rem-rest-api.herokuapp.com/">REM</a> API</strong>.</p>
-<p>Вызов <strong>fetch</strong> возвращает <strong>промис</strong>, который, когда ответ будет получен, выполняет функции обратного вызова с объектом <strong><a href="https://developer.mozilla.org/ru/docs/Web/API/Response">Response</a></strong> или с ошибкой, если запрос не удался. Объект <strong>response</strong> предоставляет методы, позволяющие прочитать тело ответа в необходимом нам формате. В нашем случае, сервер возвращает нам ответ в формате <strong>JSON</strong>, который, с помощью метода <strong>json()</strong> объекта <strong>response</strong> в первом вызове <strong>.then</strong>, преобразуется в объект <strong>JavaScript</strong> и возвращается промис. Следующий <strong>.then</strong> присваивает полученные данные, которые представляют собой массив объектов <strong>JavaScript</strong>, свойству <strong>list</strong> нашего экземпляра класса <strong>User</strong>.</p>
+<p>В первом аргументе <strong>fetch</strong> передаётся <strong>url</strong> адрес для конечной точки <strong>API</strong>, второй аргумент представляет собой объект с параметрами запроса. В свойстве <strong>method</strong> этого объекта пишем <strong>GET</strong>, а для свойства <strong>credentials</strong> задаём значение <strong>include</strong>, которое указывает на то, что мы используем <strong>куки</strong>, поскольку это является обязательным требованием для <a href="http://rem-rest-api.herokuapp.com/">REM</a> API.</p>
+<p>Вызов <strong>fetch</strong> возвращает <strong>промис</strong>, который, когда ответ будет получен, выполняет функции обратного вызова с объектом <a href="https://developer.mozilla.org/ru/docs/Web/API/Response">Response</a> или с ошибкой, если запрос не удался. Объект <strong>response</strong> предоставляет методы, позволяющие прочитать тело ответа в необходимом нам формате. В нашем случае, сервер возвращает нам ответ в формате <strong>JSON</strong>, который, с помощью метода <strong>json()</strong> объекта <strong>response</strong> в первом вызове <strong>.then</strong>, преобразуется в объект <strong>JavaScript</strong> и возвращается промис. Следующий <strong>.then</strong> присваивает полученные данные, которые представляют собой массив объектов <strong>JavaScript</strong>, свойству <strong>list</strong> нашего экземпляра класса <strong>User</strong>.</p>
 <p>Теперь мы создадим компонет <strong>UserList</strong>, который является представлением и служит для отображения данных из нашего модуля состояния.</p>
 <h3 id="create-component-userlist">Создание компонента UserList</h3>
 
@@ -381,7 +381,7 @@ import riot from &#39;riot&#39;</code></pre>
 
 &lt;/r-list&gt;</code></pre>
 <p>В ссылке имеется атрибут <strong>each</strong>, который отвечает за реализацию циклов в <strong>Riot.js</strong>. Он получает свойство <strong>list</strong> объекта компонента, которое, впоследствии, будет ссылаться на одноимённое свойство экземпляра объекта класса <strong>User</strong>, и представляет из себя массив объектов получаемых от сервера. Каждый объект в этом массиве содержит свойства: <strong>id</strong>, <strong>firstName</strong> и <strong>lastName</strong>. В приведённом выше примере, мы просто выводим содержимое этих свойст в ссылку для каждого пользователя.</p>
-<p>Вот как выглядит <strong><a href="https://ru.wikipedia.org/wiki/JSON">JSON</a></strong>-файл получаемый с сервера:</p>
+<p>Вот как выглядит <a href="https://ru.wikipedia.org/wiki/JSON">JSON</a>-файл получаемый с сервера:</p>
 <pre><code class="language-js">{
   &quot;data&quot;: [
     {
@@ -686,4 +686,4 @@ Peter Zhang
 Cindy Smith
 Ted Fernbrook
 Susan Kim
-Emily Mackenzie</code></pre><p>Мы увеличим лимит пользователей позже, когда будем реализовывать операции <strong><a href="https://ru.wikipedia.org/wiki/CRUD">CRUD</a></strong> в другом компоненте, который мы тоже вскоре создадим.</p>
+Emily Mackenzie</code></pre><p>Мы увеличим лимит пользователей позже, когда будем реализовывать операции <a href="https://ru.wikipedia.org/wiki/CRUD">CRUD</a> в другом компоненте, который мы тоже вскоре создадим.</p>

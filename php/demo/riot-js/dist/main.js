@@ -6,21 +6,6 @@ var route=function(){"use strict";var e=function(u){u=u||{};var o={},l=Array.pro
 // const appPlugins = {}
 $(function() {
 
-  const $html = $('html')
-  const $buttonUp = $('.button-up')
-
-  $buttonUp.on('click', function() {
-    $html.stop().animate({scrollTop : 0}, 600)
-  })
-
-  $(window).on('scroll.button-up', function() {
-    if ($(window).scrollTop() > 150) $buttonUp.addClass('button-up--show')
-    else $buttonUp.removeClass('button-up--show')
-  })
-  
-})
-$(function() {
-
   const $menu = $('.menu')
   const $nav = $('.menu #nav')
   const $button = $('.menu .button')
@@ -37,6 +22,21 @@ $(function() {
     if(e.which == 27) {
       $menu.removeClass('open')
     }
+  })
+  
+})
+$(function() {
+
+  const $html = $('html')
+  const $buttonUp = $('.button-up')
+
+  $buttonUp.on('click', function() {
+    $html.stop().animate({scrollTop : 0}, 600)
+  })
+
+  $(window).on('scroll.button-up', function() {
+    if ($(window).scrollTop() > 150) $buttonUp.addClass('button-up--show')
+    else $buttonUp.removeClass('button-up--show')
   })
   
 })
