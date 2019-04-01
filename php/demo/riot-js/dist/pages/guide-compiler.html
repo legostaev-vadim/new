@@ -72,7 +72,7 @@
 
 <h2 id="pre-compilation">Предварительная компиляция</h2>
 
-<p>Прекомпиляция на сервере дает вам следующие преимущества:</p>
+<p>Прекомпиляция на сервере даёт вам следующие преимущества:</p>
 
 <ul>
   <li>Возможность компилировать теги с вашим <a href="#pre-processors">любимым препроцессором</a>.</li>
@@ -85,7 +85,7 @@
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install riot <span class="nt">-g</span>
 </code></pre></div></div>
 
-<p>После установки введите <code class="highlighter-rouge">riot --help</code> чтобы убедиться, что установка прошла успешно. Разумеется, для этого нужен установленный <a href="http://nodejs.org/">node.js</a>.</p>
+<p>После установки, введите <code class="highlighter-rouge">riot --help</code> чтобы убедиться, что установка прошла успешно. Разумеется, для этого нужен установленный <a href="http://nodejs.org/">node.js</a>.</p>
 
 <p>С предварительной компиляцией, ваш HTML будет выглядеть примерно так:</p>
 
@@ -120,7 +120,7 @@ riot some.tag some_folder/some.js
 <span class="c"># компилировать все файлы из исходной папки в целевую папку</span>
 riot some/folder path/to/dist
 
-<span class="c"># омпилировать все файлы из исходной папки и объединить их в один файл</span>
+<span class="c"># компилировать все файлы из исходной папки и объединить их в один файл</span>
 riot some/folder all-my-tags.js
 
 </code></pre></div></div>
@@ -131,7 +131,7 @@ riot some/folder all-my-tags.js
 
 <h3 id="watch-mode">Режим просмотра</h3>
 
-<p>Вы можете следить за изменениями в файлах и автоматически их компилировать при изменении.</p>
+<p>Вы можете следить за файлами и автоматически их компилировать при изменении.</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># следить за</span>
 riot <span class="nt">-w</span> src dist
@@ -185,7 +185,7 @@ riot <span class="nt">-w</span> src dist
 <span class="p">};</span>
 </code></pre></div></div>
 
-<h3 id="node-module">Node модуль</h3>
+<h3 id="node-module">Модуль node</h3>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">riot</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'riot'</span><span class="p">)</span>
 
@@ -224,7 +224,7 @@ riot <span class="nt">-w</span> src dist
 riot <span class="nt">--type</span> coffee <span class="nt">--expr</span> source.tag
 </code></pre></div></div>
 
-<p>Аргумент <code class="highlighter-rouge">--expr</code> указывает, что все выражения также обрабатываются. Вы также можете использовать “cs” в качестве псевдонима “coffee”. Вот пример тэга, написанного на CoffeeScript:</p>
+<p>Аргумент <code class="highlighter-rouge">--expr</code> указывает, что все выражения также обрабатываются. Вы также можете использовать “cs”, в качестве псевдонима “coffee”. Вот пример тэга, написанного на CoffeeScript:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">kids</span><span class="o">&gt;</span>
 
@@ -240,7 +240,7 @@ riot <span class="nt">--type</span> coffee <span class="nt">--expr</span> source
 <span class="o">&lt;</span><span class="sr">/kids</span><span class="err">&gt;
 </span></code></pre></div></div>
 
-<p>Обратите внимание, что <code class="highlighter-rouge">each</code> атрибут также является CoffeeScript. CoffeeScript должен быть установлен на вашем компьютере:</p>
+<p>Обратите внимание, что атрибут <code class="highlighter-rouge">each</code> также является CoffeeScript. CoffeeScript должен быть установлен на вашем компьютере:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install coffee-script <span class="nt">-g</span>
 </code></pre></div></div>
@@ -290,7 +290,7 @@ babel es6.tags.js <span class="nt">--out-file</span> tags.js
 
 <h3 id="typescript">TypeScript</h3>
 
-<p>TypeScript добавляет необязательную статическую типизацию в JavaScript. Используйте <code class="highlighter-rouge">--type typescript</code> для включения:</p>
+<p>TypeScript добавляет необязательную статическую типизацию в JavaScript. Для использования, укажите <code class="highlighter-rouge">--type typescript</code>:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># использование препроцессора TypeScript</span>
 riot <span class="nt">--type</span> typescript source.tag
@@ -323,7 +323,7 @@ riot <span class="nt">--type</span> typescript source.tag
 riot <span class="nt">--type</span> livescript <span class="nt">--expr</span> source.tag
 </code></pre></div></div>
 
-<p>Аргумент <code class="highlighter-rouge">--expr</code> указывает, что все выражения также обрабатываются. Вы также можете использовать “ls” в качестве псевдонима “livescript”. Вот пример тэга, написанного на LiveScript:</p>
+<p>Аргумент <code class="highlighter-rouge">--expr</code> указывает, что все выражения также обрабатываются. Вы можете использовать “ls”, в качестве псевдонима “livescript”. Вот пример тэга, написанного на LiveScript:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;kids&gt;</span>
 
@@ -338,7 +338,7 @@ this.kids =
 <span class="nt">&lt;/kids&gt;</span>
 </code></pre></div></div>
 
-<p>Обратите внимание, что <code class="highlighter-rouge">each</code> атрибут также является LiveScript. LiveScript должен быть установлен на вашем компьютере:</p>
+<p>Обратите внимание, что атрибут <code class="highlighter-rouge">each</code> также является LiveScript. LiveScript должен быть установлен на вашем компьютере:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install LiveScript <span class="nt">-g</span>
 </code></pre></div></div>
@@ -402,7 +402,7 @@ riot <span class="nt">--template</span> pug source.tag
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>И передать её как параметр <code class="highlighter-rouge">parser</code> в <code class="highlighter-rouge">riot.compile</code></p>
+<p>И передать её, как параметр <code class="highlighter-rouge">parser</code> в <code class="highlighter-rouge">riot.compile</code></p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">riot</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'riot'</span><span class="p">)</span>
 

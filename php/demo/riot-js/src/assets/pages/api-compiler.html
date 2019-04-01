@@ -16,7 +16,7 @@
 <h3 id="-riotcompilecallback">
 <a name="compile"></a> riot.compile(callback)</h3>
 
-<p>Компиляция в JavaScript всех тегов с типом <code class="highlighter-rouge">&lt;script type="riot/tag"&gt;</code>. Они могут быть встроены в страницу или быть подключены как внешний ресурс, с помощью атрибута <code class="highlighter-rouge">src</code>. После того, как все теги скомпилируются, вызывается метод <code class="highlighter-rouge">callback</code>. Например:</p>
+<p>Компиляция в JavaScript всех тегов с типом <code class="highlighter-rouge">&lt;script type="riot/tag"&gt;</code>. Они могут быть встроены в страницу или быть подключены как внешний ресурс, с помощью атрибута <code class="highlighter-rouge">src</code>. После того, как все теги скомпилируются, вызывается функция <code class="highlighter-rouge">callback</code>. Например:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
@@ -35,7 +35,7 @@
 <h3 id="-riotcompileurl-callback">
 <a name="compile-fn"></a> riot.compile(url, callback)</h3>
 
-<p>Загружает и компилирует все теги, которые содержатся в ресурсе по URL. После компиляции вызывается <code class="highlighter-rouge">callback</code>. Например:</p>
+<p>Загружает и компилирует все теги, которые содержатся в ресурсе по URL. После компиляции, вызывается функция <code class="highlighter-rouge">callback</code>. Например:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="s1">'my/tags.tag'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// загруженные теги готовы к использованию</span>
@@ -61,9 +61,9 @@
 
 <p>После вызова, вы можете использовать <code class="highlighter-rouge">my-tag</code> как обычно.</p>
 
-<p>Предполагается, что первый непробельный символ строки <code class="highlighter-rouge">&lt;</code>, в противном случае, аргумент воспринимается как URL.</p>
+<p>Предполагается, что первый непробельный символ строки является <code class="highlighter-rouge">&lt;</code>, в противном случае, аргумент воспринимается как URL.</p>
 
-<p><span class="tag red">Примечание:</span> При компиляции тегов в браузере, теги скриптов не допускаются. Последний закрывающий тег определяет начало части скрипта тега.</p>
+<p><span class="tag red">Примечание:</span> При компиляции тегов в браузере, теги скриптов не допускаются. Последний закрывающий тег, определяет начало части скрипта тега.</p>
 
 <p>@returns скомпилированный JavaScript в виде строки</p>
 
@@ -89,11 +89,11 @@
 <span class="kd">const</span> <span class="nx">js</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">tagSource</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">tagPath</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Принимает пользовательский тег в виде строки и возвращает JavaScript,  тоже в виде строки.</p>
+<p>Принимает пользовательский тег в виде строки и возвращает JavaScript, тоже в виде строки.</p>
 
 <h4 id="sourcemaps-experimental">Sourcemaps (экспериментальный)</h4>
 
-<p>Если вы укажете компилятору параметр <code class="highlighter-rouge">sourcemap=true</code>, то он вернёт объект содержащий <code class="highlighter-rouge">code</code> и <code class="highlighter-rouge">sourcemap</code>. <strong>Текущей компилятор riot не использует “настоящий парсер”, поэтому сгенерированные карты кода могут быть неточными. </strong>
+<p>Если вы укажете компилятору параметр <code class="highlighter-rouge">sourcemap=true</code>, то он вернёт объект содержащий <code class="highlighter-rouge">code</code> и <code class="highlighter-rouge">sourcemap</code>. <strong>Текущей компилятор riot не использует “настоящий парсер”, поэтому, сгенерированные карты кода могут быть неточными. </strong>
 Мы постараемся это исправить в следующем основном выпуске riot.</p>
 
 <p>Ниже вы можете увидеть, как генерировать карты кода, используя предыдущий пример:</p>
@@ -184,20 +184,20 @@
 <h4 id="js">js</h4>
 <ul>
   <li>
-<code class="highlighter-rouge">none</code> or <code class="highlighter-rouge">javascript</code>
+<code class="highlighter-rouge">none</code> или <code class="highlighter-rouge">javascript</code>
 </li>
   <li><code class="highlighter-rouge">livescript</code></li>
   <li><code class="highlighter-rouge">typescript</code></li>
   <li>
-<code class="highlighter-rouge">es6</code> - (using <code class="highlighter-rouge">babel-core</code> v6.x and the <code class="highlighter-rouge">es2015</code> preset)</li>
+<code class="highlighter-rouge">es6</code> - (с использованием <code class="highlighter-rouge">babel-core</code> v6.x и пресета <code class="highlighter-rouge">es2015</code>)</li>
   <li><code class="highlighter-rouge">buble</code></li>
   <li>
-<code class="highlighter-rouge">coffee</code> or <code class="highlighter-rouge">coffeescript</code>
+<code class="highlighter-rouge">coffee</code> или <code class="highlighter-rouge">coffeescript</code>
 </li>
 </ul>
 
 <h2 id="changes-in-v230">Изменения в v2.3.0</h2>
 
-<p>В предыдущих версиях экранирующие скобки сохранялись, что приводило к генерации неправильного HTML или JavaScript. В текущей версии они удаляются на ранней стадии, после прохождения тега через HTML-парсер, но до того, как тег попадёт в парсер JavaScript.</p>
+<p>В предыдущих версиях, экранирующие скобки сохранялись, что приводило к генерации неправильного HTML или JavaScript. В текущей версии, они удаляются на ранней стадии, после прохождения тега через HTML-парсер, но до того, как тег попадёт в парсер JavaScript.</p>
 
 </section>
