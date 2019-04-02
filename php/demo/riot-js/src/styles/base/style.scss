@@ -529,7 +529,6 @@ pre code {
 #tabs a.current {
     border-bottom: 3px solid red;
     color: #000;
-    cursor: default;
 }
 @media (max-width: 880px) {
     #tabs {
@@ -676,7 +675,6 @@ a.blue:hover {
 }
 #nav .current {
     text-decoration: none;
-    cursor: default;
 }
 @media (max-width: 880px) {
     #nav {
@@ -843,7 +841,6 @@ a#current-lang:hover {
 }
 #footer .current {
     text-decoration: underline;
-    cursor: default;
 }
 #footer:after {
     content: "";

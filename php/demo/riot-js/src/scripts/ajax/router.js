@@ -15,14 +15,19 @@ $(function() {
   const duration = 300
   const error = '404'
   const $tabs = {}
+  let indent = 0
   let page = $main.attr('data-page')
   let prevPage = location.pathname
   let $currentTabs
   let tabsName
-  let indent
+  let $anchor
   let href
 
-  if(location.hash) $html.scrollTop($main.find(location.hash).offset().top - 100)
+  if(location.hash) {
+    $anchor =  $main.find(location.hash)
+    if($anchor[0]) $html.scrollTop($anchor.offset().top - 100)
+    else $html.scrollTop(indent)
+  }
 
   $('[data-tabs').each(function() {
     $tabs[$(this).data('tabs')] = $($(this).html())
@@ -36,7 +41,11 @@ $(function() {
   function load_page(data, anchor) {
     $main.html(data).attr('data-page', page)
     if(tabsName) $main.find('#tabs').empty().append($currentTabs)
-    if(anchor) indent = $main.find('#' + anchor).offset().top - 100
+    if(anchor) {
+      $anchor =  $main.find(anchor)
+      if($anchor[0]) indent = $anchor.offset().top - 100
+      else indent = 0
+    }
     else indent = 0
     $html.scrollTop(indent)
     $main.fadeTo(duration, 1)
@@ -46,14 +55,22 @@ $(function() {
 
   $main.on('click', 'a[href^="#"]', function(e) {
     if(location.hash === $(this).attr('href')) {
-      $html.scrollTop($main.find($(this).attr('href')).offset().top - 100)
+      $anchor = $main.find($(this).attr('href'))
+      if($anchor[0]) $html.scrollTop($anchor.offset().top - 100)
     }
+    else
+      return e.stopPropagation()
   })
 
-  route(function(path, anchor) {
+  route(function(...path) {
 
-    if(prevPage === location.pathname && anchor) {
-      $html.scrollTop($main.find(location.hash).offset().top - 100)
+    if(path.length > 2) path = error
+    else if(location.hash) path = path[0]
+    else path = path.pop()
+
+    if(prevPage === location.pathname && location.hash) {
+      $anchor = $main.find(location.hash)
+      if($anchor[0]) $html.scrollTop($anchor.offset().top - 100)
       return
     }
     
@@ -79,17 +96,17 @@ $(function() {
 
     $main.fadeTo(duration, 0, function() {
       if(page in pageStore) {
-        load_page(pageStore[page].main, anchor)
+        load_page(pageStore[page].main, location.hash)
         $description.attr('content', pageStore[page].description)
       } else {
         $.ajax({
-          url: `dist/pages/${page || 'index'}.html`,
+          url: `/dist/pages/${page || 'index'}.html`,
           success(data) {
-            load_page(data, anchor)
+            load_page(data, location.hash)
           }
         })
         $.ajax({
-          url: `dist/description/${page || 'index'}.txt`,
+          url: `/dist/description/${page || 'index'}.txt`,
           success(data) {
             $description.attr('content', data)
           }
@@ -103,7 +120,7 @@ $(function() {
       } else if(page === error) {
         $title.text(error)
       } else if(tabsName) {
-        if(anchor) href = location.href.slice(0, location.href.indexOf('#'))
+        if(location.hash) href = location.href.slice(0, location.href.indexOf('#'))
         else href = location.href
         $currentTabs.removeClass('current').each(function() {
           if($(this)[0].href === href) {

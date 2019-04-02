@@ -47,13 +47,13 @@ $(function() {
         $description.attr('content', pageStore[page].description)
       } else {
         $.ajax({
-          url: `dist/pages/${page || 'index'}.html`,
+          url: `/dist/pages/${page || 'index'}.html`,
           success(data) {
             load_page(data)
           }
         })
         $.ajax({
-          url: `dist/description/${page || 'index'}.txt`,
+          url: `/dist/description/${page || 'index'}.txt`,
           success(data) {
             $description.attr('content', data)
           }
