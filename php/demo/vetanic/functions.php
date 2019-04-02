@@ -7,7 +7,7 @@ function get_menu() {
   $current = $item.'--current';
 
   if(!isset($_GET['id'])) $href = '/';
-  else $href = $_GET['id'];
+  else $href = '/' . $_GET['id'];
 
   foreach ($menu as $key => $value) {
     if($key == $href) $class = "$item $current";

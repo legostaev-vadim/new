@@ -18,6 +18,7 @@ $(function() {
   let page = $main.attr('id')
 
   $current.text($items.filter('.menu__item--current').text() || error)
+  
   for (const key in appPlugins) appPlugins[key]()
 
   pageStore[page] = {
@@ -33,9 +34,11 @@ $(function() {
   }
 
 
-  route(function(path) {
+  route(function(...path) {
 
-    if($items.is(`[href="${path || '/'}"]`)) page = path || 'index'
+    path = path.pop()
+
+    if($items.is(`[href="${('/' + path) || '/'}"]`)) page = path || 'index'
     else page = error
 
     $html.fadeTo(duration, 0, function() {

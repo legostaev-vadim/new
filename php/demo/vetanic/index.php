@@ -17,16 +17,16 @@
     else
       include 'dist/description/404.txt';
   ?>">
-  <link rel="shortcut icon" type="image/x-icon" href="dist/favicon.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="/dist/favicon.ico">
   <title>
     <?php
       if($page == 'index') echo $site_name;
       elseif($page == '404') echo $page;
-      else echo $menu[$page] . ' | ' . $site_name;
+      else echo $menu['/'.$page] . ' | ' . $site_name;
     ?>
   </title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
-  <link rel="stylesheet" href="dist/main.css">
+  <link rel="stylesheet" href="/dist/main.css">
 </head>
 <body>
   <?php include 'dist/includes/header.php'; ?>
@@ -34,6 +34,6 @@
     <?php include 'dist/pages/'.$page.'.html'; ?>
   </main>
   <?php include 'dist/includes/footer.php'; ?>
-  <script src="dist/main.js"></script>
+  <script src="/dist/main.js"></script>
 </body>
 </html>

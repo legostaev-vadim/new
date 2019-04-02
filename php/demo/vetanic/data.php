@@ -4,12 +4,12 @@ $site_name = 'Vetanic';
 
 $menu = [
   '/' => 'Главная',
-  'doctors' => 'Врачи',
-  'services' => 'Услуги',
-  'prices' => 'Цены',
-  'reviews' => 'Отзывы',
-  'graph' => 'График',
-  'contacts' => 'Контакты'
+  '/doctors' => 'Врачи',
+  '/services' => 'Услуги',
+  '/prices' => 'Цены',
+  '/reviews' => 'Отзывы',
+  '/graph' => 'График',
+  '/contacts' => 'Контакты'
 ];
 
 if(!isset($_GET['id'])) $page = 'index';
