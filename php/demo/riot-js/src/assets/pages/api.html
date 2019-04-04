@@ -14,7 +14,7 @@
 <h3 id="-riotmountcustomtagselector-opts">
 <a name="mount"></a> riot.mount(customTagSelector, [opts])</h3>
 
-<p><code class="highlighter-rouge">customTagSelector</code> выбирает элементы со страницы и монтирует их как пользовательские теги. Имя выбранного элемента должно совпадать с именем пользовательского тега.</p>
+<p>Выбирает элементы со страницы <code class="highlighter-rouge">customTagSelector</code> и монтирует их как пользовательские теги. Имя выбранного элемента должно совпадать с именем пользовательского тега.</p>
 
 <p><code class="highlighter-rouge">opts</code> - необязательный объект параметров, который передаётся в теги. Это может быть что угодно, начиная от простого объекта до большого API приложения. Или это может быть Flux-хранилище. Это зависит от того, как вы структурируете ваше приложение. Вы можете узнать больше о модульности <a href="guide-design#modularity">здесь</a>. <em>Обратите внимание,</em> что атрибуты монтируемого тега имеют более высокий приоритет над атрибутами, указанными с такими же именами через аргумент <code class="highlighter-rouge">opts</code>.</p>
 
@@ -261,7 +261,7 @@ riot.render(mytag, { foo: 'bar' })
 <span class="nt">&lt;/my-tag&gt;</span>
 </code></pre></div></div>
 
-<p>В приведенном выше примере, сообщение об ошибке отображается в пользовательском интерфейсе после вызова метода <code class="highlighter-rouge">update()</code>. (Мы можем продолжать использовать <code class="highlighter-rouge">this</code> ссылаясь на наш экземпляра тега, потому что мы использовали метод <code class="highlighter-rouge">.bind(this)</code> для обработчика <code class="highlighter-rouge">fail</code> ошибок.)</p>
+<p>В приведенном выше примере, сообщение об ошибке отображается в пользовательском интерфейсе после вызова метода <code class="highlighter-rouge">update()</code>. (Мы можем продолжать использовать <code class="highlighter-rouge">this</code> ссылаясь на наш экземпляра тега, потому что мы использовали метод <code class="highlighter-rouge">.bind(this)</code> для обработчика ошибок <code class="highlighter-rouge">fail</code>)</p>
 
 <p>Если вы хотите больше контролировать обновления тегов DOM, вы можете установить пользовательскую функцию <code class="highlighter-rouge">shouldUpdate</code>, и ваш тег будет обновляться только в том случае, если эта функция вернёт <code class="highlighter-rouge">true</code></p>
 
@@ -520,7 +520,7 @@ riot.render(mytag, { foo: 'bar' })
       <span class="k">this</span><span class="p">.</span><span class="nx">posts</span> <span class="o">=</span> <span class="p">[]</span>
 
       <span class="c1">// нам нужно вручную запустить метод обновления</span>
-      <span class="c1">// поскольку функция deleteAllPosts вызывается из дочернего тега</span>
+      <span class="c1">// поскольку функция deleteAllPosts вызывается из дочернего тега,</span>
       <span class="c1">// автоматическое обновление родительского не происходит</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">()</span>
     <span class="p">}</span>
@@ -621,7 +621,7 @@ riot.render(mytag, { foo: 'bar' })
 
 <h2 id="reserved-words">Зарезервированные слова</h2>
 
-<p>Приведённые выше имена методов и свойств являются зарезервированными словами для тегов Riot. Не используйте следующие названия для переменных тегов или их методов: <code class="highlighter-rouge">opts</code>, <code class="highlighter-rouge">parent</code>, <code class="highlighter-rouge">tags</code>, <code class="highlighter-rouge">root</code>, <code class="highlighter-rouge">refs</code>, <code class="highlighter-rouge">update</code>, <code class="highlighter-rouge">unmount</code>, <code class="highlighter-rouge">on</code>, <code class="highlighter-rouge">off</code>, <code class="highlighter-rouge">one</code> и <code class="highlighter-rouge">trigger</code>.  Переменные, начинающиеся с подчеркивания (например: <code class="highlighter-rouge">this._item</code>), тоже зарезервированы для внутреннего использования. Локальные переменные можно называть как угодно. Например:</p>
+<p>Приведённые выше имена методов и свойств являются зарезервированными словами для тегов Riot. Не используйте следующие названия для переменных тегов или их методов: <code class="highlighter-rouge">opts</code>, <code class="highlighter-rouge">parent</code>, <code class="highlighter-rouge">tags</code>, <code class="highlighter-rouge">root</code>, <code class="highlighter-rouge">refs</code>, <code class="highlighter-rouge">update</code>, <code class="highlighter-rouge">unmount</code>, <code class="highlighter-rouge">on</code>, <code class="highlighter-rouge">off</code>, <code class="highlighter-rouge">one</code> и <code class="highlighter-rouge">trigger</code>.  Переменные начинающиеся с подчеркивания (например: <code class="highlighter-rouge">this._item</code>), тоже зарезервированы для внутреннего использования. Локальные переменные можно называть как угодно. Например:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">my</span><span class="o">-</span><span class="nx">tag</span><span class="o">&gt;</span>
 
@@ -644,7 +644,7 @@ riot.render(mytag, { foo: 'bar' })
 <h3 id="-riottagtagname-html-css-attrs-constructor">
 <a name="tag"></a> riot.tag(tagName, html, [css], [attrs], [constructor])</h3>
 
-<p>Создает новый пользовательский тег “вручную”, без компилятора.</p>
+<p>Создаёт новый пользовательский тег “вручную”, без компилятора.</p>
 
 <ul>
   <li>
@@ -701,7 +701,7 @@ riot.render(mytag, { foo: 'bar' })
   <li>Препроцессоры CSS</li>
 </ol>
 
-<p>Вы можете использовать теги <code class="highlighter-rouge">&lt;template&gt;</code> или <code class="highlighter-rouge">&lt;script&gt;</code> следующим образом:</p>
+<p>Вы можете использовать <code class="highlighter-rouge">&lt;template&gt;</code> или теги <code class="highlighter-rouge">&lt;script&gt;</code> следующим образом:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"tmpl"</span> <span class="na">id=</span><span class="s">"my_tmpl"</span><span class="nt">&gt;</span>
   <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="p">{</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">hello</span> <span class="p">}</span><span class="o">&lt;</span><span class="sr">/h3</span><span class="err">&gt;
@@ -719,7 +719,7 @@ riot.render(mytag, { foo: 'bar' })
 
 <p><span class="tag red">&gt;=3.5.0</span></p>
 
-<p>Начиная с версии 3.5, вы также можете создавать “теги-обёртки” без какого-либо шаблона, следующим образом:</p>
+<p>Начиная с версии 3.5, вы также можете создавать “теги-обёртки” без какого-либо шаблона, например:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">riot</span><span class="p">.</span><span class="nx">tag</span><span class="p">(</span><span class="s1">'tag-name'</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">opts</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="s1">'hi'</span>
