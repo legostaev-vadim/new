@@ -16,14 +16,14 @@ html {
     src: local('Lato Regular'), local('Lato-Regular'), url('fonts/latoregular.woff2') format('woff2'), url('fonts/latoregular.woff') format('woff'), url('fonts/latoregular.ttf') format('truetype');
     font-style: normal;
     font-weight: normal;
-    text-rendering: optimizeLegibility;
+    // text-rendering: optimizeLegibility;
 }
 @font-face {
     font-family: 'LatoWebLight';
     src: local('Lato Light'), local('Lato-Light'), url('fonts/latolight.woff2') format('woff2'), url('fonts/latolight.woff') format('woff'), url('fonts/latolight.ttf') format('truetype');
     font-style: normal;
     font-weight: normal;
-    text-rendering: optimizeLegibility;
+    // text-rendering: optimizeLegibility;
 }
 html {
     font-family: "LatoWebRegular", "Myriad Pro", "Helvetica Neue", sans-serif;
@@ -109,7 +109,7 @@ h6 {
     font-weight: bold;
     line-height: 1.25;
     color: #313131;
-    text-rendering: optimizeLegibility;
+    // text-rendering: optimizeLegibility;
 }
 h1 {
     font-size: 2.4rem;
