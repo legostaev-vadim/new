@@ -12,9 +12,9 @@ $(function() {
   const $main = $('main')
   const $items = $('#nav a').not('[target="_blank"]')
   const $buttonUp = $('.button-up')
-  const duration = 300
   const error = '404'
   const $tabs = {}
+  let duration = 0
   let indent = 0
   let page = $main.attr('data-page')
   let prevPage = location.pathname
@@ -49,9 +49,14 @@ $(function() {
     else indent = 0
     $html.scrollTop(indent)
     $main.fadeTo(duration, 1)
+    duration = 0
   }
 
   $(window).trigger('scroll.button-up')
+
+  $('body').on('click', 'a', function() {
+    duration = 300
+  })
 
   $main.on('click', 'a[href^="#"]', function(e) {
     if(location.hash === $(this).attr('href')) {
@@ -94,7 +99,7 @@ $(function() {
     else if($items.is(`[href="/${path}"]`)) page = path
     else page = error
 
-    $main.fadeTo(duration, 0, function() {
+    $main.fadeTo(duration, 0, function(e) {
       if(page in pageStore) {
         load_page(pageStore[page].main, location.hash)
         $description.attr('content', pageStore[page].description)
@@ -136,8 +141,10 @@ $(function() {
           }
         })
       } else {
+        if(location.hash) href = location.href.slice(0, location.href.indexOf('#'))
+        else href = location.href
         $items.each(function() {
-          if($(this)[0].href === location.href) {
+          if($(this)[0].href === href) {
             $(this).addClass('current')
             $title.text(`${$(this).text()} · ${siteName}`)
             return false
